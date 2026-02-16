@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+
+:root{
+    --main-shadow: 1px 1px hsl(0deg 0% 0% / 0.075),
+      0 2px 2px hsl(0deg 0% 0% / 0.075),
+      0 4px 4px hsl(0deg 0% 0% / 0.075),
+      0 8px 8px hsl(0deg 0% 0% / 0.075),
+      0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 1vw;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+header{
+    width: 100%;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header>img{
+    width: 40%;
+    transform: translateY(-110%);
+    transition: all 1.5s ease;
+    opacity: 0;
+}
+
+.organizer_logo{
+    width: 40%;
+    position: relative;
+    opacity: 0;
+    transition: all 2s ease;
+    transform: translateX(30rem);
+    font-size: 5rem;
+    font-family: "Poiret One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    padding-left: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.organizer_logo>span{
+    height: 100%;
+    transform: translateY(-4rem);
+    color: rgb(53, 53, 53);
+    font-optical-sizing: auto;
+}
+
+.form-search-glass{
+ display: flex;
+ justify-content: center;
+ width: 100%;
+}
+
+.form-search-glass>input{
+    width: 30rem;
+    padding: 1rem;
+    border-radius: 25px;
+    border: 1px black solid;
+}
+
+main{
+    width: 70%;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0 auto;
+}
+
+main>section{
+    background-color: #262a82;
+    padding: 3.5rem;
+    text-align: center;
+    border-radius: 25px;
+    color: white;
+    font-size: 1.5rem;
+    font-family: "Poiret One", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  box-shadow: var(--main-shadow);
+  cursor: pointer;
+  font-optical-sizing: auto;
+  transition: transform .5s ease, background-color .5s ease;
+}
+
+main>section:hover{
+    transform: translateY(-5px);
+    background-color: #1c1f63;
+}
+
+section>i{
+    margin-left: 1rem;
+}

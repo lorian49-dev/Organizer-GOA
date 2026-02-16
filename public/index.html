@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Organizer-GOA</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
-    
+    <header>
+        <img class="logo-andes" src="/logo-types/GOA-LOGO.png" alt="">
+        <div class="organizer_logo">
+            <span>.organizer</span>
+        </div>
+    </header>
+    <form action="" class="form-search-glass">
+        <input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142...">
+    </form>
+    <main>
+        <section>Monturas<i class="fa-solid fa-glasses"></i></section>
+        <section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section>
+        <section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section>
+    </main>
+    <script>
+        const img_logo = document.querySelector('.logo-andes');
+        const org_logo = document.querySelector('.organizer_logo')
+
+        addEventListener('DOMContentLoaded', ()=>{
+            setTimeout(()=>{
+             img_logo.style.transform = 'translateY(0)'
+             setTimeout(()=>{
+             img_logo.style.opacity = '1'
+             setTimeout(()=>{
+             img_logo.style.transform = 'translateX(-10%)'
+             org_logo.style.opacity = '1'
+             org_logo.style.transform = 'translateX(0%)'
+             }, 1000)
+             }, 500)
+            }, 1000)
+        })
+    </script>
 </body>
 </html>
