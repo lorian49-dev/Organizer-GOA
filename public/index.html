@@ -16,30 +16,37 @@
         </div>
     </header>
     <form action="" class="form-search-glass">
-        <input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142...">
+        <label for="search-glass"><input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142..."></label>
     </form>
-    <main>
-        <section>Monturas<i class="fa-solid fa-glasses"></i></section>
-        <section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section>
-        <section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section>
-    </main>
+    <div class="main">
+        <a href="#"><section>Monturas<i class="fa-solid fa-glasses"></i></section></a>
+        <a href="sections/loadFile.html"><section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section></a>
+        <a href="#"><section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section></a>
+    </div>
     <script>
         const img_logo = document.querySelector('.logo-andes');
         const org_logo = document.querySelector('.organizer_logo')
-
-        addEventListener('DOMContentLoaded', ()=>{
+        const sectionButtons = document.querySelectorAll('section')
+        const waiting = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+        addEventListener('DOMContentLoaded', async()=>{
             setTimeout(()=>{
+       document.body.style.opacity = '1'
+       document.body.style.pointerEvents = 'auto'
+      }, 1000)
+             await waiting(1000)
              img_logo.style.transform = 'translateY(0)'
-             setTimeout(()=>{
+             await waiting(500)
              img_logo.style.opacity = '1'
-             setTimeout(()=>{
+            await waiting(1000)
              img_logo.style.transform = 'translateX(-10%)'
              org_logo.style.opacity = '1'
-             org_logo.style.transform = 'translateX(0%)'
-             }, 1000)
-             }, 500)
-            }, 1000)
-        })
+             org_logo.style.transform = 'translateX(0%)'     
+            for(const secion of sectionButtons){
+            await waiting(300)
+            secion.style.opacity = '1'
+            secion.style.setProperty('--escala', '1')
+            }
+        });
     </script>
 </body>
 </html>
