@@ -52,22 +52,24 @@
         let subtittleModal = document.querySelector('.subtittlemodal')
         const modalWindowsContent = document.querySelector('.modal-windows-content') 
         const modalImg = document.querySelector('.modal-img')
+        const textInstrutions = document.createElement('div')
+        textInstrutions.classList.add('text-instructions')
 
         const modalContent = [{
             tittle: 'Como usar Organizer? ',
             subtittle: 'Busqueda de monturas',
             img: '/logo-types/search-bar.png',
-            text: 'lorem ipsum'
+            text: '<p>La <strong>barra de busqueda</strong> al inicio de la web, proporciona un atajo en la busqueda de cualquier montura registrada.<br><br> Solo se bebe ingresar el numero exacto de Modelo y apareceran todas las coincidencias</p>'
         },
-           {tittle: 'Hola Mundo2',
-            subtittle: 'Segundo texto',
-            img: '/logo-types/search-bar.png',
-            text: 'lorem ipsum'
+           {tittle: 'Atajos',
+            subtittle: 'Accesos rapidos',
+            img: '/logo-types/buttons-bar.png',
+            text: '<p>Para la fase <strong>beta</strong> se facilitan 3 opciones de acceso rapido para cargar o descargar documentos de facturas, manifiestos, o sencillamente para eliminar, agregar o editar informacion de monturas.</p><img src="/logo-types/button-montura.png"><p> Las <strong>monturas</strong> son el eje central de este proyecto, por lo que se es necesario inresar cada una de las existencias al sistema, estas tendran que ser enlazadas a una factura, un manifiesto, y ser digitada manualmente un numero de compra, para asi poder diferenciar unas de otras.</p><img src="/logo-types/button-invoice.png"><p> Para este apartado se reservan dos espacios, uno para subir el documento en pdf y el otro para visualizar y gestionar dichos pdf para <strong>Facturas especificamente</strong></p><img src="/logo-types/button-manifest.png"><p> Al igual que las facturas, los manifiestos cuentan con sus respectivos apartados de carga y vizualizacon de archivos.</p>'
         },
-            {tittle: 'Hola Mundo3',
-            subtittle: 'Tercer texto',
+            {tittle: 'Gestion de Documentos',
+            subtittle: 'PDF y monturas',
             img: '/logo-types/search-bar.png',
-            text: 'lorem ipsum'
+            text: '<p>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</p>'
         }]
         
         let i = -1
@@ -129,7 +131,7 @@
             for(const secion of sectionButtons){
             await waiting(300)
             secion.style.opacity = '1'
-            secion.style.setProperty('--escala', '1')
+            secion.style.setProperty('--escala', '.7')
     }
 }           
 
@@ -147,8 +149,9 @@
         tittleModal.textContent = modalContent[i].tittle
        subtittleModal.textContent = modalContent[i].subtittle
        modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
+       textInstrutions.innerHTML = modalContent[i].text
+        modalWindowsContent.appendChild(textInstrutions)
         modalWindowsContent.style.opacity = '1'
-        console.log(i)
        if(i == modalContent.length-1){
         btn_next.style.display = 'none'
        }
@@ -170,9 +173,9 @@
         tittleModal.textContent = modalContent[i].tittle
         subtittleModal.textContent = modalContent[i].subtittle
         modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
+          textInstrutions.innerHTML = modalContent[i].text
+        modalWindowsContent.appendChild(textInstrutions)
         modalWindowsContent.style.opacity = '1'
-        console.log(i)
-
         if(i === 0){
          btn_back.style.display = 'none'
          btn_next.style.display = 'block'

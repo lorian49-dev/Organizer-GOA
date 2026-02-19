@@ -30,11 +30,28 @@
 
   app.get('/aceptar-cookie', (req, res)=>{
      res.cookie('cookie-aceptada', 'true', {
-      maxAge: 60000,
+      maxAge: 10080000,
       httpOnly: false
      })
      res.status(200).send('Entendido')
   });
+// Solicitud de informacion a la tabla INVOICES
+  app.get('/invoices-table-get', async(req, res)=>{
+   
+try{
+
+   const {data, error} = await supabase.from('invoices').select('id_invoice, name, weight, date, url');
+
+  if(error){
+    throw error;
+  }
+
+  res.json(data)
+} catch(err){
+  console.error(err);
+      res.status(500).json({error:'Error al solicitar informacion'})
+}
+  })
 
   app.post('/upload', upload.single('pdf'), async(req, res)=>{
     
@@ -73,8 +90,7 @@
         throw dbError;
       }
 
-      res.json({message: 'Archivo Subido correctamente'});
-
+      res.redirect('/sections/loadFile.html')
     } catch(err){
       console.error(err);
       res.status(500).json({error:'Error al subir Arcvhivo'})

@@ -21,7 +21,6 @@ a{
 
 html{
     font-size: 1vw;
-    overflow-x: hidden;
     background-image: linear-gradient(to bottom, #ffffff, #ededed, #dbdbdb, #afafaf, #8d8d8d);
     min-height: 100vh;
 }
@@ -30,6 +29,7 @@ body{
     opacity: 0;
     pointer-events: none;
     transition: opacity 1s ease;
+    overflow-x: hidden;
 }
 
 header{
@@ -101,8 +101,8 @@ header>img{
     color: white;
     font-size: 1.5rem;
     font-family: "Arsenal SC", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-weight: 400;
+    font-style: normal;
   box-shadow: var(--main-shadow);
   cursor: pointer;
   font-optical-sizing: auto;
@@ -131,9 +131,9 @@ section>i{
 /*Ventana modal de manual de usuario*/
 
 .modal-container{
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     background-color: #16183881;
     top: 0;
     left: 0;
@@ -147,8 +147,8 @@ section>i{
 .modal-windows{
     width: 50%;
     min-height: 500px;
-    max-height: 1000px;
-    background-color: #121438;
+    max-height: 600px;
+    background-color: #ffffff;
     border-radius: 35px;
     box-shadow: var(--main-shadow);
     padding: 4rem ;
@@ -157,12 +157,14 @@ section>i{
     align-items: center;
     flex-direction: column;
     transition: all 1s ease;
+    color: #16183881;
 }
 
 .modal-windows-content{
     min-height: 200px;
     overflow-y: auto;
     transition: opacity .5s ease;
+    color: #16183881;
 }
 
 .modal-img{
@@ -173,12 +175,24 @@ section>i{
 
 .modal-img img{
     width: 300px;
-    filter: drop-shadow(5px 5px 5px black);
+    filter: drop-shadow(1px 1px 1px black);
+    border-radius: 15px;
+
+}
+
+.text-instructions{
+    padding: 0 5rem;
+    font-size: 1rem;
+}
+.text-instructions img{
+    width: 300px;
+    filter: drop-shadow(1px 1px 1px black);
+    border-radius: 15px;
+    margin: 2rem;
 }
 
 h2{
     font-size: 3rem;
-    color: #fff;
     font-family: "Arsenal SC", sans-serif;
   font-weight: 100;
   font-style: normal;
@@ -187,7 +201,6 @@ h2{
 
 h3{
     font-size: 1.5rem;
-    color: #fff;
     font-family: "Arsenal SC", sans-serif;
   font-weight: 100;
   font-style: normal;
@@ -213,6 +226,13 @@ h3{
     box-shadow: var(--main-shadow);
     cursor: pointer;
     transition: all .5s ease;
+    background-color: #262a82;
+    color: #cfcfcf
+}
+
+.instrucciones button:nth-child(4){
+    background-color: #fcb823;
+    color: #3a3a3ab6;
 }
 
 .instrucciones button:hover{
@@ -223,16 +243,20 @@ h3{
 
 main{
     width: 70%;
-    margin: 0 auto;
+    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 2rem;
 }
 
 h1{
    font-family: "Arsenal SC", sans-serif;
-  font-weight: 400;
+  font-weight: 100;
   font-style: normal;
+  font-size: 3rem;
+  font-optical-sizing: auto;
+
 }
 
 p{
@@ -251,13 +275,30 @@ nav{
     justify-content: center;
 }
 
+.back-home{
+    display: flex;
+    align-items: center;
+    transition: all .5s ease
+}
+
+.back-home i{
+    color: #cfcfcf;
+    font-size: 1.5rem;
+    cursor: pointer;
+    
+}
+
+.back-home:hover{
+    transform: translateX(-1rem);
+
+}
+
 nav ul{
     display: flex;
     width: 50%;
     justify-content: space-around;
     list-style: none;
     align-items: center;
-
 }
 
 nav ul li{
@@ -272,12 +313,12 @@ nav ul li{
 nav ul li::after{
     content: ' ';
     position: absolute;
-    width: 100%;
-    height: 150%;
+    width: 170%;
+    height: 170%;
     background-color: transparent;
     animation: effect 3s linear infinite normal;
-    top: -10%;
-    left: 0;
+    top: 5%;
+    left: -25%;
     border-radius: 25px;
     transition: all .5s ease;
     z-index: -2;
@@ -285,7 +326,7 @@ nav ul li::after{
 
 nav ul li:hover::after{
     animation: effect 3s linear 1s infinite normal;
-    background: conic-gradient(transparent 20deg, transparent 120deg, #ffff 360deg) ;
+    background: conic-gradient(transparent 20deg, transparent 120deg,transparent 260deg, #ffff 360deg) ;
 }
 
 nav ul li::before{
@@ -300,7 +341,7 @@ nav ul li::before{
     z-index: -1;
     transform: scale(.95, .9);
 }
-
+/*Efecto animado para los botones de redireccion en la barra de navegacion*/
 @keyframes effect{
     0%{
         transform: rotate(0deg);
@@ -314,9 +355,78 @@ nav>ul a{
  color: #cfcfcf;
   font-family: "Poiret One", sans-serif;
   font-optical-sizing: auto;
+  font-size: .8rem;
 }
 
 a .bold{
     font-weight: bold;
     color: #fff;
 }
+
+/*Personalizacion del contenido de la pagina*/
+
+.upload-file-form{
+    border: 5px #16183850 dashed;
+    padding: 5rem;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-file-form button{
+padding: 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: var(--main-shadow);
+    cursor: pointer;
+    transition: all .5s ease;
+    background-color: #fcb823;
+    color: #3a3a3ab6;
+}
+
+.upload-file-form button:hover{
+    transform: translateY(-5px);
+}
+
+table{
+    padding-top: 2rem;
+    min-width: 700px;
+  margin: 0 auto;
+  border-radius: 25px;
+  border-spacing: 0;
+  overflow: hidden;
+  font-family:  Arial, Helvetica, sans-serif;
+  background-color: #fff;
+  box-shadow: var(--main-shadow);
+  margin-bottom: 5rem;
+}
+
+thead{
+        color: #181818a6;
+
+}
+
+th{
+    padding: 1rem;
+}
+
+td{
+    padding: 1rem;
+}
+
+td:nth-child(1), th:nth-child(1){
+ width: 55%;
+}
+
+table a{
+    text-decoration: none;
+    color: #16183850;
+    transition: color .5s ease;
+}
+
+table a:hover{
+    color: #262a82;
+}
+

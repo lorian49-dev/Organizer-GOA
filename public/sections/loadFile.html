@@ -9,25 +9,28 @@
 </head>
 <body>
     <nav>
+        <span class="back-home"  onclick="goHome()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </span>
         <ul>
             <li><a href="#">Cargar Monturas</a></li>
             <li><a href="#"><span class="bold">Facturas</span></a></li>
             <li><a href="#">Manifiestos</a></li>
         </ul>
         <form action="" class="form-search-glass">
-        <label for="search-glass"><input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142..."></label>
+        <label for="search-glass">
+            <input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142...">
+        </label>
     </form>
 </nav>
     <main>
-        <h1>Administracion de facturas</h1>
+    <h1>Administracion de facturas</h1>
     <p>Cargar una Factura</p>
         
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form action="/upload" method="post" enctype="multipart/form-data" class="upload-file-form">
         <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf">
-
-    <div class="btn-container">
         <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
-    </div>
+
     </form>
     </main>
 
@@ -39,18 +42,53 @@
             <th>Date</th>
             <th>Ver</th>
         </thead>
-        <tbody class="pdf-container-tbody"></tbody>
+        <tbody class="pdf-container-tbody">
+            
+        </tbody>
      </table>
     </div>
 <script>
     const form_container = document.querySelector('form');
     const pdf_container = document.querySelector('.pdf-container-tbody')
+    const goHome = () =>{
+        window.location.href = '/'
+    }
+
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=>{
        document.body.style.opacity = '1'
        document.body.style.pointerEvents = 'auto'
       }, 1000)
     })
+
+    async function tableInformation() {
+        const res = await fetch('/invoices-table-get');
+        const response = await res.json();
+        
+        for(const file of response){
+        const newRow = document.createElement('tr')
+        const tableName = document.createElement('td');
+        tableName.textContent = file.name
+        const tableSize = document.createElement('td');
+        tableSize.textContent = parseInt((file.weight) / 1024 / 1024) + ' Mb'
+        const tableDate = document.createElement('td');
+        tableDate.textContent = new Date(file.date).toLocaleString()
+        const eyeUrl = document.createElement('td')
+        eyeUrl.innerHTML = `<a href="${file.url}" target="_blank"><i class="fa-solid fa-eye"></i></a>`;
+        
+        newRow.appendChild(tableName)    
+        newRow.appendChild(tableSize)    
+        newRow.appendChild(tableDate)    
+        newRow.appendChild(eyeUrl)    
+
+        pdf_container.appendChild(newRow)
+
+        }
+
+
+    }
+
+    tableInformation()
 </script>
 </body>
 </html>
