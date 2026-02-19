@@ -3,9 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Organizer-GOA</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
-    
+    <header>
+        <img class="logo-andes" src="/logo-types/GOA-LOGO.png" alt="">
+        <div class="organizer_logo">
+            <span>.organizer</span>
+        </div>
+    </header>
+    <form action="" class="form-search-glass">
+        <label for="search-glass"><input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142..."></label>
+    </form>
+    <div class="main">
+        <a href="#"><section>Monturas<i class="fa-solid fa-glasses"></i></section></a>
+        <a href="sections/loadFile.html"><section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section></a>
+        <a href="#"><section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section></a>
+    </div>
+    <div class="modal-container">
+        <div class="modal-windows">
+            <div class="modal-windows-content">
+                <h2 class="tittleModal">Bienvenido</h2>
+                <h3 class="subtittlemodal">Instrucciones de uso</h3>
+                <div class="modal-img"><img src="/logo-types/GOA-LOGO.png" alt="imagen de Grupo optico andes"></div>
+            </div>
+            <div class="instrucciones">
+              <button class="btn-close-windows">Cerrar</button>
+              <button class="btn-dont-show-again" onclick="acceptCookie()">No volver a mostrar</button>
+              <button class="btn-back" style="display: none;">Atras</button>
+              <button class="btn-next">Siguiente</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const img_logo = document.querySelector('.logo-andes');
+        const org_logo = document.querySelector('.organizer_logo')
+        const sectionButtons = document.querySelectorAll('section')
+        const btn_close_windows = document.querySelector('.btn-close-windows');
+        const btn_dont_show_again = document.querySelector('.btn-dont-show-again');
+        const btn_next = document.querySelector('.btn-next')
+        const btn_back = document.querySelector('.btn-back')
+        const modal_container = document.querySelector('.modal-container')
+        const modal_windows = document.querySelector('.modal-windows')
+        let tittleModal = document.querySelector('.tittleModal')
+        let subtittleModal = document.querySelector('.subtittlemodal')
+        const modalWindowsContent = document.querySelector('.modal-windows-content') 
+        const modalImg = document.querySelector('.modal-img')
+
+        const modalContent = [{
+            tittle: 'Como usar Organizer? ',
+            subtittle: 'Busqueda de monturas',
+            img: '/logo-types/search-bar.png',
+            text: 'lorem ipsum'
+        },
+           {tittle: 'Hola Mundo2',
+            subtittle: 'Segundo texto',
+            img: '/logo-types/search-bar.png',
+            text: 'lorem ipsum'
+        },
+            {tittle: 'Hola Mundo3',
+            subtittle: 'Tercer texto',
+            img: '/logo-types/search-bar.png',
+            text: 'lorem ipsum'
+        }]
+        
+        let i = -1
+        
+
+// Funciones
+         
+// arrow
+
+          const showAndHideModal = (btn,ModalC, ModalW, logoImg, logoText, groupBtn) =>{
+            btn.addEventListener('click', async()=>{
+            ModalW.style.transform = 'translateY(-100vh)'
+            ModalW.style.opacity = '0'
+            ModalC.style.opacity = '0'
+            ModalC.style.pointerEvents = 'none'
+            await waiting(1000)
+             logoImg.style.transform = 'translateY(0)'
+             await waiting(500)
+             logoImg.style.opacity = '1'
+            await waiting(1000)
+             logoImg.style.transform = 'translateX(-10%)'
+             logoText.style.opacity = '1'
+             logoText.style.transform = 'translateX(0%)'     
+            for(const secion of groupBtn){
+            await waiting(300)
+            secion.style.opacity = '1'
+            secion.style.setProperty('--escala', '1')
+            }
+            })
+          }
+
+          function acceptCookie(){
+        fetch('/aceptar-cookie').then(()=>{
+               showAndHideModal(btn_dont_show_again, modal_container, modal_windows, img_logo, org_logo, sectionButtons)
+        })
+    }
+        //constante para aniadir promesas dentro de Lisneners
+        const waiting = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+        addEventListener('DOMContentLoaded', async()=>{
+            setTimeout(()=>{
+       document.body.style.opacity = '1'
+       document.body.style.pointerEvents = 'auto'
+
+      }, 1000)
+      //Escucha el evento al No mostrar nuevamente el modal
+      const aceptarCookie = document.cookie.split('; ').find(row => row.startsWith('cookie-aceptada'))
+    if(!aceptarCookie){
+        modal_container.style.display = 'flex';
+    } else{
+         await waiting(1000)
+             img_logo.style.transform = 'translateY(0)'
+             await waiting(500)
+             img_logo.style.opacity = '1'
+            await waiting(1000)
+             img_logo.style.transform = 'translateX(-10%)'
+             org_logo.style.opacity = '1'
+             org_logo.style.transform = 'translateX(0%)'     
+            for(const secion of sectionButtons){
+            await waiting(300)
+            secion.style.opacity = '1'
+            secion.style.setProperty('--escala', '1')
+    }
+}           
+
+      
+        // escucha de evento al salir del modal
+            showAndHideModal(btn_close_windows, modal_container, modal_windows, img_logo, org_logo, sectionButtons)
+
+        // escucha al evento al seguir en el modal
+
+      btn_next.addEventListener('click', async(eventClick)=>{
+        if(i <= modalContent.length-1){
+        modalWindowsContent.style.opacity = '0'
+        await waiting(500)
+        i++
+        tittleModal.textContent = modalContent[i].tittle
+       subtittleModal.textContent = modalContent[i].subtittle
+       modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
+        modalWindowsContent.style.opacity = '1'
+        console.log(i)
+       if(i == modalContent.length-1){
+        btn_next.style.display = 'none'
+       }
+        }
+
+        if(i >= 1 && i <= modalContent.length){
+        btn_back.style.display = 'block'
+        }
+      })
+
+
+      // Evento del boton hacia atras
+
+      btn_back.addEventListener('click', async(event)=>{
+        if(i > 0){
+        modalWindowsContent.style.opacity = '0'
+        await waiting(500)
+        i--
+        tittleModal.textContent = modalContent[i].tittle
+        subtittleModal.textContent = modalContent[i].subtittle
+        modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
+        modalWindowsContent.style.opacity = '1'
+        console.log(i)
+
+        if(i === 0){
+         btn_back.style.display = 'none'
+         btn_next.style.display = 'block'
+        }
+        } 
+
+      });
+        });
+    </script>
 </body>
 </html>

@@ -5,131 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Load Files</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" href="data:,">
-    <style>
-
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
-
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Roboto Condensed", sans-serif;
-            font-optical-sizing: auto;
-            font-style: normal;
-        }
-
-        body{
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            background-color: #101828;
-            justify-content: center;
-        }
-        
-        main{
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        h1{
-            font-family: "Roboto Condensed", sans-serif;
-            font-optical-sizing: auto;
-            color: rgb(32, 124, 93);
-            font-style: normal;
-        }
-
-        p{
-            color: rgb(32, 124, 93);
-        }
-
-        .btn-container{
-            display: flex;
-            gap: 15px;
-        }
-
-        button{
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: rgba(177, 255, 229, 0.479) -2px -2px 5px,
-            #06090f 5px 5px 5px,
-            inset #06090f 3px 3px 5px;
-            background-color: #fff;
-            transition: all .5s ease;
-            cursor: pointer;
-            background-color: transparent; 
-            color: rgb(32, 124, 93);
-        }
-
-        button:hover{
-            background-color: rgb(32, 124, 93);
-            color: #101828;
-
-        }
-
-        i{
-            margin-left: 10px;
-        }
-
-        form{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input{
-            color: rgb(32, 124, 93);
-
-        }
-
-        .pdf-container{
-            box-shadow: rgba(177, 255, 229, 0.39) -3px -3px 5px,
-            #06090f 5px 5px 5px,
-            inset #06090f 3px 3px 5px;
-            width: 600px;
-            min-height: 25px;
-            max-height: 600px;
-            border-radius: 10px;
-            overflow-y: auto;
-        }
-
-        table{
-            width: 100%;
-            color: #fff;
-        }
-
-        th{
-            padding: 5px 20px;
-        }
-
-        td{
-            padding: 10px;
-        }
-
-        tbody>tr:hover{
-            transition: .5s;
-            background-color: #31446b;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-    
+    <nav>
+        <ul>
+            <li><a href="#">Cargar Monturas</a></li>
+            <li><a href="#"><span class="bold">Facturas</span></a></li>
+            <li><a href="#">Manifiestos</a></li>
+        </ul>
+        <form action="" class="form-search-glass">
+        <label for="search-glass"><input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142..."></label>
+    </form>
+</nav>
     <main>
-        <h1>Prueba de PDF</h1>
-    <p>Selecciona un pdf o arrastralo</p>
+        <h1>Administracion de facturas</h1>
+    <p>Cargar una Factura</p>
         
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf" multiple>
+        <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf">
 
     <div class="btn-container">
-        <button type="submit" class="btn-upload">Upload <i class="fa-solid fa-upload"></i></button>
+        <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
     </div>
     </form>
     </main>
@@ -148,29 +45,12 @@
 <script>
     const form_container = document.querySelector('form');
     const pdf_container = document.querySelector('.pdf-container-tbody')
-    
-    if(form_container){
-        async function myFunction() {
-            const response = await fetch('/send');
-            const responseJson = await response.json();
-
-            responseJson.forEach(element => {
-                const newRow = document.createElement('tr')
-
-                newRow.innerHTML = `
-                <td>${element.name}</td>
-                <td>${parseInt((element.size / 1024 / 1024) + " MB")}</td>
-                <td>${new Date(element.date).toLocaleDateString()}</td>
-                <td><a href="/uploads/${element.name}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
-                `
-
-            pdf_container.appendChild(newRow)      
-            });
-        }
-
-        myFunction()
-        }
-
+    document.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=>{
+       document.body.style.opacity = '1'
+       document.body.style.pointerEvents = 'auto'
+      }, 1000)
+    })
 </script>
 </body>
 </html>

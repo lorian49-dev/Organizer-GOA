@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root{
+    --main-shadow: 1px 1px hsl(0deg 0% 0% / 0.075),
+      0 2px 2px hsl(0deg 0% 0% / 0.075),
+      0 4px 4px hsl(0deg 0% 0% / 0.075),
+      0 8px 8px hsl(0deg 0% 0% / 0.075),
+      0 16px 16px hsl(0deg 0% 0% / 0.075);
+
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+html{
+    font-size: 1vw;
+    overflow-x: hidden;
+    background-image: linear-gradient(to bottom, #ffffff, #ededed, #dbdbdb, #afafaf, #8d8d8d);
+    min-height: 100vh;
+}
+
+body{
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+header{
+    width: 100%;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header>img{
+    width: 40%;
+    transform: translateY(-110%);
+    transition: all 1.5s ease;
+    opacity: 0;
+}
+
+.organizer_logo{
+    width: 40%;
+    position: relative;
+    opacity: 0;
+    transition: all 2s ease;
+    transform: translateX(30rem);
+    font-size: 5rem;
+    font-family: "Arsenal SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    padding-left: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.organizer_logo>span{
+    height: 100%;
+    transform: translateY(-4rem);
+    color: rgb(53, 53, 53);
+    font-optical-sizing: auto;
+}
+
+.form-search-glass{
+ display: flex;
+ justify-content: center;
+ width: auto;
+}
+
+.form-search-glass input{
+    width: 30rem;
+    padding: 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: var(--main-shadow);
+}
+
+.main{
+    width: 60%;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem auto 0 auto;
+}
+
+.main section{
+    background-color: #262a82;
+    padding: 3.5rem;
+    text-align: center;
+    border-radius: 25px;
+    color: white;
+    font-size: 1.5rem;
+    font-family: "Arsenal SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  box-shadow: var(--main-shadow);
+  cursor: pointer;
+  font-optical-sizing: auto;
+  opacity: 0;
+ --escala: .5;
+ --y: 0px;
+  transform: scale(var(--escala)) translateY(var(--y));
+  transition: transform .5s ease, background-color .5s ease, opacity .5s ease-in, box-shadow 1s ease, color .5s ease;
+}
+
+.main section:hover{
+    --y: -5px;
+    transform: scale(var(--escala)) translateY(var(--y));
+    background-color: rgba(128, 128, 128, 0.233);
+    box-shadow: inset 3px 3px 15px #3a3a3ab6,
+                inset -4px -4px 15px #fff,
+                 3px 3px 15px #3a3a3ab6,
+                 -4px -4px 10px #fff;
+    color: #16183881;
+}
+
+section>i{
+    margin-left: 1rem;
+}
+
+/*Ventana modal de manual de usuario*/
+
+.modal-container{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: #16183881;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s ease;
+}
+
+.modal-windows{
+    width: 50%;
+    min-height: 500px;
+    max-height: 1000px;
+    background-color: #121438;
+    border-radius: 35px;
+    box-shadow: var(--main-shadow);
+    padding: 4rem ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 1s ease;
+}
+
+.modal-windows-content{
+    min-height: 200px;
+    overflow-y: auto;
+    transition: opacity .5s ease;
+}
+
+.modal-img{
+    display: flex;
+    justify-content: center;
+    margin:2rem;
+}
+
+.modal-img img{
+    width: 300px;
+    filter: drop-shadow(5px 5px 5px black);
+}
+
+h2{
+    font-size: 3rem;
+    color: #fff;
+    font-family: "Arsenal SC", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+  text-align: center;
+}
+
+h3{
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: "Arsenal SC", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+  text-align: center;
+}
+
+.modal-windows h2{
+    letter-spacing: 1rem;
+}
+
+.instrucciones{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-top: 3rem;
+}
+
+.instrucciones button{
+    padding: 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: var(--main-shadow);
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.instrucciones button:hover{
+    transform: translateY(-5px);
+}
+
+/*Estilos de la Pagina de carga de facturas*/
+
+main{
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1{
+   font-family: "Arsenal SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+p{
+   font-family: "Arsenal SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+nav{
+    background-color: #262a82;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul{
+    display: flex;
+    width: 50%;
+    justify-content: space-around;
+    list-style: none;
+    align-items: center;
+
+}
+
+nav ul li{
+    background-color: transparent;
+    padding: 1rem;
+    border-radius: 25px;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+nav ul li::after{
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 150%;
+    background-color: transparent;
+    animation: effect 3s linear infinite normal;
+    top: -10%;
+    left: 0;
+    border-radius: 25px;
+    transition: all .5s ease;
+    z-index: -2;
+}
+
+nav ul li:hover::after{
+    animation: effect 3s linear 1s infinite normal;
+    background: conic-gradient(transparent 20deg, transparent 120deg, #ffff 360deg) ;
+}
+
+nav ul li::before{
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #262a82;
+    top: 0;
+    left: 0;
+    border-radius: 25px;
+    z-index: -1;
+    transform: scale(.95, .9);
+}
+
+@keyframes effect{
+    0%{
+        transform: rotate(0deg);
+    } 100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+nav>ul a{
+ color: #cfcfcf;
+  font-family: "Poiret One", sans-serif;
+  font-optical-sizing: auto;
+}
+
+a .bold{
+    font-weight: bold;
+    color: #fff;
+}

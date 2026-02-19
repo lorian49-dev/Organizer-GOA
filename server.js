@@ -26,6 +26,15 @@
   // Aplicacion, GET, POST & LISTEN
 
   app.use(express.static(path.join(__dirname, 'public')))
+  app.use('/logo-types',express.static(path.join(__dirname, 'src/logo-types')))
+
+  app.get('/aceptar-cookie', (req, res)=>{
+     res.cookie('cookie-aceptada', 'true', {
+      maxAge: 60000,
+      httpOnly: false
+     })
+     res.status(200).send('Entendido')
+  });
 
   app.post('/upload', upload.single('pdf'), async(req, res)=>{
     
