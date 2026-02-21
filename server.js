@@ -36,17 +36,26 @@
      res.status(200).send('Entendido')
   });
 // Solicitud de informacion a la tabla INVOICES
+
   app.get('/invoices-table-get', async(req, res)=>{
-   
+    const q = parseInt(req.query.page)
+    const page = Number.isInteger(q) && q > 0 ? q : 1;
+    const limit = 15
+
+    const start = (page - 1) * limit;
+    const end = start + (limit - 1);
+
 try{
 
-   const {data, error} = await supabase.from('invoices').select('id_invoice, name, weight, date, url');
+   const {data, error, count} = await supabase.from('invoices').select('id_invoice, name, weight, date, url', {count:'exact'}).order('date', {ascending : false}).range(start, end);
+
+  const totalRows = Math.ceil(count/limit)
 
   if(error){
     throw error;
   }
 
-  res.json(data)
+  res.json({data, totalRows})
 } catch(err){
   console.error(err);
       res.status(500).json({error:'Error al solicitar informacion'})

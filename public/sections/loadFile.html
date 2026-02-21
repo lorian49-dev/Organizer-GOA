@@ -35,12 +35,21 @@
     </main>
 
     <div class="pdf-container">
+     <span class="table-buttons">
+        <button onclick="clickBack()" class="btnBack"><i class="fa-solid fa-angle-up" style="transform: rotate(270deg);"></i></button>
+        <button onclick="clickNext()" class="btnNext"><i class="fa-solid fa-angle-up" style="transform: rotate(90deg);"></i></button>
+        <span class="page-info">
+            <!--Aqui aparecera el numero de registros y paginas-->
+        </span>
+     </span>
+     
      <table>
         <thead>
             <th>Name</th>
             <th>Size</th>
             <th>Date</th>
             <th>Ver</th>
+            <th>Acciones</th>
         </thead>
         <tbody class="pdf-container-tbody">
             
@@ -50,9 +59,15 @@
 <script>
     const form_container = document.querySelector('form');
     const pdf_container = document.querySelector('.pdf-container-tbody')
+    const btnNext = document.querySelector('.btnNext')
+    const btnBack = document.querySelector('.btnBack')
+    let pageInfo = document.querySelector('.page-info')
     const goHome = () =>{
         window.location.href = '/'
     }
+
+    let currentPage = 1;
+    let globalTotalRows = 0
 
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=>{
@@ -62,15 +77,37 @@
     })
 
     async function tableInformation() {
-        const res = await fetch('/invoices-table-get');
-        const response = await res.json();
+        const res = await fetch(`/invoices-table-get?page=${currentPage}`);
+        const reqData = await res.json();
+        const response = reqData.data
+        globalTotalRows = reqData.totalRows
         
+        // Cambio de color de flechas
+
+        if(currentPage === 1){
+            btnBack.style.color = '#adadad'
+            btnBack.style.pointerEvents = 'none'
+        } else{
+            btnBack.style.color = '#383838'
+            btnBack.style.pointerEvents = 'auto'
+        }
+
+        if(currentPage === globalTotalRows){
+            btnNext.style.color = '#adadad'
+            btnNext.style.pointerEvents = 'none'
+        } else{
+            btnNext.style.color = '#383838'
+            btnNext.style.pointerEvents = 'auto'
+        }
+
+        console.log(currentPage)
+
         for(const file of response){
         const newRow = document.createElement('tr')
         const tableName = document.createElement('td');
         tableName.textContent = file.name
         const tableSize = document.createElement('td');
-        tableSize.textContent = parseInt((file.weight) / 1024 / 1024) + ' Mb'
+        tableSize.textContent = parseInt((file.weight) / 1024) + ' Kb'
         const tableDate = document.createElement('td');
         tableDate.textContent = new Date(file.date).toLocaleString()
         const eyeUrl = document.createElement('td')
@@ -82,6 +119,7 @@
         newRow.appendChild(eyeUrl)    
 
         pdf_container.appendChild(newRow)
+        pageInfo.innerHTML = `<p>1-${response.length} de ${globalTotalRows}</p>`
 
         }
 
@@ -89,6 +127,19 @@
     }
 
     tableInformation()
+
+    const clickNext = () =>{
+     pdf_container.innerHTML = ' '
+     currentPage === globalTotalRows ? currentPage : currentPage++ ;
+     tableInformation()
+    }
+
+    const clickBack = () =>{
+     pdf_container.innerHTML = ' '
+     currentPage === 1 ? currentPage : currentPage-- ;
+     tableInformation()
+    }
+
 </script>
 </body>
 </html>

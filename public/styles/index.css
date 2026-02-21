@@ -390,9 +390,43 @@ padding: 1rem;
     transform: translateY(-5px);
 }
 
+.pdf-container{
+    margin: 0 auto;
+    background-color: #262a82;
+    max-width: 900px;
+    border-radius: 25px;
+    background-color: #fff;
+    padding-top: 1rem;
+}
+
+.table-buttons{
+    margin-left: 50px;
+    display: flex;
+    gap: 1rem;
+}
+
+.table-buttons > button{
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    transition: all .3s ease;
+    cursor: pointer;
+    color: #383838;
+}
+
+.table-buttons > button:hover{
+    background-color: #adadad;
+}
+
+.page-info{
+    font-family: sans-serif;
+    vertical-align: center;
+}
+
 table{
-    padding-top: 2rem;
-    min-width: 700px;
+  min-width: 900px;
   margin: 0 auto;
   border-radius: 25px;
   border-spacing: 0;
@@ -415,6 +449,7 @@ th{
 td{
     padding: 1rem;
 }
+
 
 td:nth-child(1), th:nth-child(1){
  width: 55%;
