@@ -4,6 +4,7 @@
   const express = require('express');
   const app = express();
   const multer = require('multer');
+const { url } = require('inspector');
 
   // Almacenamiento en memoria 
   // it's named memory storage because its function is save process in RAM memory
@@ -35,12 +36,17 @@
      })
      res.status(200).send('Entendido')
   });
+
+// \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+// --------------------------------------------
 // Solicitud de informacion a la tabla INVOICES
+// --------------------------------------------
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
   app.get('/invoices-table-get', async(req, res)=>{
     const q = parseInt(req.query.page)
     const page = Number.isInteger(q) && q > 0 ? q : 1;
-    const limit = 15
+    const limit = 10
 
     const start = (page - 1) * limit;
     const end = start + (limit - 1);
@@ -62,15 +68,24 @@ try{
 }
   })
 
-  app.post('/upload', upload.single('pdf'), async(req, res)=>{
-    
+  app.post('/upload', (req, res)=>{
+    upload.array('pdf', 15)(req,res,async(err)=>{
+
+      if(err){
+        return res.status(400).json({
+          error: 'Solo se permiten 15 archivos'
+        })
+      }
+
     try {
       // se crea una instancia de la aplicacion, cuando se ejecute el metodo post a dicha direccion, req.file tendra lugar
-      const file = req.file;
-    // medida de seguridad por si llegase a fallar o no haya ningun archivo que procesar
-      if(!file){
+      const files = req.files;
+      // medida de seguridad por si llegase a fallar o no haya ningun archivo que procesar
+      if(!files || files.length === 0){
       return res.status(400).json({error: 'No file uploaded'});
       }
+      const promesa = files.map( async file =>{
+
       // el nombre del archivo que se subira
       const fileName = Date.now() +'-'+ file.originalname;
 
@@ -87,24 +102,61 @@ try{
 
       const publicUrl = publicUrlData.publicUrl;
 
-      //insertar datos en tabla invoices
-      
-      const {error: dbError} = await supabase.from('invoices').insert([
-        {name:file.originalname, weight: file.size, date: new Date(),url: publicUrl}
-      ])
-
-      if(dbError){
-        await supabase.storage.from('invoices').remove([fileName]);
-
-        throw dbError;
+      return{
+        name : file.originalname,
+        weight: file.size,
+        date: new Date(),
+        url: publicUrl
       }
-
+      
+      })
+const resultados = await Promise.all(promesa);
+     await supabase.from('invoices').insert(resultados)
       res.redirect('/sections/loadFile.html')
     } catch(err){
       console.error(err);
       res.status(500).json({error:'Error al subir Arcvhivo'})
     }
+        })
   })
+
+  app.delete('/action-delete/:id', async(req, res)=>{
+    const idDelete = req.params.id;
+    
+    const {data, error} =  await supabase.from('invoices').delete().eq('id_invoice', idDelete)
+
+    if(error){
+      return res.status(400).json({error: error.message})
+    }
+
+    res.status(200).send({mensaje:'Registro borrado exitosamente'})
+   
+  })
+
+// \1/\1/\1/\1/\1/\1/\1/\1/\1/\1/\1/\1/\1/\1/\1/
+// --------------------------------------------
+// Solicitud de informacion a la tabla MANIFEST
+// --------------------------------------------
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+// Obtencion de datos de la tabla de invoices
+
+app.get('/manifest-table-get', async(req, res)=>{
+ // -------_____Obtencion de datos de la url_____--------
+ const getPage = parseInt(req.query.page);
+ const page = Number.isInteger(getPage) && getPage > 0 ? getPage : 1;
+ const limit = 10;
+ const start = (page - 1) * 10
+ const end = start + (limit - 1)
+
+ try{
+  const {data, error, count} = await supabase.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'})
+ }catch(error){
+  console.log(error)
+  res.status(500).json({error:"Error al solicitar la informacion de la tabla de manifiestos"})
+ }
+
+})
   
 
   app.listen(3000, ()=>{
