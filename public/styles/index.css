@@ -469,3 +469,12 @@ table a:hover{
     color: #262a82;
 }
 
+.olvidona{
+    font-size: 1.2rem;
+    color: rgb(180, 16, 16);
+    transition: all .5s ease;
+}
+
+.olvidona:hover{
+    color: rgb(75, 14, 14);
+}
