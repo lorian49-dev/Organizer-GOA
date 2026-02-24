@@ -393,10 +393,13 @@ padding: 1rem;
 .pdf-container{
     margin: 0 auto;
     background-color: #262a82;
-    max-width: 900px;
+    min-width: 900px;
+    max-width: 1000px;
     border-radius: 25px;
     background-color: #fff;
     padding-top: 1rem;
+  box-shadow: var(--main-shadow);
+
 }
 
 .table-buttons{
@@ -420,20 +423,21 @@ padding: 1rem;
     background-color: #adadad;
 }
 
-.page-info{
+.page-info p{
     font-family: sans-serif;
     vertical-align: center;
+    font-size: .7rem;
 }
 
 table{
-  min-width: 900px;
+  width: 100%;
   margin: 0 auto;
   border-radius: 25px;
   border-spacing: 0;
   overflow: hidden;
   font-family:  Arial, Helvetica, sans-serif;
+  font-size: .8rem;
   background-color: #fff;
-  box-shadow: var(--main-shadow);
   margin-bottom: 5rem;
 }
 
