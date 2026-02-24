@@ -47,6 +47,7 @@
             
         </tbody>
      </table>
+     <span class="empty-message"></span>
     </div>
     <p>Cargar una Factura (Maximo 15 Documentos)</p>
 
@@ -68,6 +69,8 @@
 
     let currentPage = 1;
     let globalTotalRows = 0
+
+    const emptyMessage = document.querySelector('.empty-message')
 
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=>{
@@ -92,12 +95,19 @@
             btnBack.style.pointerEvents = 'auto'
         }
 
-        if(currentPage === globalTotalRows){
+        if(currentPage === globalTotalRows || globalTotalRows === 0){
             btnNext.style.color = '#adadad'
             btnNext.style.pointerEvents = 'none'
         } else{
             btnNext.style.color = '#383838'
             btnNext.style.pointerEvents = 'auto'
+        }
+
+        
+        //Mensaje para cuando no haya ningun registro
+
+        if(globalTotalRows === 0){
+            emptyMessage.innerHTML = '<p>Sin registros, tabla de manifiestos vacia</p>'
         }
 
         console.log(currentPage)
@@ -122,7 +132,7 @@
          if(!eliminar) return;
 
          try{
-          const responseDelete = await fetch(`/action-delete-manifest/${file.id_invoice}`, {method:'DELETE'})
+          const responseDelete = await fetch(`/action-delete-manifest/${file.id_manifest}`, {method:'DELETE'})
 
           if(responseDelete.ok){
             btnDelete.closest('tr').remove()

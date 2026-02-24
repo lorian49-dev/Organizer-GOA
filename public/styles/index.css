@@ -478,3 +478,8 @@ table a:hover{
 .olvidona:hover{
     color: rgb(75, 14, 14);
 }
+
+.empty-message{
+    width: 100%;
+    text-align: center;
+}

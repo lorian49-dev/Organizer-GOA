@@ -4,7 +4,6 @@
   const express = require('express');
   const app = express();
   const multer = require('multer');
-const { count } = require('console');
 
 
   // Almacenamiento en memoria 
@@ -164,6 +163,8 @@ if(error){
   throw error
 }
 const totalRows = Math.ceil(count / limit)
+console.log(count)
+console.log(totalRows)
 
 res.json({data, totalRows})
 
