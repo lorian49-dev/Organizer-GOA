@@ -50,7 +50,7 @@
     </div>
     <p>Cargar una Factura (Maximo 15 Documentos)</p>
 
-    <form action="/upload" method="post" enctype="multipart/form-data" class="upload-file-form">
+    <form action="/manifest-table-post" method="post" enctype="multipart/form-data" class="upload-file-form">
         <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf" multiple>
         <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
 
@@ -77,7 +77,7 @@
     })
 
     async function tableInformation() {
-        const res = await fetch(`/invoices-table-get?page=${currentPage}`);
+        const res = await fetch(`/manifest-table-get?page=${currentPage}`);
         const reqData = await res.json();
         const response = reqData.data
         globalTotalRows = reqData.totalRows
@@ -122,7 +122,7 @@
          if(!eliminar) return;
 
          try{
-          const responseDelete = await fetch(`/action-delete/${file.id_invoice}`, {method:'DELETE'})
+          const responseDelete = await fetch(`/action-delete-manifest/${file.id_invoice}`, {method:'DELETE'})
 
           if(responseDelete.ok){
             btnDelete.closest('tr').remove()
