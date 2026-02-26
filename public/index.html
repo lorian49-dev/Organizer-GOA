@@ -19,7 +19,7 @@
         <label for="search-glass"><input type="text" name="search-glass" id="search-glass" placeholder="Numero de modelo Ej: M27142..."></label>
     </form>
     <div class="main">
-        <a href="#"><section>Monturas<i class="fa-solid fa-glasses"></i></section></a>
+        <a href="/sections/glasses.html"><section>Monturas<i class="fa-solid fa-glasses"></i></section></a>
         <a href="sections/loadFile.html"><section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section></a>
         <a href="sections/loadManiefst.html"><section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section></a>
     </div>
@@ -115,7 +115,7 @@
        document.body.style.pointerEvents = 'auto'
 
       }, 1000)
-      //Escucha el evento al No mostrar nuevamente el modal
+      //Escucha el evento al No mostrar nuevamente el modal - COOKIE
       const aceptarCookie = document.cookie.split('; ').find(row => row.startsWith('cookie-aceptada'))
     if(!aceptarCookie){
         modal_container.style.display = 'flex';
