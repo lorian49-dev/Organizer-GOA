@@ -33,7 +33,7 @@ const access = createClient(
 
 app.get('/aceptar-cookie', (req, res)=>{
   res.cookie('cookie-aceptada', true, {
-    maxAge:3600000,
+    maxAge:1209600000,
     httpOnly:false
   })
   res.status(200).send('cookie adicionada con exito')

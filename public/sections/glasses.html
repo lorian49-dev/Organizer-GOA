@@ -23,10 +23,59 @@
         </label>
     </form>
 </nav>
+<div class="main-glasses">
+    <div class="img-container">
+        
+            <button class="btn-info">Adicionar</button>
+        
+    </div>
+    <div class="img-container-2">
+            <button class="btn-info">Explorar</button>
+    </div>
+</div>
 <script>
      const goHome = () =>{
         window.location.href = '/'
     }
+
+    const buttonInfo = document.querySelectorAll('.btn-info')
+    const firstContainer = document.querySelector('.img-container')
+    const secondContainer = document.querySelector('.img-container-2')
+
+    let state = false
+
+    buttonInfo[0].addEventListener('click', (btn)=>{
+        firstContainer.classList.toggle('active')
+        
+        if(!state){
+            const formularioCreado = document.createElement('form')
+            formularioCreado.innerHTML = `
+                 <form class="glass-form">
+                    <label for="brand-glass">Marca</label>
+                    <input type="text" name="brand-glass">
+                    <label for="brand-glass">Codigo #</label>
+                    <input type="text" name="brand-glass"> 
+                    <label for="brand-glass">Orden de compra</label>
+                    <input type="text" name="brand-glass"> 
+                </form>`;
+            formularioCreado.id = 'formularioEmergente'
+            firstContainer.appendChild(formularioCreado)
+            state = true
+        } else{
+            const formularioCreado = document.getElementById('formularioEmergente')
+            formularioCreado.remove();
+            state = false
+        }
+
+    })
+
+    buttonInfo[1].addEventListener('click', (btn)=>{
+        secondContainer.classList.toggle('active')
+        
+
+    })
+
+
 
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=>{
