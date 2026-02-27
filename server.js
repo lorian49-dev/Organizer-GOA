@@ -242,7 +242,7 @@ if(getFileNameError){
     console.error(getFileNameError)
     return res.status(400).json({error:getFileNameError.message})
   }
-  const {data, error} = await access.from('invoices').delete().eq('id_invoices', id);
+  const {data, error} = await access.from('invoices').delete().eq('id_invoice', id);
   const {data: removeFile, error: removeFileError} = await access.storage.from('invoices').remove([fileName])
   if(error){
     console.error(error)
