@@ -432,7 +432,6 @@ padding: 1rem;
 table{
   width: 100%;
   margin: 0 auto;
-  border-radius: 25px;
   border-spacing: 0;
   overflow: hidden;
   font-family:  Arial, Helvetica, sans-serif;
@@ -559,4 +558,77 @@ table a:hover{
     border: 2px solid #1475e4;
     color: #e4e4e4;
     border-radius: 20px;
+}
+
+.glass-form{
+    width: 70%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    font-family: "Arsenal SC", sans-serif;
+    color: #cfcfcf;
+    gap: 1.5rem;
+}
+
+.glass-form input{
+    width: 18rem;
+    border-style: none;
+    border-bottom: #1475e4 2px solid;
+    background: transparent;
+    padding: .5rem;
+    color: #e4e4e4;
+}
+
+.glass-form input:focus{
+    outline: none;
+    border-bottom: #4099ff 2px solid;
+
+}
+
+.glass-form label{
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+ .span-input{
+    font-size: 1.2rem;
+    position: absolute;
+    top: .5rem;
+    left: 0;
+    transition: all .3s ease;
+}
+
+input:focus + .span-input,
+input:not(:placeholder-shown) + .span-input{
+    font-size: .8rem;
+    color: rgb(255, 230, 0);
+     top: -0.8rem;
+}
+
+select{
+    min-width: 13rem;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    margin-top: .5rem;
+}
+
+.btn-submit-info{
+    max-height: 3rem;
+    padding: .8rem 1.5rem;
+    border-style: none;
+    border-radius: 20px;
+    background-color: #1475e4;
+    color: #e4e4e4;
+    font-family: "Arsenal SC", sans-serif;
+    cursor: pointer;
+}
+
+.table-container{
+    display: none;
+    margin-top: 2rem;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 25px;
 }

@@ -27,54 +27,115 @@
     <div class="img-container">
         
             <button class="btn-info">Adicionar</button>
-        
+        <form class="glass-form"></form>
     </div>
     <div class="img-container-2">
             <button class="btn-info">Explorar</button>
+            <div class="table-container">
+            <table class="space-table">
+                <thead>
+                    <th>Marca</th>
+                    <th>Referencia</th>
+                    <th>Orden de Compra</th>
+                    <th>Ver Factura</th>
+                    <th>Ver manifiesto</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr><tr>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                        <td>Hola</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script>
      const goHome = () =>{
         window.location.href = '/'
     }
-
     const buttonInfo = document.querySelectorAll('.btn-info')
     const firstContainer = document.querySelector('.img-container')
     const secondContainer = document.querySelector('.img-container-2')
-
+    const formularioCreado = document.querySelector('.glass-form')
+    const tableContainer = document.querySelector('.table-container')
     let state = false
-
-    buttonInfo[0].addEventListener('click', (btn)=>{
-        firstContainer.classList.toggle('active')
-        
-        if(!state){
-            const formularioCreado = document.createElement('form')
-            formularioCreado.innerHTML = `
-                 <form class="glass-form">
-                    <label for="brand-glass">Marca</label>
-                    <input type="text" name="brand-glass">
-                    <label for="brand-glass">Codigo #</label>
-                    <input type="text" name="brand-glass"> 
-                    <label for="brand-glass">Orden de compra</label>
-                    <input type="text" name="brand-glass"> 
-                </form>`;
-            formularioCreado.id = 'formularioEmergente'
-            firstContainer.appendChild(formularioCreado)
-            state = true
-        } else{
-            const formularioCreado = document.getElementById('formularioEmergente')
-            formularioCreado.remove();
-            state = false
-        }
-
-    })
-
-    buttonInfo[1].addEventListener('click', (btn)=>{
-        secondContainer.classList.toggle('active')
-        
-
-    })
-
+    let stateTable = false
 
 
     document.addEventListener('DOMContentLoaded', ()=>{
@@ -82,6 +143,62 @@
        document.body.style.opacity = '1'
        document.body.style.pointerEvents = 'auto'
       }, 1000)
+
+ buttonInfo[0].addEventListener('click', (btn)=>{
+        firstContainer.classList.toggle('active')
+        
+        if(!state){
+            formularioCreado.style.display = 'flex'
+            formularioCreado.innerHTML = `
+                     <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Marca</span></label>
+                    <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Codigo</span></label>
+                    <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Orden #</span></label>
+                    <label>Facturas<br>
+                    <select>
+                        <option value=1>Numero 1</option>
+                        <option value=2>Numero 2</option>
+                        <option value=3>Numero 3</option>
+                        <option value=4>Numero 4</option>
+                    </select></label>
+
+                    <label>Manifiestos<br>
+                        <select>
+                        <option value=1>Numero 1</option>
+                        <option value=2>Numero 2</option>
+                        <option value=3>Numero 3</option>
+                        <option value=4>Numero 4</option>
+                    </select></label>
+                    <button type="submit" class="btn-submit-info">Enviar</button>
+                    `;
+            firstContainer.appendChild(formularioCreado)
+            state = true
+        } else{
+            const formularioCreado = document.querySelector('.glass-form')
+            formularioCreado.style.display = 'none';
+            state = false
+        }
+        
+        const span_input = document.querySelectorAll('.span-input')
+        const form_input = document.querySelectorAll('.form-input')
+
+        
+
+    })
+
+     buttonInfo[1].addEventListener('click', (btn)=>{
+        secondContainer.classList.toggle('active')
+        
+        if(!stateTable){
+            tableContainer.style.display = 'block'
+            stateTable = true
+        } else{
+            tableContainer.style.display = 'none'
+            stateTable = false
+        }
+        
+    })
+
+
     })
 
 </script>
