@@ -10,6 +10,7 @@ require('dotenv').config({path: path.join(__dirname, 'config.env')})
 const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
+const { ifError } = require('assert');
 // instanciables
 const app = express();
 
@@ -42,6 +43,47 @@ app.get('/aceptar-cookie', (req, res)=>{
 //-------------------------------------------------//
 //              manejo de la app
 //-------------------------------------------------//
+
+// ------------------------------------------- //
+//                  Gafas
+// ------------------------------------------- //
+
+// Solicitud de datos de las tablas invoices y manifest para autocompletar busquedas.
+
+// Consulta de manifiestos
+
+app.get('/search-manifest', async(req, res)=>{
+  const search = req.query.q
+
+  if(!search) return res.json([]); // validacion de consulta
+
+  const {data, error} = await access.from('manifest').select('id_manifest, name').ilike('name', `%${search}%`).limit(10); // ilike se usa en Postgree SQL para que los datos solicitados sean insensibles a las mayusculas.
+
+  if(error){
+    return res.status(500).json({message: error.message})
+  }
+
+  res.json(data);
+  
+})
+
+// consulta de facturas
+
+app.get('/search-invoice', async(req, res)=>{
+  const search = req.query.q;
+
+  if(!search) return res.status(500).json([]);
+
+  const {data, error} = await access.from('invoices').select('id_invoice, name').ilike('name', `%${search}%`).limit(10);
+
+  if(error){
+    return res.status(500).json({message: error.message})
+  }
+
+  res.json(data)
+})
+
+/*--------------------------------------------*/
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));

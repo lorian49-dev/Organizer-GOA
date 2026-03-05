@@ -134,6 +134,7 @@
     const secondContainer = document.querySelector('.img-container-2')
     const formularioCreado = document.querySelector('.glass-form')
     const tableContainer = document.querySelector('.table-container')
+    
     let state = false
     let stateTable = false
 
@@ -154,24 +155,53 @@
                     <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Codigo</span></label>
                     <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Orden #</span></label>
                     <label>Facturas<br>
-                    <select>
-                        <option value=1>Numero 1</option>
-                        <option value=2>Numero 2</option>
-                        <option value=3>Numero 3</option>
-                        <option value=4>Numero 4</option>
-                    </select></label>
+                        <input type="text" id="searchInvoice" placeholder="Buscar Factura...">
+                        <input type="hidden" id="invoiceId">
+                        <div class="results" id="searchInvoiceResults"></div>
+                   </label>
 
                     <label>Manifiestos<br>
-                        <select>
-                        <option value=1>Numero 1</option>
-                        <option value=2>Numero 2</option>
-                        <option value=3>Numero 3</option>
-                        <option value=4>Numero 4</option>
-                    </select></label>
+                        <input type="text" id="searchManifest" placeholder="Buscar manifiesto...">
+                        <input type="hidden" id="manifestId">
+                        <div id="searchManifestResults"></div>
+                    </label>
                     <button type="submit" class="btn-submit-info">Enviar</button>
                     `;
             firstContainer.appendChild(formularioCreado)
             state = true
+// Listener para el evento de autocompletado para busqueda de Facturas y manifiestos.
+           const searchInvoice = document.getElementById('searchInvoice')
+           const invoiceId = document.getElementById('invoiceId')
+           const invoiceField = document.getElementById('searchInvoiceResults')
+           
+           searchInvoice.addEventListener('input', async()=>{
+            invoiceField.innerHTML = ''
+            const value = searchInvoice.value
+
+            if(value.length < 2){
+                invoiceField.innerHTML = '';
+                return
+            }
+
+            const res = await fetch(`/search-invoice?q=${value}`);
+            const data = await res.json();
+
+            data.forEach(invoice =>{
+                const fileMatch = document.createElement('div')
+                fileMatch.textContent = invoice.name;
+                fileMatch.classList.add('result-item');
+
+                fileMatch.addEventListener('click', ()=>{
+                    searchInvoice.value = invoice.name;
+                    invoiceId.value = invoice.id_invoice
+                    invoiceField.innerHTML = ''
+                })
+
+                invoiceField.appendChild(fileMatch)
+
+            })
+           })
+
         } else{
             const formularioCreado = document.querySelector('.glass-form')
             formularioCreado.style.display = 'none';
