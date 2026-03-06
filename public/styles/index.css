@@ -632,3 +632,28 @@ select{
     overflow-y: auto;
     border-radius: 25px;
 }
+
+#searchManifestResults, #searchInvoiceResults{
+    display: none;
+    background-color: whitesmoke;
+    border-radius: 25px;
+    color: #1b1e5c;
+    padding: 1rem;
+    position: fixed;
+    z-index: 5;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#searchManifestResults::-webkit-scrollbar, #searchInvoiceResults
+
+.result-item{
+    padding: .5rem;
+    border-bottom: #1b1e5c 1px solid;
+    transition: all .5s ease;
+}
+
+.result-item:hover{
+    background-color: #acacac;
+    border-radius: 15px;
+}

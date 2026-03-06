@@ -179,7 +179,7 @@
             const value = searchInvoice.value
 
             if(value.length < 2){
-                invoiceField.innerHTML = '';
+                invoiceField.style.display = 'none'
                 return
             }
 
@@ -195,11 +195,48 @@
                     searchInvoice.value = invoice.name;
                     invoiceId.value = invoice.id_invoice
                     invoiceField.innerHTML = ''
+                    invoiceField.style.display = 'none'
                 })
-
+ 
                 invoiceField.appendChild(fileMatch)
+                invoiceField.style.display = 'block'
 
             })
+           })
+
+           const searchManifest = document.getElementById('searchManifest')
+           const manifestId = document.getElementById('manifestId')
+           const manifestField = document.getElementById('searchManifestResults')
+
+           searchManifest.addEventListener('input', async()=>{
+            manifestField.innerHTML = '';
+            const value = searchManifest.value;
+
+            if(value.length < 2){
+                manifestField.style.display = 'none';
+                return
+            }
+
+            const res = await fetch(`/search-manifest?q=${value}`)
+            const data = await res.json();
+
+            data.forEach(manifest =>{
+                const currentItem = document.createElement('div');
+                currentItem.textContent = manifest.name;
+                currentItem.classList.add('result-item');
+
+                currentItem.addEventListener('click', ()=>{
+                    searchManifest.value = manifest.name;
+                    manifestId.value = manifest.id_manifest;
+                    manifestField.innerHTML = ''
+                    manifestField.style.display = 'none'
+                })
+
+                manifestField.appendChild(currentItem)
+                manifestField.style.display = 'block'
+
+            })
+
            })
 
         } else{
