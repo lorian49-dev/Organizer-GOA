@@ -639,13 +639,29 @@ select{
     border-radius: 25px;
     color: #1b1e5c;
     padding: 1rem;
-    position: fixed;
+    position: absolute;
     z-index: 5;
     max-height: 200px;
     overflow-y: auto;
+    left: -20%;
 }
 
-#searchManifestResults::-webkit-scrollbar, #searchInvoiceResults
+#searchManifestResults::-webkit-scrollbar, #searchInvoiceResults::-webkit-scrollbar{
+    width: 8px;
+}
+
+#searchManifestResults::-webkit-scrollbar-track, #searchInvoiceResults::-webkit-scrollbar-track{
+    background: transparent; /* Fondo transparente */
+    border-radius: 10px;
+    /* El margen superior e inferior creará el espacio que buscabas */
+    margin: 50px 0; 
+}
+
+#searchManifestResults::-webkit-scrollbar-thumb, #searchInvoiceResults::-webkit-scrollbar-thumb{
+   background: #1475e4;
+   border-radius: 5px;
+   background-clip: content-box;
+}
 
 .result-item{
     padding: .5rem;

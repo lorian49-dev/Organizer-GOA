@@ -27,7 +27,7 @@
     <div class="img-container">
         
             <button class="btn-info">Adicionar</button>
-        <form class="glass-form"></form>
+        <form class="glass-form" method="POST" action="/"></form>
     </div>
     <div class="img-container-2">
             <button class="btn-info">Explorar</button>
@@ -41,85 +41,7 @@
                     <th>Ver manifiesto</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr><tr>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                        <td>Hola</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -176,6 +98,7 @@
            
            searchInvoice.addEventListener('input', async()=>{
             invoiceField.innerHTML = ''
+            invoiceField.style.display = 'none'
             const value = searchInvoice.value
 
             if(value.length < 2){
@@ -210,6 +133,7 @@
 
            searchManifest.addEventListener('input', async()=>{
             manifestField.innerHTML = '';
+            manifestField.style.display = 'none'
             const value = searchManifest.value;
 
             if(value.length < 2){
@@ -220,7 +144,7 @@
             const res = await fetch(`/search-manifest?q=${value}`)
             const data = await res.json();
 
-            data.forEach(manifest =>{
+                data.forEach(manifest =>{
                 const currentItem = document.createElement('div');
                 currentItem.textContent = manifest.name;
                 currentItem.classList.add('result-item');
