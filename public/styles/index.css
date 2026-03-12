@@ -513,10 +513,6 @@ table a:hover{
     align-items: center;
 }
 
-.img-container:hover{
-    width: 150%;
-}
-
 .img-container-2{
     width: 100%;
     height: 300px;
@@ -541,10 +537,9 @@ table a:hover{
     background: #1b1e5c;
 }
 
-.img-container-2:hover{
+.img-container:hover, .img-container-2:hover{
     width: 150%;
 }
-
 .btn-info{
     padding: 1rem 2rem;
     background: none;
@@ -571,48 +566,82 @@ table a:hover{
     gap: 1.5rem;
 }
 
-.glass-form input{
-    width: 18rem;
-    border-style: none;
+.glass-form-label{
+    position: relative;
+}
+
+.glass-form-input{
+    padding: .5rem;
+    border : none;
     border-bottom: #1475e4 2px solid;
     background: transparent;
-    padding: .5rem;
-    color: #e4e4e4;
+    color: #fff;
+    width: 20rem;
 }
 
-.glass-form input:focus{
+.glass-form-input:focus{
     outline: none;
-    border-bottom: #4099ff 2px solid;
-
 }
 
-.glass-form label{
-    position: relative;
-    display: block;
-    text-align: center;
-}
-
- .span-input{
+.glass-form-span{
     font-size: 1.2rem;
     position: absolute;
-    top: .5rem;
     left: 0;
+    transition: all .5s ease;
+}
+
+.selection-invoice, .selection-manifest{
+ margin-top: 2rem;
+}
+
+.glass-form-input:focus + .glass-form-span,
+.glass-form-input:not(:placeholder-shown) + .glass-form-span {
+    font-size: .8rem;
+    color: rgb(255, 217, 0);
+    transform: translateY(-1rem); 
+}
+
+#id-input-name-invoice, #id-input-name-manifest{
+    padding: .7rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.invoice-result-field, .manifest-result-field{
+    display: none;
+    background-color: whitesmoke;
+    max-height: 200px;
+    color: #383838;
+    padding: .5rem;
+    border-radius: 5px;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.invoice-result-field::-webkit-scrollbar, .manifest-result-field::-webkit-scrollbar{
+    width:5px;
+}
+
+.invoice-result-field::-webkit-scrollbar-track, .manifest-result-field::-webkit-scrollbar-track{
+    margin: 20px 0;
+}
+
+.invoice-result-field::-webkit-scrollbar-thumb, .manifest-result-field::-webkit-scrollbar-thumb{
+ background: #1b1e5c;
+ border-radius: 5px;
+}
+
+.result-item{
+    padding: .5rem;
     transition: all .3s ease;
 }
 
-input:focus + .span-input,
-input:not(:placeholder-shown) + .span-input{
-    font-size: .8rem;
-    color: rgb(255, 230, 0);
-     top: -0.8rem;
+.result-item:hover{
+    background-color: #000b30;
+    color: #fff;
 }
 
-select{
-    min-width: 13rem;
-    border-radius: 25px;
-    padding: 1rem 2rem;
-    margin-top: .5rem;
-}
+/*Enviar informacion*/
 
 .btn-submit-info{
     max-height: 3rem;
@@ -623,6 +652,11 @@ select{
     color: #e4e4e4;
     font-family: "Arsenal SC", sans-serif;
     cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn-submit-info:hover{
+    background-color: #000b30;
 }
 
 .table-container{
@@ -631,45 +665,4 @@ select{
     max-height: 400px;
     overflow-y: auto;
     border-radius: 25px;
-}
-
-#searchManifestResults, #searchInvoiceResults{
-    display: none;
-    background-color: whitesmoke;
-    border-radius: 25px;
-    color: #1b1e5c;
-    padding: 1rem;
-    position: absolute;
-    z-index: 5;
-    max-height: 200px;
-    overflow-y: auto;
-    left: -20%;
-}
-
-#searchManifestResults::-webkit-scrollbar, #searchInvoiceResults::-webkit-scrollbar{
-    width: 8px;
-}
-
-#searchManifestResults::-webkit-scrollbar-track, #searchInvoiceResults::-webkit-scrollbar-track{
-    background: transparent; /* Fondo transparente */
-    border-radius: 10px;
-    /* El margen superior e inferior creará el espacio que buscabas */
-    margin: 50px 0; 
-}
-
-#searchManifestResults::-webkit-scrollbar-thumb, #searchInvoiceResults::-webkit-scrollbar-thumb{
-   background: #1475e4;
-   border-radius: 5px;
-   background-clip: content-box;
-}
-
-.result-item{
-    padding: .5rem;
-    border-bottom: #1b1e5c 1px solid;
-    transition: all .5s ease;
-}
-
-.result-item:hover{
-    background-color: #acacac;
-    border-radius: 15px;
 }

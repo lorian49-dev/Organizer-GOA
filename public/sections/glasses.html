@@ -25,9 +25,28 @@
 </nav>
 <div class="main-glasses">
     <div class="img-container">
-        
             <button class="btn-info">Adicionar</button>
-        <form class="glass-form" method="POST" action="/"></form>
+        <form class="glass-form" method="POST" action="/">
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span">Marca</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span"># Serie</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span"># Orden</span></label>
+            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
+            <label class="selection-invoice">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice">
+                <input type="hidden" id="id-input-invoice">
+                <div class="invoice-result-field">
+
+                </div>
+            </label>
+            <label class="selection-manifest">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest">
+                <input type="hidden" id="id-input-manifest">
+                <div class="manifest-result-field">
+
+                </div>
+            </label>
+            <button class="btn-submit-info" type="submit">Registrar</button>
+        </form>
     </div>
     <div class="img-container-2">
             <button class="btn-info">Explorar</button>
@@ -48,150 +67,134 @@
     </div>
 </div>
 <script>
-     const goHome = () =>{
-        window.location.href = '/'
+    // Const for dropDown
+
+    // for Invoices
+
+    const nameFieldInvoice = document.getElementById('id-input-name-invoice');
+    const idFieldInvoice = document.getElementById('id-input-invoice');
+    const fieldResultInvoice = document.querySelector('.invoice-result-field')
+
+    // for Manifest
+
+    const nameFieldManifest = document.getElementById('id-input-name-manifest');
+    const idFieldManifest = document.getElementById('id-input-manifest');
+    const fieldResultManifest = document.querySelector('.manifest-result-field')
+
+    // End const for the dropDown ^
+    const btnInfoShow = document.querySelectorAll('.btn-info');
+    const formContainer = document.querySelector('.img-container');
+    const tableContainer = document.querySelector('.img-container-2');
+    const tableGlasses = document.querySelector('.table-container')
+    const formGlasses = document.querySelector('.glass-form')
+    // Estados cambiantes
+    let tableState = false
+    let formState = false
+
+   const autocompleteMI = async (name, id, field, fetchUrl, idTable) => {
+        field.innerHTML = '';
+        field.style.display = 'none';
+        const value = name.value;
+
+        if(value.length < 2) return
+
+        const res = await fetch(`${fetchUrl}${value}`);
+        const data = await res.json();
+
+        data.forEach(item =>{
+            const itemResult = document.createElement('div');
+            itemResult.textContent = item.name
+            itemResult.classList.add('result-item')
+
+            itemResult.addEventListener('click', ()=>{
+                name.value = item.name;
+                id.value = item.idTable;
+                field.innerHTML = ''
+                field.style.display = 'none'
+            })
+
+            field.appendChild(itemResult)
+            field.style.display = 'block'
+        })
+
     }
-    const buttonInfo = document.querySelectorAll('.btn-info')
-    const firstContainer = document.querySelector('.img-container')
-    const secondContainer = document.querySelector('.img-container-2')
-    const formularioCreado = document.querySelector('.glass-form')
-    const tableContainer = document.querySelector('.table-container')
-    
-    let state = false
-    let stateTable = false
+// Funcion de redireccionar la ubicacion actual a la pagina principal
+    function goHome(){
+        window.location.href = '/';
+    }
 
+    // Funcion de debounce
 
-    document.addEventListener('DOMContentLoaded', ()=>{
-      setTimeout(()=>{
-       document.body.style.opacity = '1'
-       document.body.style.pointerEvents = 'auto'
-      }, 1000)
+    function debounce(fn, delay){  // funcion de debounce
+      let timeout; // declaramos la variable de tiempo
 
- buttonInfo[0].addEventListener('click', (btn)=>{
-        firstContainer.classList.toggle('active')
-        
-        if(!state){
-            formularioCreado.style.display = 'flex'
-            formularioCreado.innerHTML = `
-                     <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Marca</span></label>
-                    <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Codigo</span></label>
-                    <label><input type="text" name="brand-glass" class="form-input" placeholder=" " required><span class="span-input">Orden #</span></label>
-                    <label>Facturas<br>
-                        <input type="text" id="searchInvoice" placeholder="Buscar Factura...">
-                        <input type="hidden" id="invoiceId">
-                        <div class="results" id="searchInvoiceResults"></div>
-                   </label>
+      return function(...args){ // devolvermos una funcion que reciba cualquier cantidad de parametros
+        clearTimeout(timeout); // Limpiamos cualquier setTimeout anterior
+        timeout = setTimeout(()=>{
+            fn.apply(this, args);
+        }, delay)
+      }
 
-                    <label>Manifiestos<br>
-                        <input type="text" id="searchManifest" placeholder="Buscar manifiesto...">
-                        <input type="hidden" id="manifestId">
-                        <div id="searchManifestResults"></div>
-                    </label>
-                    <button type="submit" class="btn-submit-info">Enviar</button>
-                    `;
-            firstContainer.appendChild(formularioCreado)
-            state = true
-// Listener para el evento de autocompletado para busqueda de Facturas y manifiestos.
-           const searchInvoice = document.getElementById('searchInvoice')
-           const invoiceId = document.getElementById('invoiceId')
-           const invoiceField = document.getElementById('searchInvoiceResults')
-           
-           searchInvoice.addEventListener('input', async()=>{
-            invoiceField.innerHTML = ''
-            invoiceField.style.display = 'none'
-            const value = searchInvoice.value
+    }
 
-            if(value.length < 2){
-                invoiceField.style.display = 'none'
-                return
-            }
+     document.addEventListener('DOMContentLoaded', ()=>{
+        setTimeout(()=>{
+         document.body.style.opacity = 1
+         document.body.style.pointerEvents = 'auto'
+        }, 1000)
 
-            const res = await fetch(`/search-invoice?q=${value}`);
-            const data = await res.json();
+        //-------------------------------------------------//
+        //                   Show Form
+        //-------------------------------------------------//
 
-            data.forEach(invoice =>{
-                const fileMatch = document.createElement('div')
-                fileMatch.textContent = invoice.name;
-                fileMatch.classList.add('result-item');
-
-                fileMatch.addEventListener('click', ()=>{
-                    searchInvoice.value = invoice.name;
-                    invoiceId.value = invoice.id_invoice
-                    invoiceField.innerHTML = ''
-                    invoiceField.style.display = 'none'
-                })
+        btnInfoShow[0].addEventListener('click', ()=>{
+         formContainer.classList.toggle('active')
  
-                invoiceField.appendChild(fileMatch)
-                invoiceField.style.display = 'block'
-
-            })
-           })
-
-           const searchManifest = document.getElementById('searchManifest')
-           const manifestId = document.getElementById('manifestId')
-           const manifestField = document.getElementById('searchManifestResults')
-
-           searchManifest.addEventListener('input', async()=>{
-            manifestField.innerHTML = '';
-            manifestField.style.display = 'none'
-            const value = searchManifest.value;
-
-            if(value.length < 2){
-                manifestField.style.display = 'none';
-                return
-            }
-
-            const res = await fetch(`/search-manifest?q=${value}`)
-            const data = await res.json();
-
-                data.forEach(manifest =>{
-                const currentItem = document.createElement('div');
-                currentItem.textContent = manifest.name;
-                currentItem.classList.add('result-item');
-
-                currentItem.addEventListener('click', ()=>{
-                    searchManifest.value = manifest.name;
-                    manifestId.value = manifest.id_manifest;
-                    manifestField.innerHTML = ''
-                    manifestField.style.display = 'none'
-                })
-
-                manifestField.appendChild(currentItem)
-                manifestField.style.display = 'block'
-
+         if(!formState){
+            formGlasses.style.display = 'flex';
+            // manejo de envento al hacer click fuera del campo de resultados
+            document.addEventListener('click', (e)=>{
+             if(!fieldResultInvoice.contains(e.target) && !fieldResultManifest.contains(e.target)){
+                fieldResultInvoice.style.display = 'none';
+                fieldResultManifest.style.display = 'none'
+             }
             })
 
-           })
+            nameFieldInvoice.addEventListener('input', ()=>{
+            autocompleteMI(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?q=', 'id_invoice')
+            })
 
-        } else{
-            const formularioCreado = document.querySelector('.glass-form')
-            formularioCreado.style.display = 'none';
-            state = false
-        }
-        
-        const span_input = document.querySelectorAll('.span-input')
-        const form_input = document.querySelectorAll('.form-input')
+            nameFieldManifest.addEventListener('input', async()=>{
+                autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?q=', 'id_manifest')
+            })
 
-        
-
-    })
-
-     buttonInfo[1].addEventListener('click', (btn)=>{
-        secondContainer.classList.toggle('active')
-        
-        if(!stateTable){
-            tableContainer.style.display = 'block'
-            stateTable = true
-        } else{
-            tableContainer.style.display = 'none'
-            stateTable = false
-        }
-        
-    })
+            formState=true;
+         }else{
+            formGlasses.style.display = 'none'
+            formState=false;
+         }
 
 
-    })
+        })
 
+        //-------------------------------------------------//
+        //                   Show Table
+        //-------------------------------------------------//
+
+        btnInfoShow[1].addEventListener('click', ()=>{
+         tableContainer.classList.toggle('active')
+
+         if(!tableState){
+         tableGlasses.style.display = 'block';
+         tableState = true;
+         } else{
+         tableGlasses.style.display = 'none';
+         tableState = false;
+         }
+
+        })
+        // end
+     })
 </script>
 </body>
 </html>
