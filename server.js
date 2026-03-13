@@ -28,6 +28,12 @@ const access = createClient(
   process.env.SUPABASE_SERVICE_KEY
 )
 
+/*--------------------------------------------*/
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
+app.use(express.urlencoded({extended:true}));
+
 //-------------------------------------------------//
 //                   COOKIES
 //-------------------------------------------------//
@@ -83,10 +89,29 @@ app.get('/search-invoice', async(req, res)=>{
   res.json(data)
 })
 
-/*--------------------------------------------*/
+app.post('/glasses', async(req, res)=>{
+  const {brand, serial, order, id_invoice, id_manifest} = req.body
+    
+  try{
+  const {data, error} = await access.from('glasses').insert([
+    {
+      brand:brand, 
+      code: serial, 
+      ship_order: order, 
+      invoice_id: id_invoice, 
+      manifest_id: id_manifest
+    }]);
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
+   if(error){
+    console.log(error)
+    return res.status(500).send('error al guardar datos'); 
+   }
+
+   res.redirect('/sections/glasses.html')
+  }catch(err){
+    console.log(err)
+  }
+})
 
 // obtencion de datos INVOICES
 

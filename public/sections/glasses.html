@@ -26,21 +26,21 @@
 <div class="main-glasses">
     <div class="img-container">
             <button class="btn-info">Adicionar</button>
-        <form class="glass-form" method="POST" action="/">
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span">Marca</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span"># Serie</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" required><span class="glass-form-span"># Orden</span></label>
+        <form class="glass-form" method="POST" action="/glasses">
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="brand" required><span class="glass-form-span">Marca</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="serial" required><span class="glass-form-span"># Serie</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="order" required><span class="glass-form-span"># Orden</span></label>
             <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
             <label class="selection-invoice">
                 <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice">
-                <input type="hidden" id="id-input-invoice">
+                <input type="hidden" id="id-input-invoice" name="id_invoice">
                 <div class="invoice-result-field">
 
                 </div>
             </label>
             <label class="selection-manifest">
                 <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest">
-                <input type="hidden" id="id-input-manifest">
+                <input type="hidden" id="id-input-manifest" name="id_manifest">
                 <div class="manifest-result-field">
 
                 </div>
@@ -105,10 +105,9 @@
             const itemResult = document.createElement('div');
             itemResult.textContent = item.name
             itemResult.classList.add('result-item')
-
             itemResult.addEventListener('click', ()=>{
                 name.value = item.name;
-                id.value = item.idTable;
+                id.value = item[idTable];
                 field.innerHTML = ''
                 field.style.display = 'none'
             })
@@ -125,17 +124,15 @@
 
     // Funcion de debounce
 
-    function debounce(fn, delay){  // funcion de debounce
-      let timeout; // declaramos la variable de tiempo
-
-      return function(...args){ // devolvermos una funcion que reciba cualquier cantidad de parametros
-        clearTimeout(timeout); // Limpiamos cualquier setTimeout anterior
+   function debounce(fn, delay){
+    let timeout;
+    return function(...args){
+        clearTimeout(timeout);
         timeout = setTimeout(()=>{
-            fn.apply(this, args);
+            fn.apply(this, args)
         }, delay)
-      }
-
     }
+   }
 
      document.addEventListener('DOMContentLoaded', ()=>{
         setTimeout(()=>{
@@ -160,13 +157,13 @@
              }
             })
 
-            nameFieldInvoice.addEventListener('input', ()=>{
+            nameFieldInvoice.addEventListener('input', debounce(()=>{
             autocompleteMI(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?q=', 'id_invoice')
-            })
+            }, 300))
 
-            nameFieldManifest.addEventListener('input', async()=>{
-                autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?q=', 'id_manifest')
-            })
+            nameFieldManifest.addEventListener('input', debounce(()=>{
+                 autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?q=', 'id_manifest')
+            }, 300))
 
             formState=true;
          }else{
