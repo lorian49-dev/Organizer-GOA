@@ -402,13 +402,13 @@ padding: 1rem;
 
 }
 
-.table-buttons{
+.table-buttons, .table-shorts{
     margin-left: 50px;
     display: flex;
     gap: 1rem;
 }
 
-.table-buttons > button{
+.table-buttons > button, .table-shorts > button{
     width: 2rem;
     height: 2rem;
     border: none;
@@ -665,4 +665,6 @@ table a:hover{
     max-height: 400px;
     overflow-y: auto;
     border-radius: 25px;
+    background-color: #fff;
+    text-align: center;
 }

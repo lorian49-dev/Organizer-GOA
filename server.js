@@ -89,6 +89,8 @@ app.get('/search-invoice', async(req, res)=>{
   res.json(data)
 })
 
+// Subida de gafas a la BD
+
 app.post('/glasses', async(req, res)=>{
   const {brand, serial, order, id_invoice, id_manifest} = req.body
     
@@ -110,6 +112,27 @@ app.post('/glasses', async(req, res)=>{
    res.redirect('/sections/glasses.html')
   }catch(err){
     console.log(err)
+  }
+})
+
+// Obtencion de datos de la tabla de gafas
+
+app.get('/get-glasses', async(req, res)=>{
+
+  const p = parseInt(req.query.p);
+  const page = Number.isInteger(p) && p > 1? p : 1;
+  const limit = 50
+
+  const start = (page - 1) * limit;
+  const end = start + (limit - 1);
+  
+  try{
+  const {data, error, count} = await access.from('glasses').select('brand, code, ship_order, invoice_id(name, url), manifest_id(name, url)', {count: 'exact'}).order('ship_order', {ascending:'false'}).range(start,end);
+  if(error) return console.log(error) 
+  const totalGlasses = Math.ceil(count / limit)                                     
+  res.json({data, totalGlasses})
+  }catch(err){
+   res.status(500).send('Error al obtener datos')
   }
 })
 

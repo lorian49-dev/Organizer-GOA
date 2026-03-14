@@ -32,14 +32,14 @@
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="order" required><span class="glass-form-span"># Orden</span></label>
             <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
             <label class="selection-invoice">
-                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
                 <input type="hidden" id="id-input-invoice" name="id_invoice">
                 <div class="invoice-result-field">
 
                 </div>
             </label>
             <label class="selection-manifest">
-                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" autocomplete="off">
                 <input type="hidden" id="id-input-manifest" name="id_manifest">
                 <div class="manifest-result-field">
 
@@ -51,6 +51,13 @@
     <div class="img-container-2">
             <button class="btn-info">Explorar</button>
             <div class="table-container">
+            <div class="table-shorts">
+                <button onclick="clickBack()" class="btnBack"><i class="fa-solid fa-angle-up" style="transform: rotate(270deg);"></i></button>
+                <button onclick="clickNext()" class="btnNext"><i class="fa-solid fa-angle-up" style="transform: rotate(90deg);"></i></button>
+                <span class="page-info">
+            <!--Aqui aparecera el numero de registros y paginas-->
+        </span>
+            </div>    
             <table class="space-table">
                 <thead>
                     <th>Marca</th>
@@ -59,7 +66,7 @@
                     <th>Ver Factura</th>
                     <th>Ver manifiesto</th>
                 </thead>
-                <tbody>
+                <tbody class="body-table-glass">
                     
                 </tbody>
             </table>
@@ -67,6 +74,13 @@
     </div>
 </div>
 <script>
+
+    // Tabla de Monturas
+    const tableGlass = document.querySelector('.body-table-glass');
+    let currentPage = 1
+    let globalCount = 0
+    const btnBack = document.querySelector('.btnBack')
+    const btnNext = document.querySelector('.btnNext')
     // Const for dropDown
 
     // for Invoices
@@ -139,7 +153,7 @@
          document.body.style.opacity = 1
          document.body.style.pointerEvents = 'auto'
         }, 1000)
-
+     })
         //-------------------------------------------------//
         //                   Show Form
         //-------------------------------------------------//
@@ -178,6 +192,48 @@
         //                   Show Table
         //-------------------------------------------------//
 
+        async function showTableInfo() {
+
+            tableGlass.innerHTML = ' '
+            const res = await fetch(`/get-glasses?p=${currentPage}`);
+            const data = await res.json();
+            const {totalGlasses : count} = data
+            globalCount = count;
+
+
+          if(currentPage <= 1){
+          btnBack.style.color = '#adadad'
+          btnBack.style.pointerEvents = 'none'
+        }else{
+          btnBack.style.color = '#383838'
+          btnBack.style.pointerEvents = 'auto'
+        }
+
+          if(currentPage === globalCount){
+            btnNext.style.color = '#adadad'
+            btnNext.style.pointerEvents = 'none'
+          }else{
+          btnNext.style.color = '#383838'
+          btnNext.style.pointerEvents = 'auto'
+          }
+
+
+            data.data.forEach(item =>{
+                //Contenedor de la fila
+                const newTr = document.createElement('tr');
+                
+                newTr.innerHTML = `
+                <td>${item.brand}</td>
+                <td>${item.code}</td>
+                <td>${item.ship_order}</td>
+                <td><a href="${item.invoice_id.url}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
+                <td><a href="${item.manifest_id.url}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
+                `
+                tableGlass.appendChild(newTr)
+
+            });
+        }
+
         btnInfoShow[1].addEventListener('click', ()=>{
          tableContainer.classList.toggle('active')
 
@@ -191,7 +247,28 @@
 
         })
         // end
-     })
+
+        showTableInfo()
+
+       function clickBack(){
+        if(currentPage <= 1 ){
+            showTableInfo();
+        }else{
+            currentPage--;
+            showTableInfo()
+        }
+        
+       }
+
+       const clickNext = () =>{
+        if(currentPage === globalCount){
+            return
+        } else{
+            currentPage++
+            showTableInfo();
+        }
+       }
+
 </script>
 </body>
 </html>
