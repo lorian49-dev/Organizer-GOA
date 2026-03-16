@@ -135,6 +135,25 @@ app.get('/get-glasses', async(req, res)=>{
    res.status(500).send('Error al obtener datos')
   }
 })
+//-------------------------------------------
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+// BUSCADOR DE GAFAS GENERAL CON REDIRECCION
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+//-------------------------------------------
+
+app.get('/search-glasses-table', async(req, res)=>{
+  const searchData = req.query.glass_model;
+
+  try{
+   const {data, error} = await access.from('glasses').select('brand, code, ship_order, invoice_id(url), manifest_id(url)').ilike('code', `%${searchData}%`).limit(50);
+   if(error) return
+   res.json(data)
+  }catch(error){
+    console.error(error);
+    res.status(500).json({message:'error de busqueda'})
+  }
+
+})
 
 // obtencion de datos INVOICES
 
