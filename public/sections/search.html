@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search result</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+     <nav>
+        <span class="back-home"  onclick="goHome()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </span>
+        <ul>
+            <li><a href="sections/glasses.html">Cargar Monturas</a></li>
+            <li><a href="sections/loadFile.html"><span class="bold">Facturas</span></a></li>
+            <li><a href="/sections/loadManiefst.html">Manifiestos</a></li>
+        </ul>
+        <form action="/search-mid" class="form-search-glass" method="get">
+        <label for="search-glass"><!--Cambiar el name del input-->
+            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de modelo Ej: M27142...">
+        </label>
+    </form>
+</nav>
+<body>
+    <div class="table-results-container">
+        <table class="table-search-results">
+        <thead>
+          <th></th>
+          <th>marca</th>
+          <th>Codigo / Referencia</th>
+          <th>Numero de orden</th>
+          <th>Ver Factura</th>
+          <th>Ver Manifiesto</th>
+        </thead>
+        <tbody class="table-body-results">
+
+        </tbody>
+    </table>
+    </div>
+</body>
+<script src="../events/search.js"></script>
+</body>
+</html>

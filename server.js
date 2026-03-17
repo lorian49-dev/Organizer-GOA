@@ -32,7 +32,7 @@ const access = createClient(
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
 
 //-------------------------------------------------//
 //                   COOKIES
@@ -141,17 +141,23 @@ app.get('/get-glasses', async(req, res)=>{
 // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 //-------------------------------------------
 
+app.get('/search-mid', (req, res)=>{
+  res.sendFile(path.join(__dirname, 'public', 'sections', 'search.html'))
+})
+
 app.get('/search-glasses-table', async(req, res)=>{
   const searchData = req.query.glass_model;
 
   try{
    const {data, error} = await access.from('glasses').select('brand, code, ship_order, invoice_id(url), manifest_id(url)').ilike('code', `%${searchData}%`).limit(50);
    if(error) return
+
    res.json(data)
   }catch(error){
     console.error(error);
     res.status(500).json({message:'error de busqueda'})
   }
+  
 
 })
 

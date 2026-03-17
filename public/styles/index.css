@@ -685,3 +685,40 @@ table a:hover{
     border-radius: 10px;
     background: #000b30;
 }
+
+/* Estilos de la pagina de resultados */
+
+.table-results-container{
+    width: 80%;
+    margin: 1rem auto;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: var(--main-shadow);
+}
+
+.table-search-results input[type="checkbox"]{
+    opacity: 0;
+    cursor: pointer;
+}
+
+.table-search-results tbody tr:hover{
+ background-color: #e4e4e4;
+ transition: .5s;
+}
+
+tr:hover input[type="checkbox"]{
+ opacity: 1;
+}
+
+.table-search-results td:nth-child(1),.table-search-results th:nth-child(1){
+ width: auto;
+}
+
+.table-search-results td:nth-child(2),.table-search-results th:nth-child(2){
+ width: 35%;
+}
+
+.field-results-glasses{
+    background-color: #fff;
+}

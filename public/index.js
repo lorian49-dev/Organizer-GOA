@@ -14,6 +14,17 @@ const img_logo = document.querySelector('.logo-andes');
         const textInstrutions = document.createElement('div')
         textInstrutions.classList.add('text-instructions')
 
+        // Eventos para el Buscador de moonturas
+
+        const inputGlasses = document.getElementById('search-glass');
+        const fieldResultGlasses = document.querySelector('.field-results-glasses')
+        const debounce = () =>{
+        let timeout;
+        return function(...args){
+          
+        }
+      }
+
         const modalContent = [{
             tittle: 'Como usar Organizer? ',
             subtittle: 'Busqueda de monturas',
@@ -142,4 +153,10 @@ const img_logo = document.querySelector('.logo-andes');
         } 
 
       });
+
+      // Input de Monturas
+
+      inputGlasses.addEventListener("input", ()=>{
+
+      })
         });
