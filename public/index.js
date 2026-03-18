@@ -18,10 +18,13 @@ const img_logo = document.querySelector('.logo-andes');
 
         const inputGlasses = document.getElementById('search-glass');
         const fieldResultGlasses = document.querySelector('.field-results-glasses')
-        const debounce = () =>{
+        const debounce = (fn, delay) =>{
         let timeout;
         return function(...args){
-          
+          clearTimeout(timeout);
+          timeout = setTimeout(()=>{
+            fn.apply(this, args)
+          }, delay)
         }
       }
 
