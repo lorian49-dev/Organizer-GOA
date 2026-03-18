@@ -18,15 +18,16 @@ const img_logo = document.querySelector('.logo-andes');
 
         const inputGlasses = document.getElementById('search-glass');
         const fieldResultGlasses = document.querySelector('.field-results-glasses')
+       
         const debounce = (fn, delay) =>{
-        let timeout;
-        return function(...args){
-          clearTimeout(timeout);
-          timeout = setTimeout(()=>{
-            fn.apply(this, args)
-          }, delay)
+          let timeout;
+          return function(...args){
+            clearTimeout(timeout)
+            timeout = setTimeout(()=>{
+             fn.apply(this, args)
+            }, delay)
+          }
         }
-      }
 
         const modalContent = [{
             tittle: 'Como usar Organizer? ',
@@ -159,7 +160,31 @@ const img_logo = document.querySelector('.logo-andes');
 
       // Input de Monturas
 
-      inputGlasses.addEventListener("input", ()=>{
+      async function getGlasses(){
+        fieldResultGlasses.innerHTML = '';
+        fieldResultGlasses.style.display = 'none';
+        inputGlasses.style.boxShadow = 'none' // Cambiar
 
-      })
+        const inputData = inputGlasses.value;
+        if(inputData.length < 2) return;
+        const res = await fetch(`/search-glass-results?glass=${inputData}`);
+        const data = await res.json();
+        data.forEach(item=>{
+         const result = document.createElement('div');
+         result.classList.add('item-glass-result');
+         result.textContent = item.code;
+
+         result.addEventListener('click', ()=>{
+          window.location.href = `/search-mid?glass_model=${item.code}`
+         })
+
+         fieldResultGlasses.appendChild(result)
+        });
+        fieldResultGlasses.style.display = 'block'
+        inputGlasses.style.boxShadow = 'none'
+      }
+
+      inputGlasses.addEventListener("input", debounce(()=>{
+        getGlasses()
+       }, 300))
         });

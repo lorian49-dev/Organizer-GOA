@@ -161,6 +161,26 @@ app.get('/search-glasses-table', async(req, res)=>{
 
 })
 
+//-------------------------------------------
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+//         Coincidencias sobre Gafas
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+//-------------------------------------------
+
+app.get('/search-glass-results', async(req, res)=>{
+  const getData = req.query.glass;
+  if(!getData) return res.status(500).send('Error al buscar coincidencias o no se encuentran.')
+    try{
+  const {data, error} = await access.from('glasses').select('brand, code').ilike('code', `%${getData}%`).limit(10);
+  if(error) return
+  res.json(data)
+  }catch(error){
+     console.error(error);
+     res.status(500).send('Falla en el sistema y obtencion de datos')
+  }
+  
+})
+
 // obtencion de datos INVOICES
 
 app.get('/invoices-table-get', async(req, res)=>{

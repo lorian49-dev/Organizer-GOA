@@ -83,6 +83,33 @@ header>img{
     box-shadow: var(--main-shadow);
 }
 
+.form-search-glass input:focus{
+    outline: none;
+}
+
+.label-for-search-input{
+    position: relative;
+}
+
+.field-results-glasses{
+    background-color: #fff;
+    padding: 2.5rem 1rem 1rem 1rem;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    position: absolute;
+    width: 100%;
+    display: none;
+
+    top: 25px;
+    box-shadow: var(--main-shadow);
+    font-family: "Arsenal SC", sans-serif;
+    color: #383838;
+}
+
+.item-glass-result{
+    cursor: pointer;
+}
+
 .main{
     width: 60%;
     padding: 2rem;
@@ -719,6 +746,3 @@ tr:hover input[type="checkbox"]{
  width: 35%;
 }
 
-.field-results-glasses{
-    background-color: #fff;
-}
