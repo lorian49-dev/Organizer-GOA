@@ -75,15 +75,17 @@ header>img{
  width: auto;
 }
 
-.form-search-glass input{
+#search-glass{
     width: 30rem;
     padding: 1rem;
     border-radius: 25px;
     border: none;
     box-shadow: var(--main-shadow);
+    position: relative;
+    z-index: 5;
 }
 
-.form-search-glass input:focus{
+#search-glass:focus{
     outline: none;
 }
 
@@ -99,15 +101,26 @@ header>img{
     position: absolute;
     width: 100%;
     display: none;
-
     top: 25px;
     box-shadow: var(--main-shadow);
     font-family: "Arsenal SC", sans-serif;
     color: #383838;
+    z-index: 1;
+}
+
+#search-glass.boxShadowOn{
+    box-shadow: none;
 }
 
 .item-glass-result{
     cursor: pointer;
+    margin-bottom: .5rem;
+    transition: all .5s ease;
+    padding: .5rem;
+}
+
+.item-glass-result:hover{
+    background-color: #d4d4d4;
 }
 
 .main{
@@ -169,6 +182,7 @@ section>i{
     justify-content: center;
     align-items: center;
     transition: all 1s ease;
+    z-index: 5;
 }
 
 .modal-windows{
@@ -185,6 +199,7 @@ section>i{
     flex-direction: column;
     transition: all 1s ease;
     color: #16183881;
+    z-index: 6;
 }
 
 .modal-windows-content{

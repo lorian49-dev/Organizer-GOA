@@ -18,8 +18,11 @@
             <li><a href="/sections/loadManiefst.html">Manifiestos</a></li>
         </ul>
         <form action="/search-mid" class="form-search-glass" method="get">
-        <label for="search-glass">
-            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de modelo Ej: M27142...">
+        <label class="label-for-search-input">
+            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de modelo Ej: M27142..." autocomplete="off">
+            <div class="field-results-glasses">
+            
+        </div>
         </label>
     </form>
 </nav>
@@ -58,11 +61,48 @@
     </form>
     </main>
 <script>
+
+    const inputSearchGlass = document.getElementById('search-glass')
+    const searchGlassResults = document.querySelector('.field-results-glasses')
+
+
     const form_container = document.querySelector('form');
     const pdf_container = document.querySelector('.pdf-container-tbody')
     const btnNext = document.querySelector('.btnNext')
     const btnBack = document.querySelector('.btnBack')
     let pageInfo = document.querySelector('.page-info')
+
+          async function autoCompleteGlass(input, field) {
+            field.innerHTML = ''
+            field.style.display = 'none';
+            if(input.classList.contains('boxShadowOn')){
+            input.classList.remove('boxShadowOn');
+            }
+            const valueSearch = input.value;
+
+            if(valueSearch.length < 2) return;
+
+            const res = await fetch(`/search-glass-results?glass=${valueSearch}`);
+            const data = await res.json();
+
+            if(data.length === 0) return field.style.display = 'none'
+            
+            data.forEach(item =>{
+                const result = document.createElement('div');
+                result.classList.add('item-glass-result');
+                result.textContent = item.code;
+
+                result.addEventListener('click', ()=>{
+                    window.location.href = `/search-mid?glass_model=${item.code}`;
+                })
+
+                field.appendChild(result);
+            })
+
+            field.style.display = 'block'
+            input.classList.add('boxShadowOn')
+        }
+
     const goHome = () =>{
         window.location.href = '/'
     }
@@ -71,6 +111,16 @@
     let globalTotalRows = 0
 
     const emptyMessage = document.querySelector('.empty-message')
+
+    const debounce = (fn, delay) =>{
+       let timeout;
+       return function(...args){
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+         fn.apply(this, args);
+        }, delay)
+       }
+    }
 
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=>{
@@ -158,6 +208,12 @@
 
 
     }
+
+        if(inputSearchGlass){
+            inputSearchGlass.addEventListener('input', debounce(()=>{
+            autoCompleteGlass(inputSearchGlass, searchGlassResults)
+            }, 300));
+        }
 
     tableInformation()
 

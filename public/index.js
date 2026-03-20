@@ -163,12 +163,18 @@ const img_logo = document.querySelector('.logo-andes');
       async function getGlasses(){
         fieldResultGlasses.innerHTML = '';
         fieldResultGlasses.style.display = 'none';
-        inputGlasses.style.boxShadow = 'none' // Cambiar
+        inputGlasses.classList.remove('boxShadowOn');
+
 
         const inputData = inputGlasses.value;
         if(inputData.length < 2) return;
         const res = await fetch(`/search-glass-results?glass=${inputData}`);
         const data = await res.json();
+
+        if(data.length === 0){
+          return fieldResultGlasses.style.display = 'none'
+        }
+
         data.forEach(item=>{
          const result = document.createElement('div');
          result.classList.add('item-glass-result');
@@ -180,8 +186,16 @@ const img_logo = document.querySelector('.logo-andes');
 
          fieldResultGlasses.appendChild(result)
         });
+          document.addEventListener('click', (e)=>{
+          if(!fieldResultGlasses.contains(e.target)){
+            fieldResultGlasses.style.display = 'none'
+            if(!inputGlasses.classList.contains('boxShadowOn')){
+        inputGlasses.classList.remove('boxShadowOn');
+            }
+          }
+        })
+        inputGlasses.classList.add('boxShadowOn');
         fieldResultGlasses.style.display = 'block'
-        inputGlasses.style.boxShadow = 'none'
       }
 
       inputGlasses.addEventListener("input", debounce(()=>{

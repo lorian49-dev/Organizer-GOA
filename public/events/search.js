@@ -1,8 +1,54 @@
 const tableResultGlasses = document.querySelector('.table-search-results');
 const tableBodyGlasses = document.querySelector('.table-body-results')
+
+
+    const inputSearchGlass = document.getElementById('search-glass')
+    const searchGlassResults = document.querySelector('.field-results-glasses')
+
 const goHome = () =>{
     window.location.href = '/'
 }
+
+  const debounce = (fn, delay) =>{
+       let timeout;
+       return function(...args){
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+         fn.apply(this, args);
+        }, delay)
+       }
+    }
+
+      async function autoCompleteGlass(input, field) {
+            field.innerHTML = ''
+            field.style.display = 'none';
+            if(input.classList.contains('boxShadowOn')){
+            input.classList.remove('boxShadowOn');
+            }
+            const valueSearch = input.value;
+
+            if(valueSearch.length < 2) return;
+
+            const res = await fetch(`/search-glass-results?glass=${valueSearch}`);
+            const data = await res.json();
+
+            if(data.length === 0) return field.style.display = 'none'
+            
+            data.forEach(item =>{
+                const result = document.createElement('div');
+                result.classList.add('item-glass-result');
+                result.textContent = item.code;
+
+                result.addEventListener('click', ()=>{
+                    window.location.href = `/search-mid?glass_model=${item.code}`;
+                })
+
+                field.appendChild(result);
+            })
+
+            field.style.display = 'block'
+            input.classList.add('boxShadowOn')
+        }
 
 addEventListener('DOMContentLoaded', async()=>{
             setTimeout(()=>{
@@ -29,6 +75,12 @@ const showInfoGlasses = async() => {
     })
 
 }
+
+    if(inputSearchGlass){
+            inputSearchGlass.addEventListener('input', debounce(()=>{
+            autoCompleteGlass(inputSearchGlass, searchGlassResults)
+            }, 300));
+        }
 
 showInfoGlasses();
 
