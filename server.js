@@ -11,6 +11,7 @@ const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
 const { ifError } = require('assert');
+const session = require('express-session')
 // instanciables
 const app = express();
 
@@ -33,6 +34,11 @@ const access = createClient(
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
+app.use(session({
+  secret:'my-secret',
+  resave:false,
+  saveUninitialized:true
+}))
 
 //-------------------------------------------------//
 //                   COOKIES
@@ -44,6 +50,15 @@ app.get('/aceptar-cookie', (req, res)=>{
     httpOnly:false
   })
   res.status(200).send('cookie adicionada con exito')
+})
+
+app.get('/get-session', (req, res)=>{
+  if(!req.session.views){
+    req.session.views = 1
+  }else{
+    req.session.views++
+  }
+  res.send(`Has visitado esta pagina ${req.session.views} veces`)
 })
 
 //-------------------------------------------------//
