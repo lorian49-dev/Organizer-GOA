@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root{
+    --main-shadow: 1px 1px hsl(0deg 0% 0% / 0.075),
+      0 2px 2px hsl(0deg 0% 0% / 0.075),
+      0 4px 4px hsl(0deg 0% 0% / 0.075),
+      0 8px 8px hsl(0deg 0% 0% / 0.075),
+      0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html{
+    font-size: 1vw;
+}
+
+/*(Design) Login Page*/
+
+.body-login{
+  background-image:  linear-gradient(90deg,#000000ec, #000000c5,#0000009c, #0000000e),url('/src/background-glasses.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  overflow-y: hidden;
+}
+
+.container{
+    margin: 100px auto 0 auto;
+    width: 60%;
+    height: 500px;
+    display: flex;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: var(--main-shadow);
+    backdrop-filter: blur(5px);
+}
+
+.left{
+    width: 50%;
+    background-color: rgba(248, 252, 255, 0.897);
+}
+
+.right{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phrase-container{
+    font-family: "Arsenal SC", sans-serif;
+    color: beige;
+    padding: 0 4rem;
+    font-size: 1.5rem;
+    transition: all 1s ease;
+}
+
+.form-login{
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.primary-btn{
+    padding: 1rem;
+
+}

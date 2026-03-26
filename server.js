@@ -10,8 +10,7 @@ require('dotenv').config({path: path.join(__dirname, 'config.env')})
 const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
-const { ifError } = require('assert');
-const session = require('express-session')
+const session = require('express-session');
 // instanciables
 const app = express();
 
@@ -31,14 +30,17 @@ const access = createClient(
 
 /*--------------------------------------------*/
 
+app.use(session({
+  secret: 'my-secret-new-key',
+  saveUninitialized: false,
+  resave: false,
+  cookie: {secure: false}
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
+app.use('/src', express.static(path.join(__dirname, '/src')))
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
-app.use(session({
-  secret:'my-secret',
-  resave:false,
-  saveUninitialized:true
-}))
+
 
 //-------------------------------------------------//
 //                   COOKIES
@@ -58,7 +60,7 @@ app.get('/get-session', (req, res)=>{
   }else{
     req.session.views++
   }
-  res.send(`Has visitado esta pagina ${req.session.views} veces`)
+  res.send(`Has visitado esta pagina ${req.session.views} veces`) 
 })
 
 //-------------------------------------------------//
