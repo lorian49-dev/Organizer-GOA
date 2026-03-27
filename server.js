@@ -11,9 +11,18 @@ const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
 const session = require('express-session');
+const bcrypt = require('bcrypt');
+const saltRounds = 10 // Nivel de seguridad (10 es el nivel mas alto)
 // instanciables
 const app = express();
-
+// Redireccion al login y seguridad
+const isAuthenticated = (req, res, next)=>{
+  if(req.session&&req.session.user){
+    return next();
+  }else{
+    res.redirect('/sections/login.html');
+  }
+}
 // Almacenamiento en la memoria local
 const myStorage = multer({
   storage: multer.memoryStorage(),
@@ -36,10 +45,28 @@ app.use(session({
   resave: false,
   cookie: {secure: false}
 }));
+
+app.use('/sections', (req, res, next) => {
+  // Si intenta ir al login, déjalo pasar (si no, nadie podría loguearse)
+  if (req.path === '/login.html') {
+    return next();
+  }
+  // Para todo lo demás, pedimos carnet
+  isAuthenticated(req, res, next);
+});
+app.get('/', isAuthenticated, (req, res)=>{
+  console.log(req.session.user)
+  res.redirect('/sections/index.html');
+})
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
 app.use('/src', express.static(path.join(__dirname, '/src')))
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
+app.use(express.json())
+
+
+// -rutas-
+
 
 
 //-------------------------------------------------//
@@ -66,6 +93,36 @@ app.get('/get-session', (req, res)=>{
 //-------------------------------------------------//
 //              manejo de la app
 //-------------------------------------------------//
+
+//-------------------------------------------------//
+//               Login de la app
+//-------------------------------------------------//
+
+app.post('/login', async(req, res)=>{
+  const {username, password} = req.body;
+  try{
+  
+    const {data, error} = await access.from('users').select('*').eq('name_user', username).single();
+    if(error || !data){
+      return res.status(401).json({error:'usuario no encontrado'})
+    }
+
+    const isCorrect = await bcrypt.compare(password, data.password)
+    console.log(password)
+    if(!isCorrect) return res.status(401).json({error: 'Contraseña Incorrecta o invalida'});
+
+      req.session.user = {
+        id: data.id_user, username: data.name_user
+      }
+
+
+      res.json({success: true})
+
+  }catch(error){
+    console.error(error);
+    res.status(500).json({error: 'Error en el servidor'});
+  }
+})
 
 // ------------------------------------------- //
 //                  Gafas

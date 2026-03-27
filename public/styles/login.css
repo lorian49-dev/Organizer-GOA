@@ -44,7 +44,16 @@ html{
 .left{
     width: 50%;
     background-color: rgba(248, 252, 255, 0.897);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+
+.logo-andes-form{
+    
+}
+
 
 .right{
     width: 50%;
@@ -67,9 +76,56 @@ html{
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap:2rem;
+    font-family: "Arsenal SC", sans-serif;
+
+}
+
+.form-login h1{
+    font-weight: 200;
 }
 
 .primary-btn{
     padding: 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: var(--main-shadow);
+    background-color: #262a82;
+    color: beige;
+    font-family: "Arsenal SC", sans-serif;
+    cursor: pointer;
+    transition: all .5s ease;
+}
 
+.primary-btn:hover{
+   transform: translateY(-5px);
+}
+
+.form-login label{
+    position: relative;
+}
+
+.form-login input{
+    border: none;
+    padding: .7rem;
+    border-radius: 25px;
+    color: rgb(51, 51, 51);
+    background-color: #ffffff;
+    box-shadow: var(--main-shadow);
+}
+
+.form-login input:focus{
+    outline: none;
+}
+
+.form-login span{
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    color: rgb(112, 112, 112);
+    transition: all .5s ease;
+}
+
+.form-login input:focus + span, .form-login input:not(:placeholder-shown) + span{
+    transform: scale(.8) translateY(-35px);
 }

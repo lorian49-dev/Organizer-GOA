@@ -1,4 +1,8 @@
 const rightSideLogin = document.querySelector('.right');
+const formLogin = document.querySelector('.form-login');
+const inputuserName = document.querySelector('.input-user-name');
+const inputPassword = document.querySelector('.input-password');
+const messageLogin = document.querySelector('.messaeg-wrong-login')
 let i = 0;
 const phrases = [
     'No te dejes intimidar por las opiniones de los demás. Solo la mediocridad es segura, así que arriésgate y haz aquello que deseas.',
@@ -20,13 +24,36 @@ document.addEventListener('DOMContentLoaded', ()=>{
   phraseContainer.textContent = phrases[i]
     phraseContainer.style.opacity = '1'
     i = (i+1) % phrases.length
-    console.log(i)
    setTimeout(()=>{
     phraseContainer.style.opacity = '0'
    }, 4000)
   }, 5000)
   }
 
-  cargePhrase()
+  formLogin.addEventListener('submit', async(event)=>{
+      event.preventDefault()
 
+      const dataForm = new FormData(formLogin);
+
+      const username = dataForm.get('username');
+      const password = dataForm.get('password');
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers:{'Content-type': 'application/json'},
+        body: JSON.stringify({username, password})
+      });
+
+    const data = await res.json();
+    console.log(data)
+    if(data.success){
+      window.location.href = '/';
+    }else{
+        messageLogin.textContent = 'Usuario o clave invalidos';
+    }
+    
+
+  })
+
+  cargePhrase()
+ 
 })
