@@ -28,12 +28,14 @@ html{
   background-size: cover;
   min-height: 100vh;
   overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container{
-    margin: 100px auto 0 auto;
     width: 60%;
-    height: 500px;
+    height: 65vh;
     display: flex;
     border-radius: 25px;
     overflow: hidden;
@@ -127,5 +129,5 @@ html{
 }
 
 .form-login input:focus + span, .form-login input:not(:placeholder-shown) + span{
-    transform: scale(.8) translateY(-35px);
+    transform: scale(.8) translateY(-2.5rem);
 }

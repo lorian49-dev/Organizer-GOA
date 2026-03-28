@@ -55,8 +55,7 @@ app.use('/sections', (req, res, next) => {
   isAuthenticated(req, res, next);
 });
 app.get('/', isAuthenticated, (req, res)=>{
-  console.log(req.session.user)
-  res.redirect('/sections/index.html');
+  res.redirect('/index.html');
 })
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
