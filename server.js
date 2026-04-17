@@ -23,19 +23,23 @@ const isAuthenticated = (req, res, next)=>{
     res.redirect('/sections/login.html');
   }
 }
+
+const isAdmin = (req, res, next) =>{
+
+}
 // Almacenamiento en la memoria local
 const myStorage = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fieldSize: 10 * 1024 * 1024
+  limits:{
+    fileSize: 10*1024*1024
   }
-});
+})
 
 // Acceso con credenciales por medio de dotenv
 const access = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
-)
+) 
 
 /*--------------------------------------------*/
 
@@ -44,14 +48,14 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   cookie: {secure: false}
-}));
+}));  
 
 app.use('/sections', (req, res, next) => {
   // Si intenta ir al login, déjalo pasar (si no, nadie podría loguearse)
   if (req.path === '/login.html') {
     return next();
   }
-  // Para todo lo demás, pedimos carnet
+  // Para todo lo demás, pedimos identificacion
   isAuthenticated(req, res, next);
 });
 app.get('/', isAuthenticated, (req, res)=>{
@@ -63,7 +67,6 @@ app.use('/src', express.static(path.join(__dirname, '/src')))
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
 app.use(express.json())
 
-
 // -rutas-
 
 
@@ -73,20 +76,11 @@ app.use(express.json())
 //-------------------------------------------------//
 
 app.get('/aceptar-cookie', (req, res)=>{
-  res.cookie('cookie-aceptada', true, {
-    maxAge:1209600000,
-    httpOnly:false
-  })
-  res.status(200).send('cookie adicionada con exito')
-})
-
-app.get('/get-session', (req, res)=>{
-  if(!req.session.views){
-    req.session.views = 1
-  }else{
-    req.session.views++
-  }
-  res.send(`Has visitado esta pagina ${req.session.views} veces`) 
+ res.cookie('cookie-aceptada', true, {
+  maxAge: 1296000000,
+  httpOnly:false
+ })
+ res.status(200).send('cookie almacenada con exito')
 })
 
 //-------------------------------------------------//
@@ -490,4 +484,6 @@ if(getFileNameError){
 app.listen(3000, ()=>{
   console.log('servidor escuchandose en http://localhost:3000');
 })
+
+
 
