@@ -11,7 +11,14 @@ const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const {Pool} = require('pg');
+const dbPool = new Pool({
+  connectionString: process.env.DATABASE_SUPABASE
+})
+
 const bcrypt = require('bcrypt');
+const { error } = require('console');
 const saltRounds = 10 // Nivel de seguridad (10 es el nivel mas alto)
 // instanciables
 const app = express();
@@ -46,6 +53,10 @@ const access = createClient(
 /*--------------------------------------------*/
 
 app.use(session({
+  store: new pgSession({
+    pool: dbPool,
+    tableName:'sessions'
+  }),
   secret: 'my-secret-new-key',
   saveUninitialized: false,
   resave: false,
@@ -80,6 +91,16 @@ app.use(express.json())
 //                   COOKIES
 //-------------------------------------------------//
 
+app.get('/test', (req, res)=>{
+  if(!req.session.visits){
+    req.session.visits = 1
+  }else{
+    req.session.visits++
+  }
+
+  res.send(`Visitas totales son ${req.session.visits}`)
+})
+
 app.get('/aceptar-cookie', (req, res)=>{
  res.cookie('cookie-aceptada', true, {
   maxAge: 1296000000,
@@ -106,7 +127,7 @@ app.post('/login', async(req, res)=>{
     }
 
     const isCorrect = await bcrypt.compare(password, data.password)
-    console.log(password)
+
     if(!isCorrect) return res.status(401).json({error: 'Contraseña Incorrecta o invalida'});
 
       req.session.user = {
@@ -120,6 +141,19 @@ app.post('/login', async(req, res)=>{
     console.error(error);
     res.status(500).json({error: 'Error en el servidor'});
   }
+})
+
+app.get('/logout', (req, res)=>{
+  req.session.destroy((error)=>{
+    if(error){
+    console.error("Error destruyendo la sesión:", err);
+     return res.status(500).send('Error al tratar de cerrar la sesion')
+    }
+
+    res.clearCookie('connect.sid');
+    res.redirect('/sections/login.html')
+
+  })
 })
 
 // ------------------------------------------- //
