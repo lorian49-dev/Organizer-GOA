@@ -24,8 +24,6 @@ const saltRounds = 10 // Nivel de seguridad (10 es el nivel mas alto)
 const app = express();
 // Redireccion al login y seguridad
 const isAuthenticated = (req, res, next)=>{
-  console.log(req.session)
-
   if(req.session&&req.session.user){
     return next();
   }else{
@@ -57,6 +55,7 @@ app.use(session({
     pool: dbPool,
     tableName:'sessions'
   }),
+
   secret: 'my-secret-new-key',
   saveUninitialized: false,
   resave: false,
