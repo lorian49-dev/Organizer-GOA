@@ -14,6 +14,7 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const {Pool} = require('pg');
 const dbPool = new Pool({
+  
   connectionString: process.env.DATABASE_SUPABASE
 })
 
@@ -247,6 +248,7 @@ app.get('/get-glasses', async(req, res)=>{
 //-------------------------------------------
 
 app.get('/search-mid', (req, res)=>{
+  // Sirve archivos en la web, que no estan en la pagina public
   res.sendFile(path.join(__dirname, 'public', 'sections', 'search.html'))
 })
 
