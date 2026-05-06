@@ -33,7 +33,12 @@ const isAuthenticated = (req, res, next)=>{
 }
 
 const isAdmin = (req, res, next) =>{
-
+  console.log(req.session.user.id)
+ if(req.session.user.id == 1){
+   return next();
+ }else{
+  res.redirect('/denny-access')
+ }
 }
 // Almacenamiento en la memoria local
 const myStorage = multer({
@@ -50,7 +55,7 @@ const access = createClient(
 ) 
 
 /*--------------------------------------------*/
-
+//Cookie de La sesion del usuario para ingreso
 app.use(session({
   store: new pgSession({
     pool: dbPool,
@@ -82,24 +87,13 @@ app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
 app.use('/src', express.static(path.join(__dirname, '/src')))
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
 app.use(express.json())
+app.set('view engine', 'ejs') 
 
 // -rutas-
-
-
 
 //-------------------------------------------------//
 //                   COOKIES
 //-------------------------------------------------//
-
-app.get('/test', (req, res)=>{
-  if(!req.session.visits){
-    req.session.visits = 1
-  }else{
-    req.session.visits++
-  }
-
-  res.send(`Visitas totales son ${req.session.visits}`)
-})
 
 app.get('/aceptar-cookie', (req, res)=>{
  res.cookie('cookie-aceptada', true, {
@@ -112,6 +106,16 @@ app.get('/aceptar-cookie', (req, res)=>{
 //-------------------------------------------------//
 //              manejo de la app
 //-------------------------------------------------//
+
+//-------------------------------------------------//
+//              Redirecciones por manejos
+//-------------------------------------------------//
+
+app.get('/denny-access', (req, res)=>{
+ res.render('dennyAcces', {
+  userName: req.session.user.username
+ })
+})
 
 //-------------------------------------------------//
 //               Login de la app
@@ -131,7 +135,7 @@ app.post('/login', async(req, res)=>{
     if(!isCorrect) return res.status(401).json({error: 'Contraseña Incorrecta o invalida'});
 
       req.session.user = {
-        id: data.id_user, username: data.name_user
+        id: data.user_roll, username: data.name_user
       }
 
 
@@ -159,6 +163,11 @@ app.get('/logout', (req, res)=>{
 // ------------------------------------------- //
 //                  Gafas
 // ------------------------------------------- //
+
+app.get('/monturas', isAdmin,(req, res)=>{
+ console.log('success log')
+ res.redirect('/sections/glasses.html')
+})
 
 // Solicitud de datos de las tablas invoices y manifest para autocompletar busquedas.
 
@@ -288,6 +297,15 @@ app.get('/search-glass-results', async(req, res)=>{
   
 })
 
+// ------------------------------------------- //
+//                  Invoices
+// ------------------------------------------- //
+
+app.get('/facturas', isAdmin,(req, res)=>{
+ console.log('success log')
+ res.redirect('/sections/loadFile.html')
+})
+
 // obtencion de datos INVOICES
 
 app.get('/invoices-table-get', async(req, res)=>{
@@ -303,38 +321,6 @@ app.get('/invoices-table-get', async(req, res)=>{
   try{
 
     const {data, error, count} = await access.from('invoices').select('id_invoice, name, weight, date, url', {count:'exact'}).order('date', {ascending: false}).range(start, end);
-
-    if(error){
-      throw error
-    }
-
-    const totalRows = Math.ceil(count / limit);
-
-    res.json({data, totalRows});
-
-  }catch(error){
-    console.error(error)
-    res.status(500).json({error: 'error en la obtencion de datos'})
-  }
-
-})
-
-// obtencion de datos PARA TABLA MANIFEST
-
-app.get('/manifest-table-get', async(req, res)=>{
-  const p = parseInt(req.query.page);
-  const page = Number.isInteger(p) && p > 1 ? p : 1;
-  const limit = 10;
-
-  // inicio y fin para e rango en la paginacion
-
-  const start = (page - 1) * limit;
-  const end = start + (limit - 1);
-
-  try{
-
-    const {data, error, count} = await access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'}).order('date', {ascending: false}).range(start, end);
-    
 
     if(error){
       throw error
@@ -410,6 +396,73 @@ res.redirect('/sections/loadFile.html')
 
 })
 
+// ------------------------------------------- //
+//           ELIMINACION DE ARCHIVOS
+// ------------------------------------------- //
+
+// Invoices
+
+app.delete('/action-delete/:id', async(req, res)=>{
+
+  const id = req.params.id;
+  const {data: getFileName, error: getFileNameError} = await access.from('invoices').select('name').eq('id_invoice', id).single()
+  const fileName = getFileName.name
+if(getFileNameError){
+    console.error(getFileNameError)
+    return res.status(400).json({error:getFileNameError.message})
+  }
+  const {data, error} = await access.from('invoices').delete().eq('id_invoice', id);
+  const {data: removeFile, error: removeFileError} = await access.storage.from('invoices').remove([fileName])
+  if(error){
+    console.error(error)
+    return res.status(400).json({error:error.message})
+  }
+   
+  res.status(200).send('registro borrado con exito')
+
+})
+
+// ------------------------------------------- //
+//                  Manifest
+// ------------------------------------------- //
+
+app.get('/manifiestos',(req, res)=>{
+ console.log('success log')
+ res.redirect('/sections/loadManiefst.html')
+})
+
+// obtencion de datos PARA TABLA MANIFEST
+
+app.get('/manifest-table-get', async(req, res)=>{
+  const p = parseInt(req.query.page);
+  const page = Number.isInteger(p) && p > 1 ? p : 1;
+  const limit = 10;
+
+  // inicio y fin para e rango en la paginacion
+
+  const start = (page - 1) * limit;
+  const end = start + (limit - 1);
+
+  try{
+
+    const {data, error, count} = await access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'}).order('date', {ascending: false}).range(start, end);
+    
+
+    if(error){
+      throw error
+    }
+
+    const totalRows = Math.ceil(count / limit);
+
+    res.json({data, totalRows});
+
+  }catch(error){
+    console.error(error)
+    res.status(500).json({error: 'error en la obtencion de datos'})
+  }
+
+})
+
 // Subida de archivos | MANIFIESTOS
 
 app.post('/manifest-table-post',async(req, res)=>{
@@ -425,7 +478,7 @@ app.post('/manifest-table-post',async(req, res)=>{
 //validacion para confirmar que lo que reciba si tenga contenido, de lo contrario abortar
 
 if(!files || files.length === 0){
- return res.status(400).json({error:'S'})
+ return res.status(400).json({error:'Error al subir archivos'})
 };
 
 const promesaUpload = files.map(async file =>{
@@ -472,30 +525,6 @@ res.redirect('/sections/loadManiefst.html')
 // ------------------------------------------- //
 //           ELIMINACION DE ARCHIVOS
 // ------------------------------------------- //
-
-// Invoices
-
-app.delete('/action-delete/:id', async(req, res)=>{
-
-  const id = req.params.id;
-  const {data: getFileName, error: getFileNameError} = await access.from('invoices').select('name').eq('id_invoice', id).single()
-  const fileName = getFileName.name
-if(getFileNameError){
-    console.error(getFileNameError)
-    return res.status(400).json({error:getFileNameError.message})
-  }
-  const {data, error} = await access.from('invoices').delete().eq('id_invoice', id);
-  const {data: removeFile, error: removeFileError} = await access.storage.from('invoices').remove([fileName])
-  if(error){
-    console.error(error)
-    return res.status(400).json({error:error.message})
-  }
-   
-  res.status(200).send('registro borrado con exito')
-
-})
-
-// Manifest
 
 app.delete('/action-delete-manifest/:id', async(req, res)=>{
 

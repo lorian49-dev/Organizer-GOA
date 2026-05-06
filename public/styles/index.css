@@ -760,3 +760,46 @@ tr:hover input[type="checkbox"]{
 .table-search-results td:nth-child(2),.table-search-results th:nth-child(2){
  width: 35%;
 }
+
+/*Pagina de accesos denegados*/
+
+.denny-box{
+    margin: 0 auto;
+    width: 70%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.denny-box h2{
+    font-size: 1.8rem;
+    font-weight: lighter;
+    color: #535353;
+}
+
+.denny-box button{
+    padding: 1rem;
+    border-radius: 25px;
+    border-style: none;
+    cursor: pointer;
+    background: linear-gradient(90deg,rgb(32, 32, 32), rgb(58, 58, 58), rgb(151, 151, 151));
+    box-shadow: var(--main-shadow);
+    transition: all .5s ease;
+}
+
+.denny-box button:hover{
+    transform: translateY(-5px);
+}
+
+.denny-box a{
+ text-decoration: none;
+ color: white;
+} 
+
+.denny-box img{
+    width: 10rem;
+    filter: grayscale(100%);
+}
