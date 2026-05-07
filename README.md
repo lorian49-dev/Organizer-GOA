@@ -34,7 +34,7 @@ https://nodejs.org/en/download/current
 Dependences
 
  step 1: As the previously process, you need to get to the proyect location 
- step 2: Install using----->(dont copy '#')
+ step 2: Install using----->(npm install) // if you use npm install, packages will be installed automaticaly
 
  #npm install express
  #npm install @supabase/supabase-js
