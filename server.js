@@ -9,12 +9,30 @@ require('dotenv').config({path: path.join(__dirname, 'config.env')})
 // constantes externas
 const multer = require('multer');
 const express = require('express');
-const {createClient} = require('@supabase/supabase-js');
+const {createClient} = require('@supabase/supabase-js'); // se crea el cliente proveniente de la libreria de supabase
+const {S3Client, PutObjectCommand} = require('@aws-sdk/client-s3');
 const session = require('express-session');
+const r2Session = new S3Client({
+ region: 'auto',
+ endpoint: process.env.CLOUDFLARE_R2,
+ credentials: {
+  accessKeyId: process.env.R2_ACCESS_KEY,
+  secretAccessKey: process.env.R2_SECRET_KEY
+ }
+})
+
+const uploadParams = (bucket, key, body, contT) =>{
+ return {
+   Bucket: bucket,
+   Key: key,
+   Body:body,
+   ContentType: contT
+ }
+}
+
 const pgSession = require('connect-pg-simple')(session);
 const {Pool} = require('pg');
 const dbPool = new Pool({
-  
   connectionString: process.env.DATABASE_SUPABASE
 })
 
@@ -44,7 +62,7 @@ const isAdmin = (req, res, next) =>{
 const myStorage = multer({
   storage: multer.memoryStorage(),
   limits:{
-    fileSize: 10*1024*1024
+    fileSize: 50*1024*1024
   }
 })
 
@@ -361,17 +379,17 @@ const fileName = Date.now()+'-'+file.originalname;
 
 // Una vez llegan los archivos iteramos con el map, ahora viene la accion de subida al storage primero
 
-const {data, error} = await access.storage.from('invoices').upload(fileName, file.buffer, {contentType: file.mimetype});
+// const {data, error} = await access.storage.from('invoices').upload(fileName, file.buffer, {contentType: file.mimetype});
+await r2Session.send(new PutObjectCommand(uploadParams('invoices', fileName, file.buffer, file.mimetype)));
 
-if(error){
-  throw error
-}
+// Originalmente con Supabase se usaba error con condicional para lanzar el error, pero AWS usa el estandart de Node, asi que 
+// try catch se encargara de gestionar el error 
 
 // obtencion de url 
 
-const {data: urlFile} = await access.storage.from('invoices').getPublicUrl(fileName);
+// const {data: urlFile} = await access.storage.from('invoices').getPublicUrl(fileName); esta linea de codigo no se usara al no usar el bucket de Supabase
 
-const publicUrl = urlFile.publicUrl;
+const publicUrl = `${process.env.PUBLIC_URL_INVOICES}/${fileName}`;
 
 // inserta de los datos en la tabla
 
@@ -487,17 +505,10 @@ const fileName = Date.now()+'-'+file.originalname;
 
 // Una vez llegan los archivos iteramos con el map, ahora viene la accion de subida al storage primero
 
-const {data, error} = await access.storage.from('manifest').upload(fileName, file.buffer, {contentType: file.mimetype});
-
-if(error){
-  throw error
-}
-
+await r2Session.send(new PutObjectCommand(uploadParams('manifest', fileName, file.buffer, file.mimetype)))
 // obtencion de url 
 
-const {data: urlFile} = await access.storage.from('manifest').getPublicUrl(fileName);
-
-const publicUrl = urlFile.publicUrl;
+const publicUrl = `${process.env.PUBLIC_URL_MANIFEST}/${fileName}`;
 
 // inserta de los datos en la tabla
 

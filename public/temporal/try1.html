@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+        
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header{
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(90deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 100;
+            font-style: normal;
+            color: aliceblue;
+        }
+
+        main{
+            width: 60%;
+            height: 500px;
+            border-radius: 25px;
+            background: #39E8E8;
+            background: linear-gradient(90deg, #39E8E8, #4D35E3);
+            margin: 100px auto;
+            display: flex;
+            padding: 25px;
+            gap: 25px;
+        }
+
+        section{
+            width: 70%;
+            height: 100%;
+            border-radius: 25px;
+            background-color: rgb(255, 255, 255);
+            padding: 25px;
+            
+        }
+
+        section p{
+            display: flex;
+            flex-grow: 0;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+
+        section span{
+            display: inline-block;
+            min-height: 25px;
+            max-height: 30px;
+            background: gray;
+            border-radius: 10px;
+            flex: 1 0 80%;
+        }
+
+        .placeholder-3, .placeholder-6, .placeholder-4{
+            flex: 1 0 20%;
+        }
+
+        aside{
+            width: 30%;
+            height: 100%;
+            border-radius: 25px;
+            background-color: rgb(255, 255, 255);
+        }
+
+    </style>
+</head>
+<body>
+    <header>MyWebPage</header>
+    <main>
+        <section><!--Aqui ira el efecto de procesado-->
+         <p>
+            <span class="phantom-line placeholder-1"></span>
+            <span class="phantom-line placeholder-2"></span>
+            <span class="phantom-line placeholder-3"></span>
+            <span class="phantom-line placeholder-4"></span>
+            <span class="phantom-line placeholder-5"></span>
+            <span class="phantom-line placeholder-6"></span>
+            <span class="phantom-line placeholder-7"></span>
+         </p>
+        </section>
+        <aside><!--Aqui ira el efecto de procesado-->
+        <p>
+            <span class="phantom-line placeholder-8"></span>
+            <span class="phantom-line placeholder-9"></span>
+            <span class="phantom-line placeholder-10"></span>
+            <span class="phantom-line placeholder-11"></span>
+            <span class="phantom-line placeholder-12"></span>
+            <span class="phantom-line placeholder-13"></span>
+            <span class="phantom-line placeholder-14"></span>
+         </p>
+        </aside>
+    </main>
+    <script>
+     
+    </script>
+</body>
+</html>
