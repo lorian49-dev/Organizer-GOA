@@ -49,8 +49,7 @@
         }
 
         section p{
-            display: flex;
-            flex-grow: 0;
+            display: flex;  
             width: 100%;
             flex-wrap: wrap;
             gap: 15px;
@@ -61,20 +60,76 @@
             display: inline-block;
             min-height: 25px;
             max-height: 30px;
-            background: gray;
             border-radius: 10px;
-            flex: 1 0 80%;
+            flex: 1 0 calc(100% - 215px);
         }
 
-        .placeholder-3, .placeholder-6, .placeholder-4{
-            flex: 1 0 20%;
+        .placeholder-3, .placeholder-4{
+            flex: 1 0 80px !important;
         }
+
+        .placeholder-6{
+            flex:  0 1 200px !important;
+        }
+
+        
+        .phantom-line{
+            background: linear-gradient(90deg, rgb(184, 184, 184), rgb(218, 218, 218), rgb(184, 184, 184)) ;
+            background-size: 200% 100% !important;
+            animation: skeleton-loading 2s infinite ease-in-out;
+        }
+
+        .phantom-line.placeholder-15{
+            width: 150px;
+            height: 150px;
+            border-radius: 25px;
+            margin-top: 25px;
+ 
+        }
+
+       /* @keyframes squart{
+            0%{
+             transform: translateX(0);
+            }
+            100%{
+              transform: translateX(100px);
+            }
+        }*/
 
         aside{
             width: 30%;
             height: 100%;
             border-radius: 25px;
             background-color: rgb(255, 255, 255);
+            padding: 25px;
+        }
+        
+        aside p{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        aside span{
+            display: inline-block;
+            min-height: 25px;
+            max-height: 30px;
+            border-radius: 10px;
+            flex: 1 1 calc(100% - 65px);
+        }
+
+        .placeholder-12{
+            flex: 0 0 50px !important;
+        }
+
+        @keyframes skeleton-loading {
+            0%{
+             background-position: 200% 0;
+            }
+            100%{
+            background-position: -200% 0;
+            }
         }
 
     </style>
@@ -92,6 +147,7 @@
             <span class="phantom-line placeholder-6"></span>
             <span class="phantom-line placeholder-7"></span>
          </p>
+         <div class="phantom-line placeholder-15"></div>
         </section>
         <aside><!--Aqui ira el efecto de procesado-->
         <p>

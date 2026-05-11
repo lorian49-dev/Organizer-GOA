@@ -432,7 +432,7 @@ padding: 1rem;
     transform: translateY(-5px);
 }
 
-.pdf-container{
+.pdf-container{ /*Este es el estilo de la capa trasera para la tabla*/
     margin: 0 auto;
     background-color: #262a82;
     min-width: 900px;
@@ -480,6 +480,16 @@ table{
   font-size: .8rem;
   background-color: #fff;
   margin-bottom: 5rem;
+}
+
+.phantom-placeholder{
+    width: 100%;
+    border-radius: 8px;
+    height: 20px;
+    background: linear-gradient(90deg, rgb(184, 184, 184), rgb(218, 218, 218), rgb(184, 184, 184)) ;
+    background-size: 200% 100%;
+    animation: phantom-loading 1.5s infinite ease-in-out;
+    display: none;
 }
 
 thead{
@@ -802,4 +812,13 @@ tr:hover input[type="checkbox"]{
 .denny-box img{
     width: 10rem;
     filter: grayscale(100%);
+}
+
+@keyframes phantom-loading{
+    0%{
+     background-position: 200% 0;
+    }
+    100%{
+      background-position: -200% 0;
+    }
 }

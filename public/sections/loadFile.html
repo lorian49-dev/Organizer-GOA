@@ -65,7 +65,6 @@
     const inputSearchGlass = document.getElementById('search-glass')
     const searchGlassResults = document.querySelector('.field-results-glasses')
 
-
     const form_container = document.querySelector('form');
     const pdf_container = document.querySelector('.pdf-container-tbody')
     const btnNext = document.querySelector('.btnNext')
@@ -130,11 +129,22 @@
     })
 
     async function tableInformation() {
+            pdf_container.innerHTML = `<tr>
+                <td><span class="phantom-placeholder"></span></td>
+                <td><span class="phantom-placeholder"></span></td>
+                <td><span class="phantom-placeholder"></span></td>
+                <td><span class="phantom-placeholder"></span></td>
+                <td><span class="phantom-placeholder"></span></td>
+            </tr>`;
+    const phantomLoading = document.querySelectorAll('.phantom-placeholder')
+    phantomLoading.forEach((loadingCapsule)=>{
+            loadingCapsule.style.display = 'inline-block'
+        })
+    try{
         const res = await fetch(`/invoices-table-get?page=${currentPage}`);
         const reqData = await res.json();
         const response = reqData.data
         globalTotalRows = reqData.totalRows
-        
         // Cambio de color de flechas
 
         if(currentPage === 1){
@@ -159,7 +169,7 @@
             emptyMessage.innerHTML = '<p>Sin registros, tabla de Facturas vacia</p>'
         }
 
-        console.log(currentPage)
+        pdf_container.innerHTML = ' '
 
         for(const file of response){
         const newRow = document.createElement('tr')
@@ -206,7 +216,11 @@
 
         }
 
-
+    }finally{
+             phantomLoading.forEach((loadingCapsule)=>{
+            loadingCapsule.style.display = 'none'
+        })
+    }
     }
 
         if(inputSearchGlass){
