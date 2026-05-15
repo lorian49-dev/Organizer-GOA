@@ -27,6 +27,20 @@
     </form>
 </nav>
     <main>
+
+         <div class="drag-and-drop">
+            <p>Arrastra o escoge tus Archivos</p>
+            <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+         </div>
+         <p id="file-info"></p>
+
+         <!--<p>Carga un manifiesto (Maximo 15 Documentos)</p>
+
+    <form action="/manifest-table-post" method="post" enctype="multipart/form-data" class="upload-file-form">
+        <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf" multiple>
+        <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
+    </form>-->
+
     <h1>Administracion de Manifiestos</h1>
         
 <div class="pdf-container">
@@ -52,183 +66,7 @@
      </table>
      <span class="empty-message"></span>
     </div>
-    <p>Cargar una Factura (Maximo 15 Documentos)</p>
-
-    <form action="/manifest-table-post" method="post" enctype="multipart/form-data" class="upload-file-form">
-        <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf" multiple>
-        <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
-
-    </form>
     </main>
-<script>
-
-    const inputSearchGlass = document.getElementById('search-glass')
-    const searchGlassResults = document.querySelector('.field-results-glasses')
-
-
-    const form_container = document.querySelector('form');
-    const pdf_container = document.querySelector('.pdf-container-tbody')
-    const btnNext = document.querySelector('.btnNext')
-    const btnBack = document.querySelector('.btnBack')
-    let pageInfo = document.querySelector('.page-info')
-    const goHome = () =>{
-        window.location.href = '/'
-    }
-
-    let currentPage = 1;
-    let globalTotalRows = 0
-
-    const emptyMessage = document.querySelector('.empty-message')
-
-    document.addEventListener('DOMContentLoaded', ()=>{
-      setTimeout(()=>{
-       document.body.style.opacity = '1'
-       document.body.style.pointerEvents = 'auto'
-      }, 1000)
-    })
-
-          async function autoCompleteGlass(input, field) {
-            field.innerHTML = ''
-            field.style.display = 'none';
-            if(input.classList.contains('boxShadowOn')){
-            input.classList.remove('boxShadowOn');
-            }
-            const valueSearch = input.value;
-
-            if(valueSearch.length < 2) return;
-
-            const res = await fetch(`/search-glass-results?glass=${valueSearch}`);
-            const data = await res.json();
-
-            if(data.length === 0) return field.style.display = 'none'
-            
-            data.forEach(item =>{
-                const result = document.createElement('div');
-                result.classList.add('item-glass-result');
-                result.textContent = item.code;
-
-                result.addEventListener('click', ()=>{
-                    window.location.href = `/search-mid?glass_model=${item.code}`;
-                })
-
-                field.appendChild(result);
-            })
-
-            field.style.display = 'block'
-            input.classList.add('boxShadowOn')
-        }
-
-      const debounce = (fn, delay) =>{
-       let timeout;
-       return function(...args){
-        clearTimeout(timeout);
-        timeout = setTimeout(()=>{
-         fn.apply(this, args);
-        }, delay)
-       }
-    }
-
-    async function tableInformation() {
-        const res = await fetch(`/manifest-table-get?page=${currentPage}`);
-        const reqData = await res.json();
-        const response = reqData.data
-        globalTotalRows = reqData.totalRows
-        
-        // Cambio de color de flechas
-
-        if(currentPage === 1){
-            btnBack.style.color = '#adadad'
-            btnBack.style.pointerEvents = 'none'
-        } else{
-            btnBack.style.color = '#383838'
-            btnBack.style.pointerEvents = 'auto'
-        }
-
-        if(currentPage === globalTotalRows || globalTotalRows === 0){
-            btnNext.style.color = '#adadad'
-            btnNext.style.pointerEvents = 'none'
-        } else{
-            btnNext.style.color = '#383838'
-            btnNext.style.pointerEvents = 'auto'
-        }
-
-        
-        //Mensaje para cuando no haya ningun registro
-
-        if(globalTotalRows === 0){
-            emptyMessage.innerHTML = '<p>Sin registros, tabla de manifiestos vacia</p>'
-        }
-
-        console.log(currentPage)
-
-        for(const file of response){
-        const newRow = document.createElement('tr')
-        const tableName = document.createElement('td');
-        tableName.textContent = file.name
-        const tableSize = document.createElement('td');
-        tableSize.textContent = parseInt((file.weight) / 1024) + ' Kb'
-        const tableDate = document.createElement('td');
-        tableDate.textContent = new Date(file.date).toLocaleString()
-        const eyeUrl = document.createElement('td')
-        eyeUrl.innerHTML = `<a href="${file.url}" target="_blank"><i class="fa-solid fa-eye"></i></a>`;
-        // Boton de borrado de Registro
-        const btnDelete = document.createElement('td')
-        btnDelete.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>'
-
-        btnDelete.addEventListener('click', async()=>{
-         const eliminar = confirm('Estas seguro de que quieres eliminar este registro?')
-
-         if(!eliminar) return;
-
-         try{
-          const responseDelete = await fetch(`/action-delete-manifest/${file.id_manifest}`, {method:'DELETE'})
-
-          if(responseDelete.ok){
-            btnDelete.closest('tr').remove()
-          }
-
-         } catch(error){
-          console.error('Error de red de:', error)
-         }
-
-        })
-        
-        newRow.appendChild(tableName)    
-        newRow.appendChild(tableSize)    
-        newRow.appendChild(tableDate)    
-        newRow.appendChild(eyeUrl)
-        newRow.appendChild(btnDelete) 
-        
-        btnDelete.classList.add('olvidona')
-
-        pdf_container.appendChild(newRow)
-        pageInfo.innerHTML = `<p>1-${response.length} de ${globalTotalRows}</p>`
-
-        }
-
-
-    }
-
-        if(inputSearchGlass){
-            inputSearchGlass.addEventListener('input', debounce(()=>{
-            autoCompleteGlass(inputSearchGlass, searchGlassResults)
-            }, 300));
-        }
-
-    tableInformation()
-
-    const clickNext = () =>{
-     pdf_container.innerHTML = ' '
-     currentPage === globalTotalRows ? currentPage : currentPage++ ;
-     tableInformation()
-    }
-
-    const clickBack = () =>{
-     pdf_container.innerHTML = ' '
-     currentPage === 1 ? currentPage : currentPage-- ;
-     tableInformation()
-    }
-
-</script>
+<script src="/events/loadManifestInvoices.js"></script>
 </body>
 </html>

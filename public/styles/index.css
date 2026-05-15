@@ -6,7 +6,10 @@
       0 4px 4px hsl(0deg 0% 0% / 0.075),
       0 8px 8px hsl(0deg 0% 0% / 0.075),
       0 16px 16px hsl(0deg 0% 0% / 0.075);
-
+    --background-shadow-button: inset 3px 3px 15px #3a3a3ab6,
+                inset -4px -4px 15px #fff,
+                 3px 3px 15px #3a3a3ab6,
+                 -4px -4px 10px #fff;
 }
 
 *{
@@ -157,10 +160,7 @@ header>img{
     --y: -5px;
     transform: scale(var(--escala)) translateY(var(--y));
     background-color: rgba(128, 128, 128, 0.233);
-    box-shadow: inset 3px 3px 15px #3a3a3ab6,
-                inset -4px -4px 15px #fff,
-                 3px 3px 15px #3a3a3ab6,
-                 -4px -4px 10px #fff;
+    box-shadow: var(--background-shadow-button);
     color: #16183881;
 }
 
@@ -281,7 +281,11 @@ h3{
     transform: translateY(-5px);
 }
 
-/*Estilos de la Pagina de carga de facturas*/
+/*
+-----------------------------------------
+/        Facturas y Manifiestos
+-----------------------------------------
+*/
 
 main{
     width: 70%;
@@ -407,6 +411,33 @@ a .bold{
 
 /*Personalizacion del contenido de la pagina*/
 
+/*
+-----------------------------------------
+/      Zona de arrastrar y pegar
+-----------------------------------------
+*/
+
+.drag-and-drop{
+    width: 25rem;
+    height: 10rem;
+    border-radius: 25px;
+    border: #111111 2px dashed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.drag-and-drop.active{
+    border-style: none;
+    background-color: #cccccc;
+    box-shadow: inset 5px 5px 15px #303030b6,
+                inset -5px -5px 10px #fff,
+                 5px 5px 10px #303030b6,
+                 -4px -4px 10px #fff;
+}
+/*
 .upload-file-form{
     border: 5px #16183850 dashed;
     padding: 5rem;
@@ -431,6 +462,8 @@ padding: 1rem;
 .upload-file-form button:hover{
     transform: translateY(-5px);
 }
+
+*/
 
 .pdf-container{ /*Este es el estilo de la capa trasera para la tabla*/
     margin: 0 auto;
