@@ -16,6 +16,9 @@ const btnNext = document.querySelector('.btnNext');
 const btnBack = document.querySelector('.btnBack');
 const pageInfo = document.querySelector('.page-info');
 const emptyMessage = document.querySelector('.empty-message');
+const dropZone = document.querySelector('.drag-and-drop');
+const dropZoneInput = document.getElementById('btn-file');
+const dropZoneFileInfo = document.getElementById('file-info')
 
 let currentPage = 1;
 let globalTotalRows = 0;
@@ -84,6 +87,38 @@ if (inputSearchGlass) {
         autoCompleteGlass(inputSearchGlass, searchGlassResults);
     }, 300));
 }
+
+// Zona de Arrastrar y soltar .pdf
+
+const eventDropZone = ['dragenter', 'dragover', 'dragleave', 'drop'];
+
+const blockFunctionActive = (event) =>{
+ event.preventDefault();
+ dropZone.classList.add('active')
+
+}
+
+const blockFunctionNoActive = (event) =>{
+ event.preventDefault();
+ dropZone.classList.remove('active')
+}
+
+const activeDropZone = [eventDropZone[0], eventDropZone[1]]
+
+const removeDropZone = [eventDropZone[2], eventDropZone[3]]
+
+activeDropZone.forEach(event =>{
+    dropZone.addEventListener(event, blockFunctionActive);
+})
+removeDropZone.forEach(event =>{
+    dropZone.addEventListener(event, blockFunctionNoActive);
+})
+
+dropZone.addEventListener('drop', (event)=>{
+    const filesPdf = event.dataTransfer.files
+    const filePdf = filesPdf[0]
+    dropZoneFileInfo.textContent = filePdf.name
+})
 
 // Render de la tabla
 async function tableInformation() {
