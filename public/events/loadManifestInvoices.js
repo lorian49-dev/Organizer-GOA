@@ -1,7 +1,8 @@
 const currentPath = window.location.pathname;
-const isManifestPage = currentPath.includes('manifiestos');
+const isManifestPage = currentPath.includes('loadManiefst');
 
 const PAGE_CONFIG = {
+    getPostPath: isManifestPage? '/manifest-table-post':'/invoice-table-post',
     getEndpoint: isManifestPage ? '/manifest-table-get' : '/invoices-table-get',
     deleteEndpoint: isManifestPage ? '/action-delete-manifest' : '/action-delete',
     idField: isManifestPage ? 'id_manifest' : 'id_invoice',
@@ -24,6 +25,20 @@ let currentPage = 1;
 let globalTotalRows = 0;
 
 // Utilidades
+
+// la siguiente funcion se encargara de prevenir el evento por defecto del navegador al momento de usar un drop zone para documentos.
+
+const preventEventDropZoneActive = (event) =>{
+ event.preventDefault();
+ dropZone.classList.add('active')
+}
+
+const preventEventDropZoneOff = (event) =>{
+    event.preventDefault();
+    dropZone.classList.remove('active')
+}
+
+// un debounce es lo que cree para tener por cada evento de tecleo en un input, un tiempo de respuesta establecido para no saturar al servidor de solicitudes.
 const debounce = (fn, delay) => {
     let timeout;
     return function(...args) {
@@ -90,35 +105,47 @@ if (inputSearchGlass) {
 
 // Zona de Arrastrar y soltar .pdf
 
-const eventDropZone = ['dragenter', 'dragover', 'dragleave', 'drop'];
+const dropZoneEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
 
-const blockFunctionActive = (event) =>{
- event.preventDefault();
- dropZone.classList.add('active')
+const activeDropzone = [dropZoneEvents[0], dropZoneEvents[1]];
+const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
 
-}
-
-const blockFunctionNoActive = (event) =>{
- event.preventDefault();
- dropZone.classList.remove('active')
-}
-
-const activeDropZone = [eventDropZone[0], eventDropZone[1]]
-
-const removeDropZone = [eventDropZone[2], eventDropZone[3]]
-
-activeDropZone.forEach(event =>{
-    dropZone.addEventListener(event, blockFunctionActive);
-})
-removeDropZone.forEach(event =>{
-    dropZone.addEventListener(event, blockFunctionNoActive);
+activeDropzone.forEach(eventZone =>{
+    dropZone.addEventListener(eventZone, preventEventDropZoneActive);
 })
 
-dropZone.addEventListener('drop', (event)=>{
-    const filesPdf = event.dataTransfer.files
-    const filePdf = filesPdf[0]
-    dropZoneFileInfo.textContent = filePdf.name
+offDropZone.forEach(eventZone =>{
+ dropZone.addEventListener(eventZone, preventEventDropZoneOff);
 })
+
+dropZone.addEventListener('drop', async(event)=>{
+    const filePdf = event.dataTransfer.files;
+    
+    if(filePdf.length > 0){
+        try{
+        const formToSend = new FormData();
+        for(let i = 0; i < filePdf.length;i++){
+         formToSend.append('filePDF[]', filePdf[i])
+        }
+
+        const data = await fetch(`${PAGE_CONFIG.getPostPath}`,{
+            method: 'POST',
+            body: formToSend
+        })
+
+        if(data.ok){
+            console.log('archivo subido!')
+        }else{
+            return console.log('error al subir archivos :c')
+        }
+      
+        }catch(error){
+    console.log(`Hubo un problema con la conexion:`, error)
+        }
+    }
+    
+})
+
 
 // Render de la tabla
 async function tableInformation() {

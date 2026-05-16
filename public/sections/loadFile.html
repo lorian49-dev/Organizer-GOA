@@ -27,13 +27,11 @@
     </form>
 </nav>
     <main>
-          <p>Cargar una Factura (Maximo 15 Documentos)</p>
-
-    <form action="/invoice-table-post" method="post" enctype="multipart/form-data" class="upload-file-form">
-        <input type="file" name="pdf" id="btn-file"  style="margin-bottom: 25px" accept=".pdf" multiple>
-        <button type="submit" class="btn-upload">Cargar<i class="fa-solid fa-upload"></i></button>
-
-    </form>
+        <div class="drag-and-drop">
+            <p>Arrastra o escoge tus Archivos</p>
+            <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+         </div>
+         <p id="file-info"></p>
     <h1>Administracion de facturas</h1>
         
 <div class="pdf-container">

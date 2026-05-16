@@ -418,15 +418,15 @@ a .bold{
 */
 
 .drag-and-drop{
-    width: 25rem;
-    height: 10rem;
+    width: 35rem;
+    height: 20rem;
     border-radius: 25px;
     border: #111111 2px dashed;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: all .5s ease;
+    transition: all .3s ease;
 }
 
 .drag-and-drop.active{

@@ -10,7 +10,7 @@ require('dotenv').config({path: path.join(__dirname, 'config.env')})
 const multer = require('multer');
 const express = require('express');
 const {createClient} = require('@supabase/supabase-js'); // se crea el cliente proveniente de la libreria de supabase
-const {S3Client, PutObjectCommand} = require('@aws-sdk/client-s3');
+const {S3Client, PutObjectCommand, DeleteObjectCommand} = require('@aws-sdk/client-s3');
 const session = require('express-session');
 const r2Session = new S3Client({
  region: 'auto',
@@ -359,7 +359,7 @@ app.get('/invoices-table-get', async(req, res)=>{
 
 app.post('/invoice-table-post',async(req, res)=>{
   
-  myStorage.array('pdf', 15)(req, res, async(err)=>{
+  myStorage.array('filePDF[]', 15)(req, res, async(err)=>{
 
     if(err){
      return res.status(400).json({message:'Error, solo se permite la carga de maximo 15 archivos'})
@@ -404,7 +404,7 @@ return {
 
 const resultados = await Promise.all(promesaUpload);
 await access.from('invoices').insert(resultados);
-res.redirect('/sections/loadFile.html')
+res.json({message:'Archivos subidos exitosamente'})
     } catch(error){
       console.error(error);
       res.status(500).json({error: 'Error de subida de archivo'})
@@ -425,18 +425,31 @@ app.delete('/action-delete/:id', async(req, res)=>{
   const id = req.params.id;
   const {data: getFileName, error: getFileNameError} = await access.from('invoices').select('name').eq('id_invoice', id).single()
   const fileName = getFileName.name
-if(getFileNameError){
+
+  try{
+    if(getFileNameError){
     console.error(getFileNameError)
     return res.status(400).json({error:getFileNameError.message})
   }
   const {data, error} = await access.from('invoices').delete().eq('id_invoice', id);
-  const {data: removeFile, error: removeFileError} = await access.storage.from('invoices').remove([fileName])
+  
+  const deleteCommand = {
+    Bucket: 'invoices',
+    Key: fileName
+  }
+
   if(error){
     console.error(error)
     return res.status(400).json({error:error.message})
   }
-   
+
+  const deleteFile = await r2Session.send(new DeleteObjectCommand(deleteCommand))
   res.status(200).send('registro borrado con exito')
+
+  }catch(error){
+  console.log(error);
+  res.status(500).send('error al intentar borrar el archivo')
+  }
 
 })
 
@@ -485,7 +498,7 @@ app.get('/manifest-table-get', async(req, res)=>{
 
 app.post('/manifest-table-post',async(req, res)=>{
   
-  myStorage.array('pdf', 15)(req, res, async(err)=>{
+  myStorage.array('filePDF[]', 15)(req, res, async(err)=>{
 
     if(err){
      return res.status(400).json({message:'Error, solo se permite la carga de maximo 15 archivos'})
@@ -523,7 +536,7 @@ return {
 
 const resultados = await Promise.all(promesaUpload);
 await access.from('manifest').insert(resultados);
-res.redirect('/sections/loadManiefst.html')
+res.json({message:'Archivos subidos exitosamente'})
     } catch(error){
       console.error(error);
       res.status(500).json({error: 'Error de subida de archivo'})
@@ -538,22 +551,33 @@ res.redirect('/sections/loadManiefst.html')
 // ------------------------------------------- //
 
 app.delete('/action-delete-manifest/:id', async(req, res)=>{
-
+  
   const id = req.params.id;
+  try{
   const {data: getFileName, error: getFileNameError} = await access.from('manifest').select('name').eq('id_manifest', id).single()
-  const fileName = getFileName.name
-if(getFileNameError){
+if(getFileNameError || !fileName){
     console.error(getFileNameError)
-    return res.status(400).json({error:getFileNameError.message})
+    throw error
   }
+  const fileName = getFileName.name
   const {data, error} = await access.from('manifest').delete().eq('id_manifest', id);
-  const {data: removeFile, error: removeFileError} = await access.storage.from('manifest').remove([fileName])
-  if(error){
+ if(error){
     console.error(error)
     return res.status(400).json({error:error.message})
   }
-   
+  const deleteCommand = {
+    Bucket: 'manifest',
+    Key: fileName
+  }
+
+  const deleteFile = await r2Session.send(new DeleteObjectCommand(deleteCommand))
+  console.log('archivo borrado con exito');
+
   res.status(200).send('registro borrado con exito')
+  }catch(deleteFileError){
+    console.log(deleteFileError)
+    res.status(500).json({message:'Error al momento de borrar el archivo de la base de datos:', error:deleteFileError})
+  }
 
 })
 
