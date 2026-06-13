@@ -27,14 +27,17 @@
     </form>
 </nav>
 <div class="main-glasses">
-    <div class="img-container">
+    <div class="img-container active">
             <button class="btn-info">Adicionar</button>
         <form class="glass-form" method="POST" action="/glasses">
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="brand" required><span class="glass-form-span">Marca</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="serial" required><span class="glass-form-span"># Serie</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="serial" required><span class="glass-form-span"># Codigo</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="reference" required><span class="glass-form-span"># Referencia</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="color" required><span class="glass-form-span">Color de montura</span></label>
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="order" required><span class="glass-form-span"># Orden</span></label>
             <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
-            <label class="selection-invoice">
+           <div class="box-selection-invoice-manifest">
+             <label class="selection-invoice">
                 <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
                 <input type="hidden" id="id-input-invoice" name="id_invoice">
                 <div class="invoice-result-field">
@@ -48,6 +51,7 @@
 
                 </div>
             </label>
+           </div>
             <button class="btn-submit-info" type="submit">Registrar</button>
         </form>
     </div>
@@ -168,9 +172,9 @@
         //                   Show Form
         //-------------------------------------------------//
 
-        btnInfoShow[0].addEventListener('click', ()=>{
+       /* btnInfoShow[0].addEventListener('click', ()=>{
          formContainer.classList.toggle('active')
- 
+ */
          if(!formState){
             formGlasses.style.display = 'flex';
             // manejo de envento al hacer click fuera del campo de resultados
@@ -195,9 +199,9 @@
             formState=false;
          }
 
-
+ /*
         })
-
+ */
         // searchGlass dropDown
 
         async function autoCompleteGlass(input, field) {

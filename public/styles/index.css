@@ -675,6 +675,11 @@ table a:hover{
     transition: all .5s ease;
 }
 
+.box-selection-invoice-manifest{
+    display: flex;
+    gap: 2rem;
+}
+
 .selection-invoice, .selection-manifest{
  margin-top: 2rem;
 }

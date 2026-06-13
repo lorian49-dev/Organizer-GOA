@@ -62,7 +62,7 @@ const isAdmin = (req, res, next) =>{
 const myStorage = multer({
   storage: multer.memoryStorage(),
   limits:{
-    fileSize: 50*1024*1024
+    fileSize: 100*1024*1024
   }
 })
 
@@ -225,13 +225,15 @@ app.get('/search-invoice', async(req, res)=>{
 // Subida de gafas a la BD
 
 app.post('/glasses', async(req, res)=>{
-  const {brand, serial, order, id_invoice, id_manifest} = req.body
+  const {brand, serial, reference, color, order, id_invoice, id_manifest} = req.body
     
   try{
   const {data, error} = await access.from('glasses').insert([
     {
       brand:brand, 
-      code: serial, 
+      code: serial,
+      reference: reference,
+      color:color,
       ship_order: order, 
       invoice_id: id_invoice, 
       manifest_id: id_manifest
@@ -555,23 +557,25 @@ app.delete('/action-delete-manifest/:id', async(req, res)=>{
   const id = req.params.id;
   try{
   const {data: getFileName, error: getFileNameError} = await access.from('manifest').select('name').eq('id_manifest', id).single()
+  const fileName = getFileName.name
 if(getFileNameError || !fileName){
     console.error(getFileNameError)
     throw error
   }
-  const fileName = getFileName.name
-  const {data, error} = await access.from('manifest').delete().eq('id_manifest', id);
- if(error){
-    console.error(error)
-    return res.status(400).json({error:error.message})
-  }
+
   const deleteCommand = {
     Bucket: 'manifest',
     Key: fileName
   }
 
-  const deleteFile = await r2Session.send(new DeleteObjectCommand(deleteCommand))
-  console.log('archivo borrado con exito');
+  const deleteFile = await r2Session.send(new DeleteObjectCommand(deleteCommand));
+  console.log('Archivo borrado con exito!');
+
+  const {data, error} = await access.from('manifest').delete().eq('id_manifest', id);
+ if(error){
+    console.error(error)
+    return res.status(400).json({error:error.message})
+  }
 
   res.status(200).send('registro borrado con exito')
   }catch(deleteFileError){
