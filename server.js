@@ -307,9 +307,20 @@ app.get('/search-glass-results', async(req, res)=>{
   const getData = req.query.glass;
   if(!getData) return res.status(500).send('Error al buscar coincidencias o no se encuentran.')
     try{
-  const {data, error} = await access.from('glasses').select('brand, code').ilike('code', `%${getData}%`).limit(10);
-  if(error) return
-  res.json(data)
+
+    const returnedResult =async (data) =>{
+  const {data: dataByCode, error: errorByCode} = await access.from('glasses').select('brand, code').ilike('code', `%${data}%`).limit(10);
+  if(errorByCode) throw errorByCode
+  if(dataByCode && dataByCode.length > 0) return dataByCode
+
+  const {data: dataByReference, error, errorByReference} = await access.from('glasses').select('brand','code').ilike('reference', `%${data}%`);
+
+  if(errorByReference) throw errorByReference
+  if(dataByReference && dataByReference.length > 0) return dataByReference
+       
+    } 
+
+  res.json(returnedResult(getData))
   }catch(error){
      console.error(error);
      res.status(500).send('Falla en el sistema y obtencion de datos')
@@ -592,6 +603,7 @@ if(getFileNameError || !fileName){
 app.listen(3000, ()=>{
   console.log('servidor escuchandose en http://localhost:3000');
 })
+
 
 
 
