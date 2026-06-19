@@ -30,6 +30,9 @@ const uploadParams = (bucket, key, body, contT) =>{
  }
 }
 
+const beHuman = {emociones: []}
+const movies = ['Scary Movie', 'Avatar:last Airvender', {name: 'Cinepolis'}]
+
 const pgSession = require('connect-pg-simple')(session);
 const {Pool} = require('pg');
 const dbPool = new Pool({
@@ -283,12 +286,23 @@ app.get('/search-mid', (req, res)=>{
 
 app.get('/search-glasses-table', async(req, res)=>{
   const searchData = req.query.glass_model;
-
+  if(!searchData) return res.status(500).send('ERROR AL INTENTAR CONECTAR CON LA BASE DE DASTO O NO HAY QUE BUSCAR EN LA CONSULTA')
   try{
-   const {data, error} = await access.from('glasses').select('brand, code, ship_order, invoice_id(url), manifest_id(url)').ilike('code', `%${searchData}%`).limit(50);
-   if(error) return
+   
+  const sendMatchGlasses = async(data) =>{
+    const {data: dataByCode, error: errorByCode} = await access.from('glasses').select('brand, code, reference, color, ship_order, invoice_id(url), manifest_id(url)').ilike('code', `%${data}%`);
 
-   res.json(data)
+    if(errorByCode) throw errorByCode;
+    if(dataByCode && dataByCode.length > 0) return dataByCode
+
+    const {data: dataByReference, error:errorByReference} = await access.from('glasses').select('brand, code, reference, color, ship_order, invoice_id(url), manifest_id(url)').ilike('reference', `%${data}%`);
+
+     if(errorByReference) throw errorByReference;
+    if(dataByReference && dataByReference.length > 0) return dataByReference
+
+  }
+
+   res.json(await sendMatchGlasses(searchData))
   }catch(error){
     console.error(error);
     res.status(500).json({message:'error de busqueda'})
@@ -308,19 +322,19 @@ app.get('/search-glass-results', async(req, res)=>{
   if(!getData) return res.status(500).send('Error al buscar coincidencias o no se encuentran.')
     try{
 
-    const returnedResult =async (data) =>{
+    const returnedResult = async(data) =>{
   const {data: dataByCode, error: errorByCode} = await access.from('glasses').select('brand, code').ilike('code', `%${data}%`).limit(10);
   if(errorByCode) throw errorByCode
   if(dataByCode && dataByCode.length > 0) return dataByCode
 
-  const {data: dataByReference, error, errorByReference} = await access.from('glasses').select('brand','code').ilike('reference', `%${data}%`);
+  const {data: dataByReference, error: errorByReference} = await access.from('glasses').select('brand,reference').ilike('reference', `%${data}%`);
 
   if(errorByReference) throw errorByReference
   if(dataByReference && dataByReference.length > 0) return dataByReference
        
     } 
 
-  res.json(returnedResult(getData))
+  res.json(await returnedResult(getData))
   }catch(error){
      console.error(error);
      res.status(500).send('Falla en el sistema y obtencion de datos')

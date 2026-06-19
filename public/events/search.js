@@ -37,10 +37,10 @@ const goHome = () =>{
             data.forEach(item =>{
                 const result = document.createElement('div');
                 result.classList.add('item-glass-result');
-                result.textContent = item.code;
+                result.textContent = item.code || item.reference
 
                 result.addEventListener('click', ()=>{
-                    window.location.href = `/search-mid?glass_model=${item.code}`;
+                    window.location.href = `/search-mid?glass_model=${result.textContent}`;
                 })
 
                 field.appendChild(result);
@@ -68,6 +68,8 @@ const showInfoGlasses = async() => {
         newTr.innerHTML = ` <td><input type='checkbox'></td>
                             <td>${item.brand}</td>
                             <td>${item.code}</td>
+                            <td>${item.reference}</td>
+                            <td>${item.color}</td>
                             <td>${item.ship_order}</td>
                             <td><a href='${item.invoice_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>
                             <td><a href='${item.manifest_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>`;

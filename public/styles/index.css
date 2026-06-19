@@ -785,6 +785,7 @@ table a:hover{
     overflow: hidden;
     background-color: #fff;
     box-shadow: var(--main-shadow);
+    text-align: left;
 }
 
 .table-search-results input[type="checkbox"]{
