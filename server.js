@@ -30,9 +30,6 @@ const uploadParams = (bucket, key, body, contT) =>{
  }
 }
 
-const beHuman = {emociones: []}
-const movies = ['Scary Movie', 'Avatar:last Airvender', {name: 'Cinepolis'}]
-
 const pgSession = require('connect-pg-simple')(session);
 const {Pool} = require('pg');
 const dbPool = new Pool({
@@ -50,12 +47,12 @@ const isAuthenticated = (req, res, next)=>{
     return next();
   }else{
     res.redirect('/sections/login.html');
+    
   }
 }
 
 const isAdmin = (req, res, next) =>{
-  console.log(req.session.user.id)
- if(req.session.user.id == 1){
+ if(req.session.user.id || req.session.user.id == 1){
    return next();
  }else{
   res.redirect('/denny-access')
@@ -92,17 +89,20 @@ app.use(session({
   }
 }));  
 
+app.use(isAuthenticated)
+
 app.use('/sections', (req, res, next) => {
-  // Si intenta ir al login, déjalo pasar (si no, nadie podría loguearse)
+  // Paso al login, esto permite que sea la unica pagina a la que ingrese si no esta autenticado
   if (req.path === '/login.html') {
     return next();
   }
   // Para todo lo demás, pedimos identificacion
   isAuthenticated(req, res, next);
 });
-app.get('/', isAuthenticated, (req, res)=>{
-  res.redirect('/index.html');
-})
+
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
 app.use('/src', express.static(path.join(__dirname, '/src')))
@@ -185,8 +185,7 @@ app.get('/logout', (req, res)=>{
 //                  Gafas
 // ------------------------------------------- //
 
-app.get('/monturas', isAdmin,(req, res)=>{
- console.log('success log')
+app.get('/monturas',(req, res)=>{
  res.redirect('/sections/glasses.html')
 })
 
