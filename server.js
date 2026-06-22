@@ -42,12 +42,21 @@ const saltRounds = 10 // Nivel de seguridad (10 es el nivel mas alto)
 // instanciables
 const app = express();
 // Redireccion al login y seguridad
-const isAuthenticated = (req, res, next)=>{
+
+const isAuthenticated = (req, res, next) =>{
+if(req.path === '/sections/login.html'&&(req.session&&req.session.user)){
+   return res.redirect('/')
+  } 
+  
   if(req.session&&req.session.user){
-    return next();
-  }else{
-    res.redirect('/sections/login.html');
+    return next()
+  } 
+
+  if(req.path !== '/sections/login.html'){
+     return res.redirect('/sections/login.html')
   }
+
+  next()
 }
 
 const isAdmin = (req, res, next) =>{
@@ -88,17 +97,7 @@ app.use(session({
   }
 }));  
 
-app.use('/sections', (req, res, next) => {
-  // Paso al login, esto permite que sea la unica pagina a la que ingrese si no esta autenticado
-  if (req.path === '/login.html') {
-    return next();
-  }
-  // Para todo lo demás, pedimos identificacion
-  isAuthenticated(req, res, next);
-});
-
-
-
+// Rutas estaticas
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
@@ -106,8 +105,6 @@ app.use('/src', express.static(path.join(__dirname, '/src')))
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
 app.use(express.json())
 app.set('view engine', 'ejs') 
-
-// -rutas-
 
 //-------------------------------------------------//
 //                   COOKIES
@@ -119,20 +116,6 @@ app.get('/aceptar-cookie', (req, res)=>{
   httpOnly:false
  })
  res.status(200).send('cookie almacenada con exito')
-})
-
-//-------------------------------------------------//
-//              manejo de la app
-//-------------------------------------------------//
-
-//-------------------------------------------------//
-//              Redirecciones por manejos
-//-------------------------------------------------//
-
-app.get('/denny-access', (req, res)=>{
- res.render('dennyAcces', {
-  userName: req.session.user.username
- })
 })
 
 //-------------------------------------------------//
@@ -176,6 +159,30 @@ app.get('/logout', (req, res)=>{
     res.redirect('/sections/login.html')
 
   })
+})
+
+// -rutas-
+
+app.use(isAuthenticated)
+
+app.get('/',(req, res)=>{
+  res.sendFile(path.join(__dirname, '/public/sections/index.html'))
+})
+
+
+//-------------------------------------------------//
+//              manejo de la app
+//-------------------------------------------------//
+
+
+//-------------------------------------------------//
+//              Redirecciones por manejos
+//-------------------------------------------------//
+
+app.get('/denny-access', (req, res)=>{
+ res.render('dennyAcces', {
+  userName: req.session.user.username
+ })
 })
 
 // ------------------------------------------- //
