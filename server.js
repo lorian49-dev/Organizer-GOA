@@ -47,7 +47,6 @@ const isAuthenticated = (req, res, next)=>{
     return next();
   }else{
     res.redirect('/sections/login.html');
-    
   }
 }
 
@@ -88,8 +87,6 @@ app.use(session({
     secure: false
   }
 }));  
-
-app.use(isAuthenticated)
 
 app.use('/sections', (req, res, next) => {
   // Paso al login, esto permite que sea la unica pagina a la que ingrese si no esta autenticado
