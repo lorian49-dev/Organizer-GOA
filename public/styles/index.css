@@ -287,13 +287,23 @@ h3{
 -----------------------------------------
 */
 
+.container{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
 main{
-    width: 70%;
-    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+}
+
+main.load-manifest-and-invoice-container{
+    width: 100%;
+    overflow-y: auto;
 }
 
 h1{
@@ -312,19 +322,29 @@ p{
 }
 
 nav{
+    max-width: 70px;
+    height: 100vh;
     background-color: #262a82;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    border-bottom-left-radius: 25px;
+    border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 50px;
+    transition: all .5s ease;
+}
+
+nav:hover{
+    max-width: 250px;
 }
 
 .back-home{
     display: flex;
     align-items: center;
-    transition: all .5s ease
+    transition: all .5s ease;
+    margin-left: 2rem;
 }
 
 .back-home i{
@@ -341,7 +361,8 @@ nav{
 
 nav ul{
     display: flex;
-    width: 50%;
+    flex-direction: column  ;
+    width: 100%;
     justify-content: space-around;
     list-style: none;
     align-items: center;
@@ -418,8 +439,8 @@ a .bold{
 */
 
 .drag-and-drop{
-    width: 35rem;
-    height: 20rem;
+    width: 200px;
+    min-height: 200px;
     border-radius: 25px;
     border: #111111 2px dashed;
     display: flex;
