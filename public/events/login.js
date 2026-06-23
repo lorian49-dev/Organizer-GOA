@@ -13,6 +13,8 @@ const phrases = [
     'No hay nada completamente errado en el mundo, incluso un reloj parado puede estar en lo cierto dos veces al día.'
 ]
 
+const modalContainer = document.querySelector('.modal-container-login')
+
 document.addEventListener('DOMContentLoaded', ()=>{
   const phraseContainer = document.createElement('div');
   phraseContainer.classList.add('phrase-container')
@@ -31,6 +33,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   formLogin.addEventListener('submit', async(event)=>{
+    formLogin.style.pointerEvents = 'none';
+    modalContainer.classList.toggle('modal-on')
       event.preventDefault()
 
       const dataForm = new FormData(formLogin);
@@ -44,10 +48,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
       });
 
     const data = await res.json();
-    console.log(data)
     if(data.success){
       window.location.href = '/';
     }else{
+      formLogin.style.pointerEvents = 'auto';
+      modalContainer.classList.remove('modal-on');
         messageLogin.textContent = 'Usuario o clave invalidos';
     }
     

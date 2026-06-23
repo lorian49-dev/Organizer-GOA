@@ -81,10 +81,10 @@ async function autoCompleteGlass(input, field) {
         data.forEach(item => {
             const result = document.createElement('div');
             result.classList.add('item-glass-result');
-            result.textContent = item.code;
+            result.textContent = item.code || item.reference;
 
             result.addEventListener('click', () => {
-                window.location.href = `/search-mid?glass_model=${item.code}`;
+                window.location.href = `/search-mid?glass_model=${result.textContent}`;
             });
 
             field.appendChild(result);
