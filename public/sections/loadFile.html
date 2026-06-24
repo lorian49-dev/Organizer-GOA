@@ -14,25 +14,28 @@
             <i class="fa-solid fa-arrow-left"></i>
         </span>
         <ul>
-            <li><a href="/monturas">Cargar Monturas</a></li>
-            <li><a href="#"><span class="bold">Facturas</span></a></li>
-            <li><a href="/manifiestos">Manifiestos</a></li>
-        </ul>
-        <form action="/search-mid" class="form-search-glass" method="get">
-        <label class="label-for-search-input">
-            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de serie o referencia Ej: M27142/ZD7701..." autocomplete="off">
-            <div class="field-results-glasses">
+        <li><i class="fa-solid fa-magnifying-glass"></i>  
+        <form action="/search-mid" class="form-search-glass form-documents" method="get">
+         <label class="label-for-search-input">
+          <input type="text" name="glass_model" id="search-glass" placeholder="Buscar de Documento..." autocomplete="off">
+          <div class="field-results-glasses">
             
-        </div>
-        </label>
-    </form>
-</nav>
-    <main class="load-manifest-and-invoice-container">
-        <div class="drag-and-drop">
+          </div>
+         </label>
+        </form>
+        </li>
+            <li><a href="/monturas"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></a></li>
+            <li><a href="#"><span class="bold"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></span></a></li>
+            <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
+            <li><i class="fa-solid fa-cloud-arrow-up"></i></li>
+        </ul>
+            <div class="drag-and-drop">
             <p>Arrastra o escoge tus Archivos</p>
             <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
          </div>
          <p id="file-info"></p>
+</nav>
+    <main class="load-manifest-and-invoice-container">
     <h1>Administracion de facturas</h1>
         
 <div class="pdf-container">

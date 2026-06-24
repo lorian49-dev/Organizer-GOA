@@ -85,11 +85,34 @@ header>img{
     border: none;
     box-shadow: var(--main-shadow);
     position: relative;
-    z-index: 5;
 }
 
 #search-glass:focus{
     outline: none;
+}
+
+/*Este es el mismo elemento de arriba pero se le aplicaran estilos distintos*/
+
+.form-documents{
+    position: absolute;
+    top: 0;
+    left: -20rem;
+    transition: transform .5s ease-in-out, opacity 1s ease-in;
+    opacity: 0;
+}
+
+.form-documents.active{
+    transform: translateX(23rem);
+    opacity: 1;
+}
+
+.form-documents #search-glass{
+    width: 3rem;
+    transition: all .5s ease-in-out;
+} 
+
+#search-glass.active{
+    width: 9rem;
 }
 
 .label-for-search-input{
@@ -108,7 +131,6 @@ header>img{
     box-shadow: var(--main-shadow);
     font-family: "Arsenal SC", sans-serif;
     color: #383838;
-    z-index: 1;
 }
 
 #search-glass.boxShadowOn{
@@ -322,7 +344,7 @@ p{
 }
 
 nav{
-    max-width: 70px;
+    width: 70px;
     height: 100vh;
     background-color: #262a82;
     padding-top: 1rem;
@@ -333,11 +355,12 @@ nav{
     flex-direction: column;
     justify-content: flex-start;
     gap: 50px;
-    transition: all .5s ease;
+    transition: all .4s ease;
+    color: #cfcfcf;
 }
 
-nav:hover{
-    max-width: 250px;
+nav.active{
+    width: 250px;
 }
 
 .back-home{
@@ -347,11 +370,18 @@ nav:hover{
     margin-left: 2rem;
 }
 
+nav ul li i{
+    cursor: pointer;
+    color: #cfcfcf;
+  font-family: "Poiret One", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 1rem;
+}
+
 .back-home i{
     color: #cfcfcf;
     font-size: 1.5rem;
     cursor: pointer;
-    
 }
 
 .back-home:hover{
@@ -365,64 +395,35 @@ nav ul{
     width: 100%;
     justify-content: space-around;
     list-style: none;
-    align-items: center;
+    align-items: flex-start;
+    margin-left: 1rem;
+    position: relative;
 }
 
 nav ul li{
     background-color: transparent;
     padding: 1rem;
-    border-radius: 25px;
     position: relative;
-    z-index: 10;
-    overflow: hidden;
 }
 
-nav ul li::after{
-    content: ' ';
+.nav-description{
+    margin-left: 1rem;
     position: absolute;
-    width: 170%;
-    height: 170%;
-    background-color: transparent;
-    animation: effect 3s linear infinite normal;
-    top: 5%;
-    left: -25%;
-    border-radius: 25px;
-    transition: all .5s ease;
-    z-index: -2;
+    top: 35%;
+    opacity: 0;
+    display: none;
 }
 
-nav ul li:hover::after{
-    animation: effect 3s linear 1s infinite normal;
-    background: conic-gradient(transparent 20deg, transparent 120deg,transparent 260deg, #ffff 360deg) ;
+nav.active .nav-description{
+   display: inline-block;
+   opacity: 1;
 }
-
-nav ul li::before{
-    content: ' ';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #262a82;
-    top: 0;
-    left: 0;
-    border-radius: 25px;
-    z-index: -1;
-    transform: scale(.95, .9);
-}
-/*Efecto animado para los botones de redireccion en la barra de navegacion*/
-@keyframes effect{
-    0%{
-        transform: rotate(0deg);
-    } 100%{
-        transform: rotate(360deg);
-    }
-}
-
 
 nav>ul a{
  color: #cfcfcf;
   font-family: "Poiret One", sans-serif;
   font-optical-sizing: auto;
-  font-size: .8rem;
+  font-size: 1rem;
 }
 
 a .bold{
@@ -439,8 +440,8 @@ a .bold{
 */
 
 .drag-and-drop{
-    width: 200px;
-    min-height: 200px;
+    width: 10rem;
+    min-height: 10rem;
     border-radius: 25px;
     border: #111111 2px dashed;
     display: flex;
@@ -448,6 +449,7 @@ a .bold{
     align-items: center;
     cursor: pointer;
     transition: all .3s ease;
+    margin: 2rem;
 }
 
 .drag-and-drop.active{

@@ -20,6 +20,10 @@ const emptyMessage = document.querySelector('.empty-message');
 const dropZone = document.querySelector('.drag-and-drop');
 const dropZoneInput = document.getElementById('btn-file');
 const dropZoneFileInfo = document.getElementById('file-info')
+// navBar Constantes
+const magnifier = document.querySelector('.fa-magnifying-glass')
+const navEgation = document.querySelector('nav')
+const formManifestAndInvoice = document.querySelector('.form-documents');
 
 let currentPage = 1;
 let globalTotalRows = 0;
@@ -48,6 +52,8 @@ const debounce = (fn, delay) => {
         }, delay);
     };
 };
+
+const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const goHome = () => {
     window.location.href = '/';
@@ -269,3 +275,28 @@ const clickBack = () => {
         tableInformation();
     }
 };
+
+// Eventos en la NavBar 
+
+if(magnifier){
+    magnifier.addEventListener('click', async()=>{
+     const navIsActive = navEgation.classList.contains('active')
+ 
+     if(!navIsActive){
+        navEgation.classList.add('active');
+        formManifestAndInvoice.classList.add('active')
+      setTimeout(()=>{
+      inputSearchGlass.classList.add('active')
+      }, 1000)
+     }else{
+        inputSearchGlass.classList.remove('active')
+        setTimeout(()=>{
+        formManifestAndInvoice.classList.remove('active')
+        }, 500)
+        await breakPoint(500)
+        navEgation.classList.remove('active');
+
+     }
+     
+    })
+}
