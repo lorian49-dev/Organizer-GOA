@@ -24,11 +24,32 @@ const dropZoneFileInfo = document.getElementById('file-info')
 const magnifier = document.querySelector('.fa-magnifying-glass')
 const navEgation = document.querySelector('nav')
 const formManifestAndInvoice = document.querySelector('.form-documents');
+// Zona de Arrastrar y soltar .pdf
+const dropZoneEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
+const activeDropzone = [dropZoneEvents[0], dropZoneEvents[1]];
+const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
 
 let currentPage = 1;
 let globalTotalRows = 0;
 
 // Utilidades
+
+const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+// un debounce es lo que cree para tener por cada evento de tecleo en un input, un tiempo de respuesta establecido para no saturar al servidor de solicitudes.
+const debounce = (fn, delay) => {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            fn.apply(this, args);
+        }, delay);
+    };
+};
+
+const goHome = () => {
+    window.location.href = '/';
+};
+
 
 // la siguiente funcion se encargara de prevenir el evento por defecto del navegador al momento de usar un drop zone para documentos.
 
@@ -42,22 +63,24 @@ const preventEventDropZoneOff = (event) =>{
     dropZone.classList.remove('active')
 }
 
-// un debounce es lo que cree para tener por cada evento de tecleo en un input, un tiempo de respuesta establecido para no saturar al servidor de solicitudes.
-const debounce = (fn, delay) => {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            fn.apply(this, args);
-        }, delay);
-    };
-};
+// constante Para Abrir la barra de navegacion
 
-const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+ const openNavBar = async(a, b) =>{
+   
+    if(!a){
+        navEgation.classList.add('active');
+        formManifestAndInvoice.classList.add('active')
+        setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
+    }else{
+        inputSearchGlass.classList.remove('active');
+        setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
+        await b(500);
+        if(dropZone.classList.contains('on')) dropZone.classList.remove('on');
+        navEgation.classList.remove('active')
 
-const goHome = () => {
-    window.location.href = '/';
-};
+    }
+   
+ }
 
 // Transición de carga de página
 document.addEventListener('DOMContentLoaded', () => {
@@ -109,20 +132,46 @@ if (inputSearchGlass) {
     }, 300));
 }
 
+// Eventos en la NavBar 
+
+if(magnifier){
+    magnifier.addEventListener('click', async()=>{
+     const navIsActive = navEgation.classList.contains('active')
+     openNavBar(navIsActive, breakPoint)
+    })
+}
+
 // Zona de Arrastrar y soltar .pdf
-
-const dropZoneEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
-
-const activeDropzone = [dropZoneEvents[0], dropZoneEvents[1]];
-const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
-
 activeDropzone.forEach(eventZone =>{
     dropZone.addEventListener(eventZone, preventEventDropZoneActive);
+// Eventos para Arrastrar el documento en toda la pagina
+      document.addEventListener(eventZone, ()=>{
+     const navIsActiveForDrag = navEgation.classList.contains('active')
+     if(!navIsActiveForDrag){
+       navEgation.classList.add('active')
+       dropZone.classList.add('on')
+       formManifestAndInvoice.classList.add('active')
+       setTimeout(()=>{
+      inputSearchGlass.classList.add('active')
+      }, 1000)
+     }else{
+       dropZone.classList.add('on')
+     }
+      })
 })
 
 offDropZone.forEach(eventZone =>{
  dropZone.addEventListener(eventZone, preventEventDropZoneOff);
 })
+
+document.addEventListener('dragover', (event)=>{event.preventDefault()})
+
+document.addEventListener('drop', (event)=>{
+    event.preventDefault()
+  if(!dropZone.contains(event.target)){
+    dropZone.classList.remove('on')
+  }
+});
 
 dropZone.addEventListener('drop', async(event)=>{
     const filePdf = event.dataTransfer.files;
@@ -134,7 +183,7 @@ dropZone.addEventListener('drop', async(event)=>{
          formToSend.append('filePDF[]', filePdf[i])
         }
 
-        const data = await fetch(`${PAGE_CONFIG.getPostPath}`,{
+      /*  const data = await fetch(`${PAGE_CONFIG.getPostPath}`,{
             method: 'POST',
             body: formToSend
         })
@@ -143,7 +192,31 @@ dropZone.addEventListener('drop', async(event)=>{
             console.log('archivo subido!')
         }else{
             return console.log('error al subir archivos :c')
-        }
+        } */
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', (event)=>{
+              if(event.lengthComputable){
+                const porcentaje = Math.round((event.loaded / event.total)*100);
+                console.log(porcentaje)
+              }
+            })
+
+            xhr.addEventListener('load', ()=>{
+                if(xhr.status >= 200 && xhr.status < 300){
+                    console.log('Archivo Subidos con exito')
+                } else{
+                    console.log('Error en la subida :c')
+                }
+            })
+
+            xhr.addEventListener('error', ()=>{
+                console.log('Problema con la conexion, lo lamentamos :c')
+            })
+
+            xhr.open('POST', PAGE_CONFIG.getPostPath);
+            xhr.send(formToSend)
       
         }catch(error){
     console.log(`Hubo un problema con la conexion:`, error)
@@ -276,27 +349,3 @@ const clickBack = () => {
     }
 };
 
-// Eventos en la NavBar 
-
-if(magnifier){
-    magnifier.addEventListener('click', async()=>{
-     const navIsActive = navEgation.classList.contains('active')
- 
-     if(!navIsActive){
-        navEgation.classList.add('active');
-        formManifestAndInvoice.classList.add('active')
-      setTimeout(()=>{
-      inputSearchGlass.classList.add('active')
-      }, 1000)
-     }else{
-        inputSearchGlass.classList.remove('active')
-        setTimeout(()=>{
-        formManifestAndInvoice.classList.remove('active')
-        }, 500)
-        await breakPoint(500)
-        navEgation.classList.remove('active');
-
-     }
-     
-    })
-}

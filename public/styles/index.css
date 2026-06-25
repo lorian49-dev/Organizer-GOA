@@ -367,7 +367,7 @@ nav.active{
     display: flex;
     align-items: center;
     transition: all .5s ease;
-    margin-left: 2rem;
+    margin-left: 20px;
 }
 
 nav ul li i{
@@ -396,7 +396,7 @@ nav ul{
     justify-content: space-around;
     list-style: none;
     align-items: flex-start;
-    margin-left: 1rem;
+    margin-left: 15px;
     position: relative;
 }
 
@@ -412,23 +412,33 @@ nav ul li{
     top: 35%;
     opacity: 0;
     display: none;
+    width: 100px;
 }
 
 nav.active .nav-description{
    display: inline-block;
    opacity: 1;
+  font-family: "Poiret One", sans-serif;
 }
 
 nav>ul a{
  color: #cfcfcf;
-  font-family: "Poiret One", sans-serif;
   font-optical-sizing: auto;
   font-size: 1rem;
 }
 
+.list-navegation-ul li:hover i{
+    transition: .5s;
+    color: #fff;
+}
+
 a .bold{
     font-weight: bold;
-    color: #fff;
+    color: #ecc900;
+}
+
+.bold i{
+    color: #ecc900;
 }
 
 /*Personalizacion del contenido de la pagina*/
@@ -443,22 +453,34 @@ a .bold{
     width: 10rem;
     min-height: 10rem;
     border-radius: 25px;
-    border: #111111 2px dashed;
-    display: flex;
+    border: #e7e7e7 1px dashed;
+    display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: all .3s ease;
     margin: 2rem;
+    gap:.5rem;
+}
+
+.drag-and-drop.on{
+    display: flex;
+}
+
+.drag-and-drop p{
+    text-align: center;
+    width: 70%;
+}
+
+.drag-and-drop i{
+    font-size: 3rem;
 }
 
 .drag-and-drop.active{
     border-style: none;
     background-color: #cccccc;
-    box-shadow: inset 5px 5px 15px #303030b6,
-                inset -5px -5px 10px #fff,
-                 5px 5px 10px #303030b6,
-                 -4px -4px 10px #fff;
+    color: #000b30;
 }
 /*
 .upload-file-form{

@@ -13,7 +13,7 @@
         <span class="back-home"  onclick="goHome()">
             <i class="fa-solid fa-arrow-left"></i>
         </span>
-        <ul>
+        <ul class="list-navegation-ul">
         <li><i class="fa-solid fa-magnifying-glass"></i>  
         <form action="/search-mid" class="form-search-glass form-documents" method="get">
          <label class="label-for-search-input">
@@ -27,10 +27,11 @@
             <li><a href="/monturas"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></a></li>
             <li><a href="#"><span class="bold"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></span></a></li>
             <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
-            <li><i class="fa-solid fa-cloud-arrow-up"></i></li>
+            <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Factura</span></li>
         </ul>
             <div class="drag-and-drop">
-            <p>Arrastra o escoge tus Archivos</p>
+            <i class="fa-solid fa-upload"></i>
+            <p>Arrastra maximo 15 PDF</p>
             <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
          </div>
          <p id="file-info"></p>
