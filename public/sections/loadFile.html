@@ -14,41 +14,41 @@
             <i class="fa-solid fa-arrow-left"></i>
         </span>
         <ul class="list-navegation-ul">
-        <li><i class="fa-solid fa-magnifying-glass"></i>  
-        <form action="/search-mid" class="form-search-glass form-documents" method="get">
-         <label class="label-for-search-input">
-          <input type="text" name="glass_model" id="search-glass" placeholder="Buscar de Documento..." autocomplete="off">
-          <div class="field-results-glasses">
+         <li><i class="fa-solid fa-magnifying-glass"></i>  
+          <form action="/search-mid" class="form-search-glass form-documents" method="get">
+           <label class="label-for-search-input">
+            <input type="text" name="glass_model" id="search-glass" placeholder="Buscar de Documento..." autocomplete="off">
+             <div class="field-results-glasses">
             
-          </div>
-         </label>
-        </form>
-        </li>
-            <li><a href="/monturas"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></a></li>
-            <li><a href="#"><span class="bold"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></span></a></li>
-            <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
-            <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Factura</span></li>
+             </div>
+           </label>
+          </form>
+         </li>
+         <li><a href="/monturas"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></a></li>
+         <li><a href="#"><span class="bold"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></span></a></li>
+         <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
+         <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Factura</span></li>
         </ul>
-            <div class="drag-and-drop">
-            <i class="fa-solid fa-upload"></i>
-            <p>Arrastra maximo 15 PDF</p>
-            <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
-         </div>
+        <div class="drag-and-drop">
+         <i class="fa-solid fa-upload"></i>
+          <p>Arrastra maximo 15 PDF</p>
+           <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+        </div>
          <p id="file-info"></p>
-</nav>
-    <main class="load-manifest-and-invoice-container">
-    <h1>Administracion de facturas</h1>
+      </nav>
+      <main class="load-manifest-and-invoice-container">
+       <h1>Administracion de facturas</h1>
         
-<div class="pdf-container">
-     <span class="table-buttons">
+      <div class="pdf-container">
+       <span class="table-buttons">
         <button onclick="clickBack()" class="btnBack"><i class="fa-solid fa-angle-up" style="transform: rotate(270deg);"></i></button>
         <button onclick="clickNext()" class="btnNext"><i class="fa-solid fa-angle-up" style="transform: rotate(90deg);"></i></button>
         <span class="page-info">
             <!--Aqui aparecera el numero de registros y paginas-->
         </span>
-     </span>
+       </span>
      
-     <table>
+    <table>
         <thead>
             <th>Name</th>
             <th>Size</th>

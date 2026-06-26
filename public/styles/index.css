@@ -71,13 +71,13 @@ header>img{
     color: rgb(53, 53, 53);
     font-optical-sizing: auto;
 }
-
+/*FORMULARIO DE BUSQUEDA*/
 .form-search-glass{
  display: flex;
  justify-content: center;
  width: auto;
 }
-
+/*INPUT DE LA BARRA DE BUSQUEDA*/
 #search-glass{
     width: 30rem;
     padding: 1rem;
@@ -91,28 +91,28 @@ header>img{
     outline: none;
 }
 
-/*Este es el mismo elemento de arriba pero se le aplicaran estilos distintos*/
-
+/*Este es el mismo elemento de arriba(Formulario en la barra de busquedas de documentos) pero se le aplicaran estilos distintos*/
+/*FORMULARIO DE BUSQUEDA*/
 .form-documents{
     position: absolute;
-    top: 0;
-    left: -20rem;
-    transition: transform .5s ease-in-out, opacity 1s ease-in;
+    top: -100%;
+    left: -100px;
+    transition: left .5s ease-in-out, opacity 1s ease-in;
     opacity: 0;
 }
 
 .form-documents.active{
-    transform: translateX(23rem);
     opacity: 1;
+    left: 40px;
 }
 
 .form-documents #search-glass{
     width: 3rem;
     transition: all .5s ease-in-out;
 } 
-
+/*INPUT DE LA BARRA DE BUSQUEDA*/
 #search-glass.active{
-    width: 9rem;
+    width: 8rem;
 }
 
 .label-for-search-input{
@@ -389,36 +389,42 @@ nav ul li i{
 
 }
 
-nav ul{
+.list-navegation-ul{
     display: flex;
     flex-direction: column  ;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
     list-style: none;
     align-items: flex-start;
-    margin-left: 15px;
     position: relative;
+    gap: 1rem;
+    margin-left: 10px;
 }
 
-nav ul li{
+.list-navegation-ul li{
     background-color: transparent;
-    padding: 1rem;
     position: relative;
+    width: 100%;
+}
+
+.list-navegation-ul li:is(:nth-child(3), :nth-child(4)){
+    margin-left: 5px;
 }
 
 .nav-description{
-    margin-left: 1rem;
+    margin-left: 1.5rem;
     position: absolute;
-    top: 35%;
+    top: 0;
     opacity: 0;
     display: none;
-    width: 100px;
+    width: 100%;
+   font-family: "Poiret One", sans-serif;
+   font-size: .8rem;
 }
 
 nav.active .nav-description{
    display: inline-block;
    opacity: 1;
-  font-family: "Poiret One", sans-serif;
 }
 
 nav>ul a{
@@ -450,7 +456,7 @@ a .bold{
 */
 
 .drag-and-drop{
-    width: 10rem;
+    width: 80%;
     min-height: 10rem;
     border-radius: 25px;
     border: #e7e7e7 1px dashed;
@@ -460,8 +466,8 @@ a .bold{
     align-items: center;
     cursor: pointer;
     transition: all .3s ease;
-    margin: 2rem;
     gap:.5rem;
+    margin-left: 15px;
 }
 
 .drag-and-drop.on{
