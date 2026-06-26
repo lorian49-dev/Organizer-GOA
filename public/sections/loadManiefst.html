@@ -8,30 +8,47 @@
     <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-    <nav>
+<div class="container">
+ <nav>
         <span class="back-home"  onclick="goHome()">
             <i class="fa-solid fa-arrow-left"></i>
         </span>
-        <ul>
-            <li><a href="/monturas">Cargar Monturas</a></li>
-            <li><a href="/facturas">Facturas</a></li>
-            <li><a href="#"><span class="bold">Manifiestos</span></a></li>
+        <ul class="list-navegation-ul">
+         <li><i class="fa-solid fa-magnifying-glass"></i>  
+          <form action="/search-mid" class="form-search-glass form-documents" method="get">
+           <label class="label-for-search-input">
+            <input type="text" name="glass_model" id="search-glass" placeholder="Buscar de Documento..." autocomplete="off">
+             <div class="field-results-glasses">
+            
+             </div>
+           </label>
+          </form>
+         </li>
+         <li><a href="/monturas"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></a></li>
+         <li><a href="/facturas"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></a></li>
+         <li><a href="#"><span class="bold"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></span></a></li>
+         <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Manifiesto</span></li>
         </ul>
-        <form action="/search-mid" class="form-search-glass" method="get">
-        <label class="label-for-search-input">
-            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de serie o referencia Ej: M27142/ZD7701..." autocomplete="off">
-            <div class="field-results-glasses">
-        </div>
-        </label>
-    </form>
-</nav>
-    <main class="load-manifest-and-invoice-container">
+        <div class="drag-and-drop">
+          <div class="shape-drag-and-drop">
+            <div class="drop-file-space">
+             <i class="fa-solid fa-upload"></i>
+              <p>Arrastra maximo 15 PDF</p>
+               <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+            </div>
+            <div class="drop-file-process">
+                <div class="file">
+                    <div class="process-container">
+                        <div class="process-bar"></div>
+                    </div>
+                </div>
 
-         <div class="drag-and-drop">
-            <p>Arrastra o escoge tus Archivos</p>
-            <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
-         </div>
+            </div>
+          </div>
+        </div>
          <p id="file-info"></p>
+      </nav>
+    <main class="load-manifest-and-invoice-container">
 
          <!--<p>Carga un manifiesto (Maximo 15 Documentos)</p>
 
@@ -67,6 +84,7 @@
      <span class="empty-message"></span>
     </div>
     </main>
+</div>
 <script src="/events/loadManifestInvoices.js"></script>
 </body>
 </html>

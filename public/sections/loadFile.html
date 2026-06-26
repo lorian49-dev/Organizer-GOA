@@ -30,9 +30,21 @@
          <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Factura</span></li>
         </ul>
         <div class="drag-and-drop">
-         <i class="fa-solid fa-upload"></i>
-          <p>Arrastra maximo 15 PDF</p>
-           <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+          <div class="shape-drag-and-drop">
+            <div class="drop-file-space">
+             <i class="fa-solid fa-upload"></i>
+              <p>Arrastra maximo 15 PDF</p>
+               <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+            </div>
+            <div class="drop-file-process">
+                <div class="file">
+                    <div class="process-container">
+                        <div class="process-bar"></div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
         </div>
          <p id="file-info"></p>
       </nav>

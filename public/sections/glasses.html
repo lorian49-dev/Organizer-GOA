@@ -8,26 +8,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <nav>
+   <div class="container">
+ <nav>
         <span class="back-home"  onclick="goHome()">
             <i class="fa-solid fa-arrow-left"></i>
         </span>
-        <ul>
-            <li><a href="#"><span class="bold">Cargar Monturas</span></a></li>
-            <li><a href="/facturas">Facturas</a></li>
-            <li><a href="/manifiestos">Manifiestos</a></li>
-        </ul>
-        <form action="/search-mid" class="form-search-glass" method="get">
-        <label class="label-for-search-input">
-            <input type="text" name="glass_model" id="search-glass" placeholder="Numero de serie o referencia Ej: M27142/ZD7701..." autocomplete="off">
-            <div class="field-results-glasses">
+        <ul class="list-navegation-ul">
+         <li><i class="fa-solid fa-magnifying-glass"></i>  
+          <form action="/search-mid" class="form-search-glass form-documents" method="get">
+           <label class="label-for-search-input">
+            <input type="text" name="glass_model" id="search-glass" placeholder="Buscar de Documento..." autocomplete="off">
+             <div class="field-results-glasses">
             
+             </div>
+           </label>
+          </form>
+         </li>
+         <li><a href="/monturas"><span class="bold"><i class="fa-solid fa-glasses"></i><span class="nav-description">Monturas</span></span></a></li>
+         <li><a href="/facturas"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></a></li>
+         <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
+        </ul>
+        <div class="drag-and-drop">
+          <div class="shape-drag-and-drop">
+            <div class="drop-file-space">
+             <i class="fa-solid fa-upload"></i>
+              <p>Arrastra maximo 15 PDF</p>
+               <input type="file" name="pdf" id="btn-file" accept=".pdf" multiple hidden>
+            </div>
+            <div class="drop-file-process">
+                <div class="file">
+                    <div class="process-container">
+                        <div class="process-bar"></div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
         </div>
-        </label>
-    </form>
-</nav>
+         <p id="file-info"></p>
+      </nav>
 <div class="main-glasses">
-    <div class="img-container active">
+    <div class="img-container">
             <button class="btn-info">Adicionar</button>
         <form class="glass-form" method="POST" action="/glasses">
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="brand" required><span class="glass-form-span">Marca</span></label>
@@ -81,6 +102,7 @@
         </div>
     </div>
 </div>
+</div>
 <script>
 
     // Buscador de Gafas
@@ -88,10 +110,13 @@
     const inputSearchGlass = document.getElementById('search-glass')
     const searchGlassResults = document.querySelector('.field-results-glasses')
 
+    // navBar Constantes
+    const magnifier = document.querySelector('.fa-magnifying-glass')
+    const navEgation = document.querySelector('nav')
+    const formManifestAndInvoice = document.querySelector('.form-documents');
+
     // Tabla de Monturas
     const tableGlass = document.querySelector('.body-table-glass');
-    let currentPage = 1
-    let globalCount = 0
     const btnBack = document.querySelector('.btnBack')
     const btnNext = document.querySelector('.btnNext')
     // Const for dropDown
@@ -114,11 +139,53 @@
     const tableContainer = document.querySelector('.img-container-2');
     const tableGlasses = document.querySelector('.table-container')
     const formGlasses = document.querySelector('.glass-form')
+    
     // Estados cambiantes
     let tableState = false
     let formState = false
 
-   const autocompleteMI = async (name, id, field, fetchUrl, idTable) => {
+    let currentPage = 1
+    let globalCount = 0
+
+    // Utilidades
+
+    const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+     const openNavBar = async(a, b) =>{
+   
+    if(!a){
+        navEgation.classList.add('active');
+        formManifestAndInvoice.classList.add('active')
+        setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
+    }else{
+        inputSearchGlass.classList.remove('active');
+        setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
+        await b(500);
+        navEgation.classList.remove('active')
+        if(dropZone&&dropZone.classList.contains('on')) dropZone.classList.remove('on');
+
+    }
+   
+ }
+
+    // Funcion de redireccionar la ubicacion actual a la pagina principal
+    function goHome(){
+        window.location.href = '/';
+    }
+
+    // Funcion de debounce
+
+   function debounce(fn, delay){
+    let timeout;
+    return function(...args){
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+            fn.apply(this, args)
+        }, delay)
+    }
+   }
+
+    const autocompleteMI = async (name, id, field, fetchUrl, idTable) => {
         field.innerHTML = '';
         field.style.display = 'none';
         const value = name.value;
@@ -144,22 +211,6 @@
         })
 
     }
-// Funcion de redireccionar la ubicacion actual a la pagina principal
-    function goHome(){
-        window.location.href = '/';
-    }
-
-    // Funcion de debounce
-
-   function debounce(fn, delay){
-    let timeout;
-    return function(...args){
-        clearTimeout(timeout);
-        timeout = setTimeout(()=>{
-            fn.apply(this, args)
-        }, delay)
-    }
-   }
 
      document.addEventListener('DOMContentLoaded', ()=>{
         setTimeout(()=>{
@@ -167,13 +218,23 @@
          document.body.style.pointerEvents = 'auto'
         }, 1000)
      })
+
+     // Eventos en la NavBar 
+
+if(magnifier){
+    magnifier.addEventListener('click', async()=>{
+     const navIsActive = navEgation.classList.contains('active')
+     openNavBar(navIsActive, breakPoint)
+    })
+}
+
         //-------------------------------------------------//
         //                   Show Form
         //-------------------------------------------------//
 
-       /* btnInfoShow[0].addEventListener('click', ()=>{
+        btnInfoShow[0].addEventListener('click', ()=>{
          formContainer.classList.toggle('active')
- */
+ 
          if(!formState){
             formGlasses.style.display = 'flex';
             // manejo de envento al hacer click fuera del campo de resultados
@@ -197,10 +258,7 @@
             formGlasses.style.display = 'none'
             formState=false;
          }
-
- /*
         })
- */
         // searchGlass dropDown
 
         async function autoCompleteGlass(input, field) {

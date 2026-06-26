@@ -1,9 +1,8 @@
 const tableResultGlasses = document.querySelector('.table-search-results');
 const tableBodyGlasses = document.querySelector('.table-body-results')
 
-
-    const inputSearchGlass = document.getElementById('search-glass')
-    const searchGlassResults = document.querySelector('.field-results-glasses')
+const inputSearchGlass = document.getElementById('search-glass')
+const searchGlassResults = document.querySelector('.field-results-glasses')
 
 const goHome = () =>{
     window.location.href = '/'

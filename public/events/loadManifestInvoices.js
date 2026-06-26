@@ -17,17 +17,21 @@ const btnNext = document.querySelector('.btnNext');
 const btnBack = document.querySelector('.btnBack');
 const pageInfo = document.querySelector('.page-info');
 const emptyMessage = document.querySelector('.empty-message');
-const dropZone = document.querySelector('.drag-and-drop');
-const dropZoneInput = document.getElementById('btn-file');
-const dropZoneFileInfo = document.getElementById('file-info')
+
 // navBar Constantes
 const magnifier = document.querySelector('.fa-magnifying-glass')
 const navEgation = document.querySelector('nav')
 const formManifestAndInvoice = document.querySelector('.form-documents');
 // Zona de Arrastrar y soltar .pdf
+const dropZone = document.querySelector('.drag-and-drop');
+const dropZoneInput = document.getElementById('btn-file');
+const dropZoneFileInfo = document.getElementById('file-info')
 const dropZoneEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
 const activeDropzone = [dropZoneEvents[0], dropZoneEvents[1]];
 const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
+const shapeDragAndDrop = document.querySelector('.shape-drag-and-drop')
+const fileToServer = document.querySelector('.file')
+const processBar = document.querySelector('.process-bar')
 
 let currentPage = 1;
 let globalTotalRows = 0;
@@ -63,7 +67,7 @@ const preventEventDropZoneOff = (event) =>{
     dropZone.classList.remove('active')
 }
 
-// constante Para Abrir la barra de navegacion
+// funcion Para Abrir la barra de navegacion
 
  const openNavBar = async(a, b) =>{
    
@@ -160,9 +164,9 @@ activeDropzone.forEach(eventZone =>{
       })
 })
 
-offDropZone.forEach(eventZone =>{
- dropZone.addEventListener(eventZone, preventEventDropZoneOff);
-})
+
+ dropZone.addEventListener('dragleave', preventEventDropZoneOff);
+
 
 document.addEventListener('dragover', (event)=>{event.preventDefault()})
 
@@ -174,6 +178,8 @@ document.addEventListener('drop', (event)=>{
 });
 
 dropZone.addEventListener('drop', async(event)=>{
+    event.preventDefault()
+    shapeDragAndDrop.classList.add('active')
     const filePdf = event.dataTransfer.files;
     
     if(filePdf.length > 0){
@@ -199,13 +205,20 @@ dropZone.addEventListener('drop', async(event)=>{
             xhr.upload.addEventListener('progress', (event)=>{
               if(event.lengthComputable){
                 const porcentaje = Math.round((event.loaded / event.total)*100);
+                processBar.style.width = `${porcentaje}%`
                 console.log(porcentaje)
               }
             })
 
-            xhr.addEventListener('load', ()=>{
+            xhr.addEventListener('load', async ()=>{
                 if(xhr.status >= 200 && xhr.status < 300){
-                    console.log('Archivo Subidos con exito')
+                    fileToServer.classList.add('done') // este es el objeto de la forma de documento
+                    await breakPoint(1000);
+                    shapeDragAndDrop.classList.remove('active') // este es el restablecimiento del lugar de la capa movil
+                    processBar.style.width = '0%' // se devuelve la barra a su estado inicial
+                    await breakPoint(500);
+                    dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
+                    fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
                 } else{
                     console.log('Error en la subida :c')
                 }
@@ -330,7 +343,9 @@ async function tableInformation() {
 }
 
 // Inicializar la tabla al cargar
-tableInformation();
+if(pdf_container){
+    tableInformation();
+}
 
 // Paginacion
 const clickNext = () => {
