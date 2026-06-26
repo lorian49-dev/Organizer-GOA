@@ -163,32 +163,36 @@ activeDropzone.forEach(eventZone =>{
      }
       })
 })
-
-
- dropZone.addEventListener('dragleave', preventEventDropZoneOff);
-
-
+dropZone.addEventListener('dragleave', preventEventDropZoneOff);
 document.addEventListener('dragover', (event)=>{event.preventDefault()})
-
 document.addEventListener('drop', (event)=>{
     event.preventDefault()
   if(!dropZone.contains(event.target)){
     dropZone.classList.remove('on')
   }
 });
-
 dropZone.addEventListener('drop', async(event)=>{
     event.preventDefault()
     shapeDragAndDrop.classList.add('active')
     const filePdf = event.dataTransfer.files;
-    
+    const feedBackAd = ['Paciencia por favor', 'Esto podria demorar unos minutos']
+    const feedBackAdAlmost = ['Ya casi', 'Solo un poco mas']
+    let i = 0;
+    if(filePdf.length > 1){
+        dropZoneFileInfo.textContent = 'Subiendo Documentos'
+    }else{
+        dropZoneFileInfo.textContent = 'Subiendo su Documento'
+    }
+    const feedBackChange = setInterval(()=>{
+     dropZoneFileInfo.textContent = feedBackAd[i]
+     i = (i+1) % feedBackAd.length
+    }, 2000)
     if(filePdf.length > 0){
         try{
         const formToSend = new FormData();
         for(let i = 0; i < filePdf.length;i++){
          formToSend.append('filePDF[]', filePdf[i])
         }
-
       /*  const data = await fetch(`${PAGE_CONFIG.getPostPath}`,{
             method: 'POST',
             body: formToSend
@@ -199,9 +203,7 @@ dropZone.addEventListener('drop', async(event)=>{
         }else{
             return console.log('error al subir archivos :c')
         } */
-
             const xhr = new XMLHttpRequest();
-
             xhr.upload.addEventListener('progress', (event)=>{
               if(event.lengthComputable){
                 const porcentaje = Math.round((event.loaded / event.total)*100);
@@ -212,6 +214,9 @@ dropZone.addEventListener('drop', async(event)=>{
 
             xhr.addEventListener('load', async ()=>{
                 if(xhr.status >= 200 && xhr.status < 300){
+                    clearInterval(feedBackChange)
+                    dropZoneFileInfo.textContent = 'Hecho!'
+                    await breakPoint(500)
                     fileToServer.classList.add('done') // este es el objeto de la forma de documento
                     await breakPoint(1000);
                     shapeDragAndDrop.classList.remove('active') // este es el restablecimiento del lugar de la capa movil
@@ -219,6 +224,7 @@ dropZone.addEventListener('drop', async(event)=>{
                     await breakPoint(500);
                     dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
                     fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
+                    dropZoneFileInfo.textContent = ' '
                 } else{
                     console.log('Error en la subida :c')
                 }
