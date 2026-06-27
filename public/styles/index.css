@@ -556,6 +556,7 @@ a .bold{
 .container-feedback-file{
     width: 100%;
     display: flex;
+    gap: 15px;
 }
 
 #file-info{
@@ -568,6 +569,11 @@ a .bold{
     width: 20px;
     height: 20px;
     position: relative;
+    display: none;
+}
+
+.feedback-circle.active{
+    display: inline-block;
 }
 
 .feedback-circle::before{

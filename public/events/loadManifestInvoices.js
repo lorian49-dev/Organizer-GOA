@@ -32,6 +32,7 @@ const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
 const shapeDragAndDrop = document.querySelector('.shape-drag-and-drop')
 const fileToServer = document.querySelector('.file')
 const processBar = document.querySelector('.process-bar')
+const circleFeedBack = document.querySelector('.feedback-circle')
 
 let currentPage = 1;
 let globalTotalRows = 0;
@@ -173,6 +174,7 @@ document.addEventListener('drop', (event)=>{
 });
 dropZone.addEventListener('drop', async(event)=>{
     event.preventDefault()
+    circleFeedBack.classList.add('active')
     shapeDragAndDrop.classList.add('active')
     const filePdf = event.dataTransfer.files;
     const feedBackAd = ['Paciencia por favor', 'Esto podria demorar unos minutos']
@@ -224,7 +226,8 @@ dropZone.addEventListener('drop', async(event)=>{
                     await breakPoint(500);
                     dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
                     fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
-                    dropZoneFileInfo.textContent = ' '
+                    dropZoneFileInfo.textContent = ' ' // Se resetea el contenido del campo de feedback textual
+                    circleFeedBack.classList.remove('active'); // se elimina la visualizacion del circulo de carga
                 } else{
                     console.log('Error en la subida :c')
                 }
