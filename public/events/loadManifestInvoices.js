@@ -263,7 +263,7 @@ dropZone.addEventListener('drop', async(event)=>{
                 }
             })
 
-            xhr.addEventListener('error', ()=>{
+            xhr.addEventListener('error', async()=>{
                  processBar.style.width = '0%' // se devuelve la barra a su estado inicial
                     processBarContainer.classList.add('error')
                      checkFeedBack.innerHTML = iconUbication[1]
