@@ -400,7 +400,7 @@ app.post('/invoice-table-post',async(req, res)=>{
 //validacion para confirmar que lo que reciba si tenga contenido, de lo contrario abortar
 
 if(!files || files.length === 0){
- return res.status(400).json({error:'S'})
+ return res.status(400).json({error:'Ce mamo we xd'})
 };
 
 const promesaUpload = files.map(async file =>{

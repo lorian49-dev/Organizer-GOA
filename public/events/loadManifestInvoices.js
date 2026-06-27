@@ -31,8 +31,11 @@ const activeDropzone = [dropZoneEvents[0], dropZoneEvents[1]];
 const offDropZone = [dropZoneEvents[2], dropZoneEvents[3]];
 const shapeDragAndDrop = document.querySelector('.shape-drag-and-drop')
 const fileToServer = document.querySelector('.file')
+const processBarContainer = document.querySelector('.process-container')
 const processBar = document.querySelector('.process-bar')
 const circleFeedBack = document.querySelector('.feedback-circle')
+const iconUbication = ['<img src="/src/check-icon.png">', '<img src="/src/error-icon.png">']
+const checkFeedBack = document.querySelector('.check-feedback')
 
 let currentPage = 1;
 let globalTotalRows = 0;
@@ -185,7 +188,7 @@ dropZone.addEventListener('drop', async(event)=>{
     }else{
         dropZoneFileInfo.textContent = 'Subiendo su Documento'
     }
-    const feedBackChange = setInterval(()=>{
+    let feedBackChange = setInterval(()=>{
      dropZoneFileInfo.textContent = feedBackAd[i]
      i = (i+1) % feedBackAd.length
     }, 2000)
@@ -210,12 +213,22 @@ dropZone.addEventListener('drop', async(event)=>{
               if(event.lengthComputable){
                 const porcentaje = Math.round((event.loaded / event.total)*100);
                 processBar.style.width = `${porcentaje}%`
+                if(porcentaje >= 70){
+                    clearInterval(feedBackChange)
+                    feedBackChange = setInterval(()=>{
+                     dropZoneFileInfo.textContent = feedBackAdAlmost[i];
+                     i = (i+1) % feedBackAdAlmost.length;
+                    }, 1000)
+                }
+                    
                 console.log(porcentaje)
               }
             })
 
             xhr.addEventListener('load', async ()=>{
                 if(xhr.status >= 200 && xhr.status < 300){
+                    checkFeedBack.innerHTML = iconUbication[0]
+                    checkFeedBack.style.opacity = '1'
                     clearInterval(feedBackChange)
                     dropZoneFileInfo.textContent = 'Hecho!'
                     await breakPoint(500)
@@ -226,15 +239,48 @@ dropZone.addEventListener('drop', async(event)=>{
                     await breakPoint(500);
                     dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
                     fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
+                    checkFeedBack.style.opacity = '0' // se regresa la opacidad del icono del estado 
                     dropZoneFileInfo.textContent = ' ' // Se resetea el contenido del campo de feedback textual
                     circleFeedBack.classList.remove('active'); // se elimina la visualizacion del circulo de carga
                 } else{
-                    console.log('Error en la subida :c')
+                    processBar.style.width = '0%' // se devuelve la barra a su estado inicial
+                    processBarContainer.classList.add('error')
+                     checkFeedBack.innerHTML = iconUbication[1]
+                    checkFeedBack.style.opacity = '1'
+                    clearInterval(feedBackChange)
+                    dropZoneFileInfo.textContent = 'Hubo un error, intenta de nuevo'
+                    await breakPoint(500)
+                    fileToServer.classList.add('done') // este es el objeto de la forma de documento
+                    await breakPoint(1000);
+                    shapeDragAndDrop.classList.remove('active') // este es el restablecimiento del lugar de la capa movil
+                    await breakPoint(500);
+                    dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
+                    fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
+                    checkFeedBack.style.opacity = '0' // se regresa la opacidad del icono del estado 
+                    dropZoneFileInfo.textContent = ' ' // Se resetea el contenido del campo de feedback textual
+                    circleFeedBack.classList.remove('active'); // se elimina la visualizacion del circulo de carga
+                    processBarContainer.classList.remove('error')
                 }
             })
 
             xhr.addEventListener('error', ()=>{
-                console.log('Problema con la conexion, lo lamentamos :c')
+                 processBar.style.width = '0%' // se devuelve la barra a su estado inicial
+                    processBarContainer.classList.add('error')
+                     checkFeedBack.innerHTML = iconUbication[1]
+                    checkFeedBack.style.opacity = '1'
+                    clearInterval(feedBackChange)
+                    dropZoneFileInfo.textContent = 'No se Pudo Establecer Conexion'
+                    await breakPoint(500)
+                    fileToServer.classList.add('done') // este es el objeto de la forma de documento
+                    await breakPoint(1000);
+                    shapeDragAndDrop.classList.remove('active') // este es el restablecimiento del lugar de la capa movil
+                    await breakPoint(500);
+                    dropZone.classList.remove('active') // se devuelve la zona de drop a su estado inicial(se quita el color blanco de fondo)
+                    fileToServer.classList.remove('done') // se reinicia para un futuro uso de la animacion
+                    checkFeedBack.style.opacity = '0' // se regresa la opacidad del icono del estado 
+                    dropZoneFileInfo.textContent = ' ' // Se resetea el contenido del campo de feedback textual
+                    circleFeedBack.classList.remove('active'); // se elimina la visualizacion del circulo de carga
+                    processBarContainer.classList.remove('error')
             })
 
             xhr.open('POST', PAGE_CONFIG.getPostPath);

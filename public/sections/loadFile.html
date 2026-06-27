@@ -29,7 +29,7 @@
          <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
          <li><i class="fa-solid fa-cloud-arrow-up"></i><span class="nav-description">Subir Factura</span></li>
         </ul>
-        <div class="drag-and-drop">
+       <div class="drag-and-drop">
           <div class="shape-drag-and-drop">
             <div class="drop-file-space">
              <i class="fa-solid fa-upload"></i>
@@ -38,6 +38,7 @@
             </div>
             <div class="drop-file-process">
                 <div class="file">
+                    <span class="check-feedback"></span>
                     <div class="process-container">
                         <div class="process-bar"></div>
                     </div>
@@ -45,7 +46,10 @@
             </div>
           </div>
         </div>
-         <p id="file-info"></p>
+         <span class="container-feedback-file">
+            <p id="file-info"></p>
+            <span class="feedback-circle"></span>
+         </span>
       </nav>
       <main class="load-manifest-and-invoice-container">
        <h1>Administracion de facturas</h1>

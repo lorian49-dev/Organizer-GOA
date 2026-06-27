@@ -511,10 +511,22 @@ a .bold{
     border-radius: 15px;
     background: linear-gradient(#000b30, rgb(46, 76, 105));
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
     padding-bottom: 10px;
     transition: all 1s ease-in;
+    gap: 50px;
+}
+
+.check-feedback{
+    width:35%;
+    transition: all .5s ease-in;
+    opacity: 0;
+}
+
+.check-feedback img{
+    width: 100%;
 }
 
 .file.done{
@@ -537,10 +549,14 @@ a .bold{
     height: 5px;
 }
 
+.process-container.error{
+    background: linear-gradient(rgba(90, 8, 8, 0.733), rgb(167, 54, 46));
+}
+
 .process-bar{
     height: 100%;
     border-radius: 5px;
-    background: linear-gradient(to right, #ee9002, #ffd310);
+    background: linear-gradient(to right, #03a07e, #69db1c);
     transition: all .5s ease-in;
 }
 
