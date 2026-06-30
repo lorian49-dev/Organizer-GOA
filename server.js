@@ -193,41 +193,6 @@ app.get('/monturas',(req, res)=>{
  res.redirect('/sections/glasses.html')
 })
 
-// Solicitud de datos de las tablas invoices y manifest para autocompletar busquedas.
-
-// Consulta de manifiestos
-
-app.get('/search-manifest', async(req, res)=>{
-  const search = req.query.q
-
-  if(!search) return res.json([]); // validacion de consulta
-
-  const {data, error} = await access.from('manifest').select('id_manifest, name').ilike('name', `%${search}%`).limit(10); // ilike se usa en Postgree SQL para que los datos solicitados sean insensibles a las mayusculas.
-
-  if(error){
-    return res.status(500).json({message: error.message})
-  }
-
-  res.json(data);
-  
-})
-
-// consulta de facturas
-
-app.get('/search-invoice', async(req, res)=>{
-  const search = req.query.q;
-
-  if(!search) return res.status(500).json([]);
-
-  const {data, error} = await access.from('invoices').select('id_invoice, name').ilike('name', `%${search}%`).limit(10);
-
-  if(error){
-    return res.status(500).json({message: error.message})
-  }
-
-  res.json(data)
-})
-
 // Subida de gafas a la BD
 
 app.post('/glasses', async(req, res)=>{
@@ -350,11 +315,26 @@ app.get('/search-glass-results', async(req, res)=>{
 // ------------------------------------------- //
 
 app.get('/facturas', isAdmin,(req, res)=>{
- console.log('success log')
  res.redirect('/sections/loadFile.html')
 })
 
-// obtencion de datos INVOICES
+// consulta de facturas en el buscador
+
+app.get('/search-invoice', async(req, res)=>{
+  const search = req.query.q;
+
+  if(!search) return res.status(500).json([]);
+
+  const {data, error} = await access.from('invoices').select('id_invoice, name').ilike('name', `%${search}%`).limit(10);
+
+  if(error){
+    return res.status(500).json({message: error.message})
+  }
+
+  res.json(data)
+})
+
+// obtencion de datos INVOICES para la tabla
 
 app.get('/invoices-table-get', async(req, res)=>{
   const p = parseInt(req.query.page);
@@ -490,6 +470,23 @@ app.delete('/action-delete/:id', async(req, res)=>{
 app.get('/manifiestos',(req, res)=>{
  console.log('success log')
  res.redirect('/sections/loadManiefst.html')
+})
+
+// Consulta de manifiestos en el buscador
+
+app.get('/search-manifest', async(req, res)=>{
+  const search = req.query.q
+
+  if(!search) return res.json([]); // validacion de consulta
+
+  const {data, error} = await access.from('manifest').select('id_manifest, name').ilike('name', `%${search}%`).limit(10); // ilike se usa en Postgree SQL para que los datos solicitados sean insensibles a las mayusculas.
+
+  if(error){
+    return res.status(500).json({message: error.message})
+  }
+
+  res.json(data);
+  
 })
 
 // obtencion de datos PARA TABLA MANIFEST

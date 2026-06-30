@@ -134,9 +134,28 @@ async function autoCompleteGlass(input, field) {
     }
 }
 
+const autoCompleteDocument = async(input, field) =>{
+    if(input.value){
+    const value = input.value;
+    const res = await fetch('/search-invoice');
+    const data = await res.json();
+
+    data.forEach(item=>{
+        const rowResult = document.createElement('div');
+        rowResult.textContent = item.name;
+        field.appendChild(rowResult)
+
+        data.addEventListener('click', ()=>{
+            input.value = rowResult
+        })
+
+    })
+ }
+}
+
 if (inputSearchGlass) {
     inputSearchGlass.addEventListener('input', debounce(() => {
-        autoCompleteGlass(inputSearchGlass, searchGlassResults);
+        autoCompleteDocument(inputSearchGlass, searchGlassResults)
     }, 300));
 }
 
