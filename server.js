@@ -321,7 +321,7 @@ app.get('/facturas', isAdmin,(req, res)=>{
 // consulta de facturas en el buscador
 
 app.get('/search-invoice', async(req, res)=>{
-  const search = req.query.q;
+  const search = req.query.name;
 
   if(!search) return res.status(500).json([]);
 

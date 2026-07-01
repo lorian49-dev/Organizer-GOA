@@ -135,22 +135,36 @@ async function autoCompleteGlass(input, field) {
 }
 
 const autoCompleteDocument = async(input, field) =>{
+    try{
     if(input.value){
+    field.innerHTML = ' '
+
     const value = input.value;
-    const res = await fetch('/search-invoice');
+    const res = await fetch(`/search-invoice?name=${value}`);
     const data = await res.json();
 
-    data.forEach(item=>{
+    if(Array.isArray(data) && data.length >= 1){ 
+        data.forEach(item=>{
         const rowResult = document.createElement('div');
+        rowResult.classList.add('item-glass-result');
         rowResult.textContent = item.name;
         field.appendChild(rowResult)
 
-        data.addEventListener('click', ()=>{
-            input.value = rowResult
+        rowResult.addEventListener('click', ()=>{
+            input.value = rowResult.textContent
+            field.innerHTML = ' ';
+            field.style.display = 'none'
         })
 
     })
+
+    field.style.display = 'block'
+    input.classList.add('boxShadowOn');
+    }
  }
+    }catch(error){
+        console.log('error en la consulta o no se obtuvieron resultados')
+    }
 }
 
 if (inputSearchGlass) {

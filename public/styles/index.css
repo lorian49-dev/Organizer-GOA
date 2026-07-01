@@ -126,7 +126,7 @@ header>img{
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
     position: absolute;
-    width: 100%;
+    width: 150%;
     display: none;
     top: 25px;
     box-shadow: var(--main-shadow);
@@ -144,6 +144,7 @@ header>img{
     margin-bottom: .5rem;
     transition: all .5s ease;
     padding: .5rem;
+    font-size: .7rem;
 }
 
 .item-glass-result:hover{
