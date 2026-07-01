@@ -2,6 +2,7 @@ const currentPath = window.location.pathname;
 const isManifestPage = currentPath.includes('loadManiefst');
 
 const PAGE_CONFIG = {
+    getSearchDocument : isManifestPage? '/search-manifest': '/search-invoice',
     getPostPath: isManifestPage? '/manifest-table-post':'/invoice-table-post',
     getEndpoint: isManifestPage ? '/manifest-table-get' : '/invoices-table-get',
     deleteEndpoint: isManifestPage ? '/action-delete-manifest' : '/action-delete',
@@ -98,12 +99,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
 });
 
+// Render de la tabla
+async function tableInformation(filter) {
+    // Placeholder fantasma de carga
+    pdf_container.innerHTML = `<tr>
+        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
+        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
+        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
+        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
+        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
+    </tr>`;
+
+    try {
+        const params = new URLSearchParams({
+            page: currentPage
+        })
+
+        params.append('filter', filter)
+        // Usamos el endpoint dinámico según la página
+        const res = await fetch(`${PAGE_CONFIG.getEndpoint}?${params.toString()}`);
+        const reqData = await res.json();
+        const response = reqData.data;
+        globalTotalRows = reqData.totalRows;
+
+        // Estilos de los botones de Paginación
+        if (currentPage === 1) {
+            btnBack.style.color = '#adadad';
+            btnBack.style.pointerEvents = 'none';
+        } else {
+            btnBack.style.color = '#383838';
+            btnBack.style.pointerEvents = 'auto';
+        }
+
+        if (currentPage === globalTotalRows || globalTotalRows === 0) {
+            btnNext.style.color = '#adadad';
+            btnNext.style.pointerEvents = 'none';
+        } else {
+            btnNext.style.color = '#383838';
+            btnNext.style.pointerEvents = 'auto';
+        }
+
+        // Mensaje de tabla vacía dinámico
+        if (globalTotalRows === 0) {
+            emptyMessage.innerHTML = `<p>${PAGE_CONFIG.emptyMessageText}</p>`;
+        } else {
+            emptyMessage.innerHTML = '';
+        }
+
+        pdf_container.innerHTML = '';
+
+        for (const file of response) {
+            const newRow = document.createElement('tr');
+            
+            const tableName = document.createElement('td');
+            tableName.textContent = file.name;
+            
+            const tableSize = document.createElement('td');
+            tableSize.textContent = parseInt((file.weight) / 1024) + ' Kb';
+            
+            const tableDate = document.createElement('td');
+            tableDate.textContent = new Date(file.date).toLocaleString();
+            
+            const eyeUrl = document.createElement('td');
+            eyeUrl.innerHTML = `<a href="${file.url}" target="_blank"><i class="fa-solid fa-eye"></i></a>`;
+            
+            const btnDelete = document.createElement('td');
+            btnDelete.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+            btnDelete.classList.add('olvidona');
+
+            // Lógica de borrado dinámica
+            btnDelete.addEventListener('click', async () => {
+                const eliminar = confirm('¿Estás seguro de que quieres eliminar este registro?');
+                if (!eliminar) return;
+
+                try {
+                    // Accedemos al ID dinámico según la página
+                    const fileId = file[PAGE_CONFIG.idField];
+                    const responseDelete = await fetch(`${PAGE_CONFIG.deleteEndpoint}/${fileId}`, { method: 'DELETE' });
+
+                    if (responseDelete.ok) {
+                        btnDelete.closest('tr').remove();
+                    }
+                } catch (error) {
+                    console.error('Error de red eliminando:', error);
+                }
+            });
+            
+            newRow.appendChild(tableName);    
+            newRow.appendChild(tableSize);    
+            newRow.appendChild(tableDate);    
+            newRow.appendChild(eyeUrl);
+            newRow.appendChild(btnDelete); 
+
+            pdf_container.appendChild(newRow);
+        }
+
+        // Información de paginación
+        if(globalTotalRows > 0) {
+            pageInfo.innerHTML = `<p>1-${response.length} de ${globalTotalRows}</p>`;
+        } else {
+            pageInfo.innerHTML = '';
+        }
+
+    } catch(error) {
+        console.error('Error obteniendo la tabla:', error);
+        pdf_container.innerHTML = '<tr><td colspan="5">Ocurrió un error al cargar la información</td></tr>';
+    }
+}
+
 // Buscador de monturas y autocompletado
+// Actualmente esta funcion no esta en uso, pero no se descarta si se llega a necesitar.
 async function autoCompleteGlass(input, field) {
     field.innerHTML = '';
     field.style.display = 'none';
-    if (input.classList.contains('boxShadowOn')) {
-        input.classList.remove('boxShadowOn');
+    if (input.classList.contains('boxShadowOff')) {
+        input.classList.remove('boxShadowOff');
     }
     
     const valueSearch = input.value;
@@ -128,7 +238,7 @@ async function autoCompleteGlass(input, field) {
         });
 
         field.style.display = 'block';
-        input.classList.add('boxShadowOn');
+        input.classList.add('boxShadowOff');
     } catch (error) {
         console.error('Error buscando monturas:', error);
     }
@@ -138,15 +248,21 @@ const autoCompleteDocument = async(input, field) =>{
     try{
     if(input.value){
     field.innerHTML = ' '
+    if(input.value.length < 2){
+        field.style.display = 'none'
+        input.classList.remove('boxShadowOff')
+        return 
+    }
 
     const value = input.value;
-    const res = await fetch(`/search-invoice?name=${value}`);
+    const res = await fetch(`${PAGE_CONFIG.getSearchDocument}?name=${value}`);
     const data = await res.json();
 
     if(Array.isArray(data) && data.length >= 1){ 
         data.forEach(item=>{
         const rowResult = document.createElement('div');
         rowResult.classList.add('item-glass-result');
+        rowResult.title = item.name
         rowResult.textContent = item.name;
         field.appendChild(rowResult)
 
@@ -154,13 +270,29 @@ const autoCompleteDocument = async(input, field) =>{
             input.value = rowResult.textContent
             field.innerHTML = ' ';
             field.style.display = 'none'
+            input.classList.remove('boxShadowOff');
         })
 
     })
 
     field.style.display = 'block'
-    input.classList.add('boxShadowOn');
+    input.classList.add('boxShadowOff');
+
+    document.addEventListener('click', (place)=>{
+        if(!inputSearchGlass.contains(place.target) && !searchGlassResults.contains(place.target)){
+            field.innerHTML = ' ';
+            field.style.display = 'none'
+            input.classList.remove('boxShadowOff');
+        }
+    })
+
+    } else{
+        field.style.display = 'none'
+        input.classList.remove('boxShadowOff');
     }
+
+
+
  }
     }catch(error){
         console.log('error en la consulta o no se obtuvieron resultados')
@@ -171,7 +303,14 @@ if (inputSearchGlass) {
     inputSearchGlass.addEventListener('input', debounce(() => {
         autoCompleteDocument(inputSearchGlass, searchGlassResults)
     }, 300));
+
+    formManifestAndInvoice.addEventListener('submit', (event)=>{
+        event.preventDefault()
+        tableInformation(inputSearchGlass.value)
+    })
 }
+
+
 
 // Eventos en la NavBar 
 
@@ -325,110 +464,6 @@ dropZone.addEventListener('drop', async(event)=>{
     }
     
 })
-
-
-// Render de la tabla
-async function tableInformation() {
-    // Placeholder fantasma de carga
-    pdf_container.innerHTML = `<tr>
-        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
-        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
-        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
-        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
-        <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
-    </tr>`;
-
-    try {
-        // Usamos el endpoint dinámico según la página
-        const res = await fetch(`${PAGE_CONFIG.getEndpoint}?page=${currentPage}`);
-        const reqData = await res.json();
-        const response = reqData.data;
-        globalTotalRows = reqData.totalRows;
-
-        // Estilos de los botones de Paginación
-        if (currentPage === 1) {
-            btnBack.style.color = '#adadad';
-            btnBack.style.pointerEvents = 'none';
-        } else {
-            btnBack.style.color = '#383838';
-            btnBack.style.pointerEvents = 'auto';
-        }
-
-        if (currentPage === globalTotalRows || globalTotalRows === 0) {
-            btnNext.style.color = '#adadad';
-            btnNext.style.pointerEvents = 'none';
-        } else {
-            btnNext.style.color = '#383838';
-            btnNext.style.pointerEvents = 'auto';
-        }
-
-        // Mensaje de tabla vacía dinámico
-        if (globalTotalRows === 0) {
-            emptyMessage.innerHTML = `<p>${PAGE_CONFIG.emptyMessageText}</p>`;
-        } else {
-            emptyMessage.innerHTML = '';
-        }
-
-        pdf_container.innerHTML = '';
-
-        for (const file of response) {
-            const newRow = document.createElement('tr');
-            
-            const tableName = document.createElement('td');
-            tableName.textContent = file.name;
-            
-            const tableSize = document.createElement('td');
-            tableSize.textContent = parseInt((file.weight) / 1024) + ' Kb';
-            
-            const tableDate = document.createElement('td');
-            tableDate.textContent = new Date(file.date).toLocaleString();
-            
-            const eyeUrl = document.createElement('td');
-            eyeUrl.innerHTML = `<a href="${file.url}" target="_blank"><i class="fa-solid fa-eye"></i></a>`;
-            
-            const btnDelete = document.createElement('td');
-            btnDelete.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-            btnDelete.classList.add('olvidona');
-
-            // Lógica de borrado dinámica
-            btnDelete.addEventListener('click', async () => {
-                const eliminar = confirm('¿Estás seguro de que quieres eliminar este registro?');
-                if (!eliminar) return;
-
-                try {
-                    // Accedemos al ID dinámico según la página
-                    const fileId = file[PAGE_CONFIG.idField];
-                    const responseDelete = await fetch(`${PAGE_CONFIG.deleteEndpoint}/${fileId}`, { method: 'DELETE' });
-
-                    if (responseDelete.ok) {
-                        btnDelete.closest('tr').remove();
-                    }
-                } catch (error) {
-                    console.error('Error de red eliminando:', error);
-                }
-            });
-            
-            newRow.appendChild(tableName);    
-            newRow.appendChild(tableSize);    
-            newRow.appendChild(tableDate);    
-            newRow.appendChild(eyeUrl);
-            newRow.appendChild(btnDelete); 
-
-            pdf_container.appendChild(newRow);
-        }
-
-        // Información de paginación
-        if(globalTotalRows > 0) {
-            pageInfo.innerHTML = `<p>1-${response.length} de ${globalTotalRows}</p>`;
-        } else {
-            pageInfo.innerHTML = '';
-        }
-
-    } catch(error) {
-        console.error('Error obteniendo la tabla:', error);
-        pdf_container.innerHTML = '<tr><td colspan="5">Ocurrió un error al cargar la información</td></tr>';
-    }
-}
 
 // Inicializar la tabla al cargar
 if(pdf_container){

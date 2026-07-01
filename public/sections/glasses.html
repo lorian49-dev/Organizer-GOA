@@ -228,11 +228,11 @@ if(magnifier){
             })
 
             nameFieldInvoice.addEventListener('input', debounce(()=>{
-            autocompleteMI(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?q=', 'id_invoice')
+            autocompleteMI(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?name=', 'id_invoice')
             }, 300))
 
             nameFieldManifest.addEventListener('input', debounce(()=>{
-                 autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?q=', 'id_manifest')
+                 autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?name=', 'id_manifest')
             }, 300))
 
             formState=true;

@@ -475,7 +475,7 @@ app.get('/manifiestos',(req, res)=>{
 // Consulta de manifiestos en el buscador
 
 app.get('/search-manifest', async(req, res)=>{
-  const search = req.query.q
+  const search = req.query.name;
 
   if(!search) return res.json([]); // validacion de consulta
 
@@ -489,12 +489,14 @@ app.get('/search-manifest', async(req, res)=>{
   
 })
 
-// obtencion de datos PARA TABLA MANIFEST
+// obtencion de datos PARA TABLA manifiestos
 
 app.get('/manifest-table-get', async(req, res)=>{
   const p = parseInt(req.query.page);
   const page = Number.isInteger(p) && p > 1 ? p : 1;
   const limit = 10;
+
+  const filter = (!req.query.filter || req.query.filter === 'undefined') ? '' : req.query.filter;
 
   // inicio y fin para e rango en la paginacion
 
@@ -502,8 +504,11 @@ app.get('/manifest-table-get', async(req, res)=>{
   const end = start + (limit - 1);
 
   try{
-
-    const {data, error, count} = await access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'}).order('date', {ascending: false}).range(start, end);
+    let query = access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'});
+    if(filter){
+     query = query.ilike('name', `%${filter}%`)
+    }
+    const {data, error, count} = await query.order('date', {ascending: false}).range(start, end);
     
 
     if(error){

@@ -108,11 +108,11 @@ header>img{
 
 .form-documents #search-glass{
     width: 3rem;
-    transition: all .5s ease-in-out;
+    transition: transform .5s ease-in-out, width .5s ease-in-out, opacity .5s ease-in-out;
 } 
 /*INPUT DE LA BARRA DE BUSQUEDA*/
 #search-glass.active{
-    width: 150px;
+    width: 200px;
     z-index: 10;
 }
 
@@ -126,16 +126,16 @@ header>img{
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
     position: absolute;
-    width: 150%;
+    width: 100%;
     display: none;
     top: 25px;
     box-shadow: var(--main-shadow);
-    font-family: "Arsenal SC", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: #383838;
     z-index: 5;
 }
 
-#search-glass.boxShadowOn{
+#search-glass.boxShadowOff{
     box-shadow: none;
 }
 
@@ -145,6 +145,10 @@ header>img{
     transition: all .5s ease;
     padding: .5rem;
     font-size: .7rem;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .item-glass-result:hover{
@@ -363,7 +367,7 @@ nav{
 }
 
 nav.active{
-    width: 250px;
+    width: 350px;
 }
 
 .back-home{
@@ -459,13 +463,13 @@ a .bold{
 */
 
 .drag-and-drop{
-    width: 80%;
+    width: 70%;
     height: 200px;
     border-radius: 25px;
     border: #e7e7e7 1px dashed;
     display: none;
     transition: all .3s ease;
-    margin-left: 15px;
+    margin: 0 auto;
     overflow: hidden;
 }
 
