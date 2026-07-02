@@ -40,6 +40,7 @@ const checkFeedBack = document.querySelector('.check-feedback')
 
 let currentPage = 1;
 let globalTotalRows = 0;
+let valueInput
 
 // Utilidades
 
@@ -153,6 +154,8 @@ async function tableInformation(filter) {
             
             const tableName = document.createElement('td');
             tableName.textContent = file.name;
+            tableName.classList.add('row-name-table')
+            tableName.title = tableName.textContent;
             
             const tableSize = document.createElement('td');
             tableSize.textContent = parseInt((file.weight) / 1024) + ' Kb';
@@ -307,6 +310,10 @@ if (inputSearchGlass) {
     formManifestAndInvoice.addEventListener('submit', (event)=>{
         event.preventDefault()
         tableInformation(inputSearchGlass.value)
+        searchGlassResults.innerHTML = ' '
+        searchGlassResults.style.display = 'none';
+        inputSearchGlass.classList.remove('boxShadowOff')
+        valueInput = inputSearchGlass.value
     })
 }
 

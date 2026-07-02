@@ -665,6 +665,7 @@ padding: 1rem;
     background-color: #fff;
     padding-top: 1rem;
   box-shadow: var(--main-shadow);
+  overflow: hidden;
 
 }
 
@@ -729,9 +730,11 @@ td{
     padding: 1rem;
 }
 
-
-td:nth-child(1), th:nth-child(1){
- width: 55%;
+.row-name-table{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 500px;
 }
 
 table a{

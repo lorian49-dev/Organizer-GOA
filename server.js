@@ -341,14 +341,20 @@ app.get('/invoices-table-get', async(req, res)=>{
   const page = Number.isInteger(p) && p > 1 ? p : 1;
   const limit = 10;
 
+  const filter = (!req.query.filter || req.query.filter === 'undefined') ? '' : req.query.filter;
+
   // inicio y fin para e rango en la paginacion
 
   const start = (page - 1) * limit;
   const end = start + (limit - 1);
 
   try{
+    let query = access.from('invoices').select('id_invoice, name, weight, date, url', {count:'exact'});
+    if(filter){
+      query = query.ilike('name', `%${filter}%`)
+    }
 
-    const {data, error, count} = await access.from('invoices').select('id_invoice, name, weight, date, url', {count:'exact'}).order('date', {ascending: false}).range(start, end);
+    const {data, error, count} = await query.order('date', {ascending: false}).range(start, end);
 
     if(error){
       throw error
