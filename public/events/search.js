@@ -1,6 +1,11 @@
 const tableResultGlasses = document.querySelector('.table-search-results');
 const tableBodyGlasses = document.querySelector('.table-body-results')
 
+// navBar Constantes
+    const magnifier = document.querySelector('.fa-magnifying-glass')
+    const navEgation = document.querySelector('nav')
+    const formManifestAndInvoice = document.querySelector('.form-documents');
+
 const inputSearchGlass = document.getElementById('search-glass')
 const searchGlassResults = document.querySelector('.field-results-glasses')
 
@@ -17,6 +22,25 @@ const goHome = () =>{
         }, delay)
        }
     }
+
+    const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+     const openNavBar = async(a, b) =>{
+   
+    if(!a){
+        navEgation.classList.add('active');
+        formManifestAndInvoice.classList.add('active')
+        setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
+    }else{
+        inputSearchGlass.classList.remove('active');
+        setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
+        await b(500);
+        navEgation.classList.remove('active')
+        if(dropZone&&dropZone.classList.contains('on')) dropZone.classList.remove('on');
+
+    }
+   
+ }
 
       async function autoCompleteGlass(input, field) {
             field.innerHTML = ''
@@ -84,6 +108,15 @@ const showInfoGlasses = async() => {
         }
 
 showInfoGlasses();
+
+     // Eventos en la NavBar 
+
+if(magnifier){
+    magnifier.addEventListener('click', async()=>{
+     const navIsActive = navEgation.classList.contains('active')
+     openNavBar(navIsActive, breakPoint)
+    })
+}
 
 
     

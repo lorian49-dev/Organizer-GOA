@@ -309,6 +309,8 @@ if (inputSearchGlass) {
 
     formManifestAndInvoice.addEventListener('submit', (event)=>{
         event.preventDefault()
+        currentPage = 1;
+        valueInput = inputSearchGlass.value
         tableInformation(inputSearchGlass.value)
         searchGlassResults.innerHTML = ' '
         searchGlassResults.style.display = 'none';
@@ -479,18 +481,26 @@ if(pdf_container){
 
 // Paginacion
 const clickNext = () => {
-    if (currentPage < globalTotalRows) {
+    if (currentPage < globalTotalRows && !valueInput) {
         pdf_container.innerHTML = '';
         currentPage++;
         tableInformation();
+    }else{
+        pdf_container.innerHTML = '';
+        currentPage++;
+        tableInformation(valueInput);
     }
 };
 
 const clickBack = () => {
-    if (currentPage > 1) {
+    if (currentPage > 1 && !valueInput) {
         pdf_container.innerHTML = '';
         currentPage--;
         tableInformation();
+    }else{
+        pdf_container.innerHTML = '';
+        currentPage--;
+        tableInformation(valueInput);
     }
 };
 

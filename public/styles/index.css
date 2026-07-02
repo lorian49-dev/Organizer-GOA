@@ -973,7 +973,7 @@ table a:hover{
 /* Estilos de la pagina de resultados */
 
 .table-results-container{
-    width: 80%;
+    width: 70%;
     margin: 1rem auto;
     border-radius: 25px;
     overflow: hidden;
