@@ -1,6 +1,6 @@
 const currentPath = window.location.pathname;
 const isManifestPage = currentPath.includes('loadManiefst');
-
+// configuracion dinamica de la url de la pagina dependiendo de la ubicacion actual
 const PAGE_CONFIG = {
     getSearchDocument : isManifestPage? '/search-manifest': '/search-invoice',
     getPostPath: isManifestPage? '/manifest-table-post':'/invoice-table-post',
@@ -18,7 +18,10 @@ const btnNext = document.querySelector('.btnNext');
 const btnBack = document.querySelector('.btnBack');
 const pageInfo = document.querySelector('.page-info');
 const emptyMessage = document.querySelector('.empty-message');
-
+const containerFilterBar = document.querySelector('.container-filters');
+const filterBar = document.querySelector('.filter-bar');
+const filterByModel = document.querySelector('.filter-by-model');
+const filterByReference = document.querySelector('.filter-by-reference')
 // navBar Constantes
 const magnifier = document.querySelector('.fa-magnifying-glass')
 const navEgation = document.querySelector('nav')
@@ -37,13 +40,15 @@ const processBar = document.querySelector('.process-bar')
 const circleFeedBack = document.querySelector('.feedback-circle')
 const iconUbication = ['<img src="/src/check-icon.png">', '<img src="/src/error-icon.png">']
 const checkFeedBack = document.querySelector('.check-feedback')
-
+// Variables cambiantes
 let currentPage = 1;
 let globalTotalRows = 0;
 let valueInput
+let valueFilter
 
 // Utilidades
-
+const searchByGlass = document.querySelector('.hello') // variable la cual tendra una clase de la que cuando se active se buscara un documento por gafas
+const searchByGlassReference = document.querySelector('.hola') // variable la cual tendra una clase de la que cuando se active se buscara un documento por referencia
 const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // un debounce es lo que cree para tener por cada evento de tecleo en un input, un tiempo de respuesta establecido para no saturar al servidor de solicitudes.
 const debounce = (fn, delay) => {
@@ -296,6 +301,11 @@ const autoCompleteDocument = async(input, field) =>{
 
 
 
+ }else{
+    field.innerHTML = ' '
+        field.style.display = 'none'
+        input.classList.remove('boxShadowOff')
+        return 
  }
     }catch(error){
         console.log('error en la consulta o no se obtuvieron resultados')
@@ -304,18 +314,26 @@ const autoCompleteDocument = async(input, field) =>{
 
 if (inputSearchGlass) {
     inputSearchGlass.addEventListener('input', debounce(() => {
-        autoCompleteDocument(inputSearchGlass, searchGlassResults)
+         autoCompleteDocument(inputSearchGlass, searchGlassResults)
     }, 300));
 
     formManifestAndInvoice.addEventListener('submit', (event)=>{
         event.preventDefault()
         currentPage = 1;
         valueInput = inputSearchGlass.value
-        tableInformation(inputSearchGlass.value)
+        switch (valueFilter) {
+            case 'isModel':
+                 console.log(valueFilter)
+                break;
+            case 'isReference':
+                 console.log(valueFilter)
+                break
+            default: tableInformation(valueInput)
+                break;
+        }
         searchGlassResults.innerHTML = ' '
         searchGlassResults.style.display = 'none';
         inputSearchGlass.classList.remove('boxShadowOff')
-        valueInput = inputSearchGlass.value
     })
 }
 
@@ -503,4 +521,32 @@ const clickBack = () => {
         tableInformation(valueInput);
     }
 };
+
+const clickFilterAction = (btn1, btn2, valueBtn)=>{
+     btn1.addEventListener('click', ()=>{
+
+       if(!btn2.classList.contains('picked')){
+        btn1.classList.toggle('picked')
+        if(btn1.classList.contains('picked')){
+            valueFilter = valueBtn;
+        } else{
+            valueFilter = '';
+        }
+       }
+     })
+}
+
+clickFilterAction(filterByModel, filterByReference, 'isModel');
+clickFilterAction(filterByReference, filterByModel, 'isReference');
+
+filterBar.addEventListener('click', async()=>{
+ containerFilterBar.classList.toggle('active')
+ if(containerFilterBar.classList.contains('active')){
+    filterByModel.classList.add('active');
+    filterByReference.classList.add('active');
+ }else{
+    filterByModel.classList.remove('active');
+    filterByReference.classList.remove('active');
+ }
+})
 

@@ -45,8 +45,8 @@ const goHome = () =>{
       async function autoCompleteGlass(input, field) {
             field.innerHTML = ''
             field.style.display = 'none';
-            if(input.classList.contains('boxShadowOn')){
-            input.classList.remove('boxShadowOn');
+            if(input.classList.contains('boxShadowOff')){
+            input.classList.remove('boxShadowOff');
             }
             const valueSearch = input.value;
 
@@ -70,7 +70,7 @@ const goHome = () =>{
             })
 
             field.style.display = 'block'
-            input.classList.add('boxShadowOn')
+            input.classList.add('boxShadowOff')
         }
 
 addEventListener('DOMContentLoaded', async()=>{

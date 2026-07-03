@@ -405,7 +405,7 @@ nav ul li i{
     align-items: flex-start;
     position: relative;
     gap: 1.5rem;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .list-navegation-ul li{
@@ -628,33 +628,77 @@ a .bold{
  background: #262a82;
 }
 
-/*
-.upload-file-form{
-    border: 5px #16183850 dashed;
-    padding: 5rem;
-    border-radius: 25px;
+/*modulo de filtros*/
+
+ .filer-modules{
+    min-width: 900px;
+    max-width: 1000px;
+    height: 60px;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: flex-end;
+ }
+
+ .container-filters{
+    width: 55px;
+    display: flex;
     align-items: center;
-}
-
-.upload-file-form button{
-padding: 1rem;
-    border-radius: 25px;
-    border: none;
+    gap: 15px;
+    background: #ffffff;
+    border-radius: 30px;
     box-shadow: var(--main-shadow);
-    cursor: pointer;
+    padding-left: 12px;
     transition: all .5s ease;
-    background-color: #fcb823;
-    color: #3a3a3ab6;
-}
+    overflow: hidden;
+ }
 
-.upload-file-form button:hover{
+ .container-filters.active{
+    width: 300px;
+ }
+
+ .filter-by-model, .filter-by-reference{
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid black;
+    display:  flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform .5s ease, opacity 1s ease-in, background .5s ease-in;
+    opacity: 0;
+ }
+
+  .filter-by-model.active, .filter-by-reference.active{
+    opacity: 1;
+  }
+
+   .filter-by-model.picked, .filter-by-reference.picked{
+    background: #000b30;
+    color: #fff;
+  }
+
+ .filter-by-model i, .filter-by-reference i{
+    font-size: 1rem;
+    transition: all 0.5s ease-in;
+ }
+
+ .filter-by-model:hover, .filter-by-reference:hover{
     transform: translateY(-5px);
-}
+ }
 
-*/
+ .filter-by-model:hover i,  .filter-by-reference:hover i{
+   transform: rotate(360deg);
+ }
+
+ .fa-sliders{
+    font-size: 1.5rem;
+    padding: 5px;
+    cursor: pointer;
+    color: rgb(43, 43, 43);
+ }
+ 
+
+/* Tabla de datos de manifiestos y documentos*/
 
 .pdf-container{ /*Este es el estilo de la capa trasera para la tabla*/
     margin: 0 auto;
