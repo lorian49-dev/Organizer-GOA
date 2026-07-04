@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Render de la tabla
-async function tableInformation(filter) {
+async function tableInformation(code, filter) {
     // Placeholder fantasma de carga
     pdf_container.innerHTML = `<tr>
         <td><span class="phantom-placeholder" style="display:inline-block"></span></td>
@@ -121,6 +121,7 @@ async function tableInformation(filter) {
             page: currentPage
         })
 
+        params.append('code', code)
         params.append('filter', filter)
         // Usamos el endpoint dinámico según la página
         const res = await fetch(`${PAGE_CONFIG.getEndpoint}?${params.toString()}`);
@@ -323,10 +324,10 @@ if (inputSearchGlass) {
         valueInput = inputSearchGlass.value
         switch (valueFilter) {
             case 'isModel':
-                 console.log(valueFilter)
+                 tableInformation(valueInput, 'isModel')
                 break;
             case 'isReference':
-                 console.log(valueFilter)
+                 tableInformation(valueInput, 'isReference')
                 break
             default: tableInformation(valueInput)
                 break;

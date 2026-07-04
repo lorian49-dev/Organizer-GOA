@@ -336,39 +336,90 @@ app.get('/search-invoice', async(req, res)=>{
 
 // obtencion de datos INVOICES para la tabla
 
-app.get('/invoices-table-get', async(req, res)=>{
+app.get('/invoices-table-get', async (req, res) => {
   const p = parseInt(req.query.page);
   const page = Number.isInteger(p) && p > 1 ? p : 1;
   const limit = 10;
 
-  const filter = (!req.query.filter || req.query.filter === 'undefined') ? '' : req.query.filter;
-
-  // inicio y fin para e rango en la paginacion
+  // Simplificación de validaciones
+  const code = (req.query.code && req.query.code !== 'undefined') ? req.query.code : '';
+  const filter = (req.query.filter && req.query.filter !== 'undefined') ? req.query.filter : '';
 
   const start = (page - 1) * limit;
-  const end = start + (limit - 1);
+  const end = start + limit - 1;
 
-  try{
-    let query = access.from('invoices').select('id_invoice, name, weight, date, url', {count:'exact'});
-    if(filter){
-      query = query.ilike('name', `%${filter}%`)
+  try {
+    let query;
+    let isJoin = false; // Bandera para saber si estamos haciendo un JOIN con otra tabla
+
+    switch (filter) {
+      case 'isModel':
+        query = access.from('glasses')
+          .select('invoice_id(id_invoice, name, weight, date, url)', { count: 'exact' })
+          .ilike('code', `%${code}%`);
+        isJoin = true;
+        break;
+        
+      case 'isReference':
+        query = access.from('glasses')
+          .select('invoice_id(id_invoice, name, weight, date, url)', { count: 'exact' })
+          .ilike('reference', `%${code}%`);
+        isJoin = true;
+        break;
+        
+      default:
+        query = access.from('invoices')
+          .select('id_invoice, name, weight, date, url', { count: 'exact' });
+        if (code) {
+          query = query.ilike('name', `%${code}%`);
+        }
+        break;
+    }
+    const orderColumn = isJoin ? 'invoice_id(date)' : 'date';
+
+    const { data, error, count } = await query
+      .order(orderColumn, { ascending: false })
+      .range(start, end);
+
+    if (error) {
+      throw error;
     }
 
-    const {data, error, count} = await query.order('date', {ascending: false}).range(start, end);
-
-    if(error){
-      throw error
-    }
+    const normalizedData = data.map(item => isJoin ? item.invoice_id : item);
 
     const totalRows = Math.ceil(count / limit);
 
-    res.json({data, totalRows});
+    res.json({ data: normalizedData, totalRows });  
+
+  } catch (error) {
+    console.error('Error en /invoices-table-get:', error);
+    res.status(500).json({ error: 'Error en la obtención de datos' });
+  }
+});
+
+// Busqueda de Invoices Por medio del codigo de la montura
+
+app.get('/invoices-table-by-glasses', async(req, res)=>{
+  const code = req.query.code;
+  const filter = req.query.filter;
+  try{
+   if(code && filter && filter == 'isModel'){
+    const {data: dataByModel, error: errorByModel} = await access.from('glasses').select('invoice_id(name, weight, date, url)').ilike('code', `%${code}%`)
+    if(errorByModel) return res.status(404).send('No se encontro la factura que solicitaste')
+    res.json(dataByModel)
+   }
+
+   if(code && filter && filter == 'isReference'){
+    const {data: dataByReference, error: errorByReference} = await access.from('glasses').select('invoice_id(name, weight, date, url)').ilike('reference', `%${code}%`)
+    if(errorByReference) return res.status(404).send('No se encontro la factura que solicitaste')
+    res.json(dataByReference)
+   }
+
 
   }catch(error){
-    console.error(error)
-    res.status(500).json({error: 'error en la obtencion de datos'})
+    console.error(error);
+    res.status(500).json({message:'error al obtener los resultados'})
   }
-
 })
 
 // subida de archivos | INVOICES
