@@ -46,6 +46,7 @@ let globalTotalRows = 0;
 let valueInput
 let valueFilter
 let stateSearch = false
+let limitPag = 1
 
 // Utilidades
 const searchByGlass = document.querySelector('.hello') // variable la cual tendra una clase de la que cuando se active se buscara un documento por gafas
@@ -206,7 +207,7 @@ async function tableInformation(code, filter) {
 
         // Información de paginación
         if(globalTotalRows > 0) {
-            pageInfo.innerHTML = `<p>1-${response.length} de ${globalTotalRows}</p>`;
+            pageInfo.innerHTML = `<p>pag ${currentPage} de ${globalTotalRows}</p>`;
         } else {
             pageInfo.innerHTML = '';
         }
@@ -504,6 +505,7 @@ if(pdf_container){
 
 // Paginacion
 const clickNext = () => {
+    limitPag = limitPag + 10 // 10 es el limite de resultados
     if (currentPage < globalTotalRows && !valueInput) {
         pdf_container.innerHTML = '';
         currentPage++;
@@ -516,6 +518,7 @@ const clickNext = () => {
 };
 
 const clickBack = () => {
+    limitPag = limitPag - 10 // 10 es el limite de resultados
     if (currentPage > 1 && !valueInput) {
         pdf_container.innerHTML = '';
         currentPage--;
