@@ -45,6 +45,7 @@ let currentPage = 1;
 let globalTotalRows = 0;
 let valueInput
 let valueFilter
+let stateSearch = false
 
 // Utilidades
 const searchByGlass = document.querySelector('.hello') // variable la cual tendra una clase de la que cuando se active se buscara un documento por gafas
@@ -257,7 +258,7 @@ const autoCompleteDocument = async(input, field) =>{
     try{
     if(input.value){
     field.innerHTML = ' '
-    if(input.value.length < 2){
+    if(input.value.length < 2 || stateSearch){
         field.style.display = 'none'
         input.classList.remove('boxShadowOff')
         return 
@@ -320,6 +321,7 @@ if (inputSearchGlass) {
 
     formManifestAndInvoice.addEventListener('submit', (event)=>{
         event.preventDefault()
+        stateSearch = true;
         currentPage = 1;
         valueInput = inputSearchGlass.value
         switch (valueFilter) {
@@ -335,6 +337,8 @@ if (inputSearchGlass) {
         searchGlassResults.innerHTML = ' '
         searchGlassResults.style.display = 'none';
         inputSearchGlass.classList.remove('boxShadowOff')
+        setTimeout(()=>stateSearch = !stateSearch, 300)
+        
     })
 }
 

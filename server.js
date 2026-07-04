@@ -350,7 +350,7 @@ app.get('/invoices-table-get', async (req, res) => {
 
   try {
     let query;
-    let isJoin = false; // Bandera para saber si estamos haciendo un JOIN con otra tabla
+    let isJoin = false;
 
     switch (filter) {
       case 'isModel':
@@ -553,6 +553,7 @@ app.get('/manifest-table-get', async(req, res)=>{
   const page = Number.isInteger(p) && p > 1 ? p : 1;
   const limit = 10;
 
+  const code = (!req.query.code || req.query.code === 'undefined') ? '' : req.query.code;
   const filter = (!req.query.filter || req.query.filter === 'undefined') ? '' : req.query.filter;
 
   // inicio y fin para e rango en la paginacion
@@ -561,20 +562,39 @@ app.get('/manifest-table-get', async(req, res)=>{
   const end = start + (limit - 1);
 
   try{
-    let query = access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'});
-    if(filter){
-     query = query.ilike('name', `%${filter}%`)
+    let query
+    let isJoin = false
+    switch (filter){
+      case 'isModel':
+       query = access.from('glasses').select('manifest_id(id_manifest, name, weight, date, url)', {count:'exact'}).ilike('code', `%${code}%`);
+       isJoin = true;
+        break;
+      case 'isReference':
+       query = access.from('glasses').select('manifest_id(id_manifest, name, weight, date, url)', {count:'exact'}).ilike('reference', `%${code}%`);
+       isJoin = true;
+        break;
+        default:
+         query = access.from('manifest').select('id_manifest, name, weight, date, url', {count:'exact'});
+         if(code){
+          query = query.ilike('name', `%${code}%`);
+         } 
+          break;
     }
-    const {data, error, count} = await query.order('date', {ascending: false}).range(start, end);
+
+    const dataJoin = isJoin == true ? 'manifest_id(date)' : 'date'
+
+    const {data, error, count} = await query.order(dataJoin, {ascending: false}).range(start, end);
     
 
     if(error){
       throw error
     }
 
+    const normalizedData = data.map(item => isJoin ? item.manifest_id : item);
+
     const totalRows = Math.ceil(count / limit);
 
-    res.json({data, totalRows});
+    res.json({data: normalizedData, totalRows});
 
   }catch(error){
     console.error(error)
