@@ -163,7 +163,7 @@ const img_logo = document.querySelector('.logo-andes');
       async function getGlasses(){
         fieldResultGlasses.innerHTML = '';
         fieldResultGlasses.style.display = 'none';
-        inputGlasses.classList.remove('boxShadowOn');
+        inputGlasses.classList.remove('boxShadowOff');
 
 
         const inputData = inputGlasses.value;
@@ -190,12 +190,12 @@ const img_logo = document.querySelector('.logo-andes');
           document.addEventListener('click', (e)=>{
           if(!fieldResultGlasses.contains(e.target)){
             fieldResultGlasses.style.display = 'none'
-            if(!inputGlasses.classList.contains('boxShadowOn')){
+            if(!inputGlasses.classList.contains('boxShadowOff')){
         inputGlasses.classList.remove('boxShadowOn');
             }
           }
         })
-        inputGlasses.classList.add('boxShadowOn');
+        inputGlasses.classList.add('boxShadowOff');
         fieldResultGlasses.style.display = 'block'
       }
 

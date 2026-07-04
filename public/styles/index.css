@@ -76,6 +76,7 @@ header>img{
  display: flex;
  justify-content: center;
  width: auto;
+
 }
 /*INPUT DE LA BARRA DE BUSQUEDA*/
 #search-glass{
@@ -85,6 +86,7 @@ header>img{
     border: none;
     box-shadow: var(--main-shadow);
     position: relative;
+    z-index: 10;
 }
 
 #search-glass:focus{
@@ -162,7 +164,8 @@ header>img{
     grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;
     gap: 2rem;
-    margin: 2rem auto 0 auto;
+    margin: 0 auto;
+    z-index: 0;
 }
 
 .main section{
@@ -211,7 +214,7 @@ section>i{
     justify-content: center;
     align-items: center;
     transition: all 1s ease;
-    z-index: 5;
+    z-index: 100;
 }
 
 .modal-windows{
@@ -228,7 +231,7 @@ section>i{
     flex-direction: column;
     transition: all 1s ease;
     color: #16183881;
-    z-index: 6;
+    z-index: 101;
 }
 
 .modal-windows-content{
