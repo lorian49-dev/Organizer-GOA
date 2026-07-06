@@ -26,6 +26,8 @@ const filterByReference = document.querySelector('.filter-by-reference')
 const magnifier = document.querySelector('.fa-magnifying-glass')
 const navEgation = document.querySelector('nav')
 const formManifestAndInvoice = document.querySelector('.form-documents');
+const barIconMenu = document.querySelector('.fa-bars-staggered')
+let navIsActive 
 // Zona de Arrastrar y soltar .pdf
 const dropZone = document.querySelector('.drag-and-drop');
 const dropZoneInput = document.getElementById('btn-file');
@@ -85,10 +87,12 @@ const preventEventDropZoneOff = (event) =>{
  const openNavBar = async(a, b) =>{
    
     if(!a){
+        barIconMenu.title = 'Minimizar menu'
         navEgation.classList.add('active');
         formManifestAndInvoice.classList.add('active')
         setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
     }else{
+        barIconMenu.title = 'Expandir menu'
         inputSearchGlass.classList.remove('active');
         setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
         await b(500);
@@ -343,13 +347,18 @@ if (inputSearchGlass) {
     })
 }
 
-
+if(barIconMenu){
+  barIconMenu.addEventListener('click', async()=>{
+     navIsActive = navEgation.classList.contains('active')
+     openNavBar(navIsActive, breakPoint)
+    })
+}
 
 // Eventos en la NavBar 
 
 if(magnifier){
     magnifier.addEventListener('click', async()=>{
-     const navIsActive = navEgation.classList.contains('active')
+     navIsActive = navEgation.classList.contains('active')
      openNavBar(navIsActive, breakPoint)
     })
 }
