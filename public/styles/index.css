@@ -417,10 +417,6 @@ nav ul li i{
     width: 100%;
 }
 
-.list-navegation-ul li:is(:nth-child(3), :nth-child(4)){
-    margin-left: 3px;
-}
-
 .nav-description{
     margin-left: 1.5rem;
     position: absolute;

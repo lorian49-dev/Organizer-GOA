@@ -43,8 +43,10 @@ const saltRounds = 10 // Nivel de seguridad (10 es el nivel mas alto)
 const app = express();
 // Redireccion al login y seguridad
 
+const routeFolder = path.join(__dirname, 'routes')
+
 const isAuthenticated = (req, res, next) =>{
-if(req.path === '/sections/login.html'&&(req.session&&req.session.user)){
+if(req.path === `${routeFolder}/sections/login.html`&&(req.session&&req.session.user)){
    return res.redirect('/')
   } 
   
@@ -52,15 +54,15 @@ if(req.path === '/sections/login.html'&&(req.session&&req.session.user)){
     return next()
   } 
 
-  if(req.path !== '/sections/login.html'){
-     return res.redirect('/sections/login.html')
+  if(req.path !== `${routeFolder}/sections/login.html`){
+     return res.sendFile(`${routeFolder}/sections/login.html`)
   }
 
   next()
 }
 
 const isAdmin = (req, res, next) =>{
- if(req.session.user.id || req.session.user.id == 1){
+ if(req.session.user.id && req.session.user.id == 1){
    return next();
  }else{
   res.redirect('/denny-access')
@@ -82,12 +84,18 @@ const access = createClient(
 
 /*--------------------------------------------*/
 //Cookie de La sesion del usuario para ingreso
-app.use(session({
-  store: new pgSession({
+
+const pgSessionStore = new pgSession({
     pool: dbPool,
     tableName:'sessions'
-  }),
+  })
 
+  pgSessionStore.on('error', function(error){
+    console.error(error);
+  })
+
+app.use(session({
+  store: pgSessionStore,
   secret: 'my-secret-new-key',
   saveUninitialized: false,
   resave: false,
@@ -102,6 +110,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/logo-types', express.static(path.join(__dirname, 'src/logo-types')));
 app.use('/src', express.static(path.join(__dirname, '/src')))
+
 app.use(express.urlencoded({extended:true})); // permite el uso del cuerpo de un formulario
 app.use(express.json())
 app.set('view engine', 'ejs') 
@@ -166,7 +175,7 @@ app.get('/logout', (req, res)=>{
 app.use(isAuthenticated)
 
 app.get('/',(req, res)=>{
-  res.sendFile(path.join(__dirname, '/public/sections/index.html'))
+  res.sendFile(`${routeFolder}/sections/index.html`)
 })
 
 
@@ -189,8 +198,8 @@ app.get('/denny-access', (req, res)=>{
 //                  Gafas
 // ------------------------------------------- //
 
-app.get('/monturas',(req, res)=>{
- res.redirect('/sections/glasses.html')
+app.get('/monturas',isAdmin,(req, res)=>{
+ res.sendFile(`${routeFolder}/sections/glasses.html`)
 })
 
 // Subida de gafas a la BD
@@ -215,7 +224,7 @@ app.post('/glasses', async(req, res)=>{
     return res.status(500).send('error al guardar datos'); 
    }
 
-   res.redirect('/sections/glasses.html')
+   res.sendFile(`${routeFolder}/sections/glasses.html`)
   }catch(err){
     console.log(err)
   }
@@ -248,9 +257,8 @@ app.get('/get-glasses', async(req, res)=>{
 //-------------------------------------------
 
 app.get('/search-mid', (req, res)=>{
-  // Sirve archivos en la web, que no estan en la pagina public
-  res.sendFile(path.join(__dirname, 'public', 'sections', 'search.html'))
-})
+  res.sendFile(path.join(routeFolder, 'sections', 'search.html'))
+}) 
 
 app.get('/search-glasses-table', async(req, res)=>{
   const searchData = req.query.glass_model;
@@ -315,7 +323,7 @@ app.get('/search-glass-results', async(req, res)=>{
 // ------------------------------------------- //
 
 app.get('/facturas', isAdmin,(req, res)=>{
- res.redirect('/sections/loadFile.html')
+ res.sendFile(path.join(routeFolder, 'sections', 'loadFile.html'))
 })
 
 // consulta de facturas en el buscador
@@ -524,9 +532,9 @@ app.delete('/action-delete/:id', async(req, res)=>{
 //                  Manifest
 // ------------------------------------------- //
 
-app.get('/manifiestos',(req, res)=>{
+app.get('/manifiestos', isAdmin, (req, res)=>{
  console.log('success log')
- res.redirect('/sections/loadManiefst.html')
+ res.sendFile(path.join(routeFolder, 'sections', 'loadManiefst.html'))
 })
 
 // Consulta de manifiestos en el buscador

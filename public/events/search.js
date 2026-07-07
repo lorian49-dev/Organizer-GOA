@@ -2,6 +2,8 @@ const tableResultGlasses = document.querySelector('.table-search-results');
 const tableBodyGlasses = document.querySelector('.table-body-results')
 
 // navBar Constantes
+    const barIconMenu = document.querySelector('.fa-bars-staggered')
+    let navIsActive
     const magnifier = document.querySelector('.fa-magnifying-glass')
     const navEgation = document.querySelector('nav')
     const formManifestAndInvoice = document.querySelector('.form-documents');
@@ -28,10 +30,12 @@ const goHome = () =>{
      const openNavBar = async(a, b) =>{
    
     if(!a){
+        barIconMenu.title = 'Minimizar menu'
         navEgation.classList.add('active');
         formManifestAndInvoice.classList.add('active')
         setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
     }else{
+        barIconMenu.title = 'Expandir menu'
         inputSearchGlass.classList.remove('active');
         setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
         await b(500);
@@ -110,10 +114,16 @@ const showInfoGlasses = async() => {
 showInfoGlasses();
 
      // Eventos en la NavBar 
+     if(barIconMenu){
+  barIconMenu.addEventListener('click', async()=>{
+     navIsActive = navEgation.classList.contains('active')
+     openNavBar(navIsActive, breakPoint)
+    })
+}
 
 if(magnifier){
     magnifier.addEventListener('click', async()=>{
-     const navIsActive = navEgation.classList.contains('active')
+     navIsActive = navEgation.classList.contains('active')
      openNavBar(navIsActive, breakPoint)
     })
 }
