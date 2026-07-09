@@ -15,6 +15,10 @@ const goHome = () =>{
     window.location.href = '/'
 }
 
+const logoutBtn = () =>{
+    window.location.href = '/logout'
+}
+
   const debounce = (fn, delay) =>{
        let timeout;
        return function(...args){
@@ -91,7 +95,7 @@ const showInfoGlasses = async() => {
     const data = await res.json();
 
     data.forEach(item => {
-        let newTr = document.createElement('tr');
+        const newTr = document.createElement('tr');
         let htmlContent = ` <td><input type='checkbox'></td>
                             <td>${item.brand}</td>
                             <td>${item.code}</td>

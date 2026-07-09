@@ -367,6 +367,7 @@ nav{
     gap: 50px;
     transition: all .4s ease;
     color: #cfcfcf;
+    position: relative;
 }
 
 nav.active{
@@ -451,6 +452,24 @@ a .bold{
 
 .bold i{
     color: #ecc900;
+}
+
+#btn-log-out{
+    position: absolute;
+    bottom: 40px;
+    right: 20px;
+    border-radius: 50%;
+    padding: 7px;
+    font-size: 15px;
+    border-style: none;
+    font-optical-sizing: auto;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+#btn-log-out:hover{
+    background-color: rgb(202, 90, 90);
+    color: whitesmoke;
 }
 
 /*Personalizacion del contenido de la pagina*/

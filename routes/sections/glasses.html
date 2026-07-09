@@ -30,6 +30,8 @@
          <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
         </ul>
       </nav>
+      <!--Boton de Cierre de sesion-->
+         <button id="btn-log-out" onclick="logoutBtn()"><i class="fa-solid fa-power-off"></i></button>
 <div class="main-glasses">
     <div class="img-container">
             <button class="btn-info">Adicionar</button>
@@ -133,6 +135,10 @@
     let globalCount = 0
 
     // Utilidades
+
+    const logoutBtn = () =>{
+    window.location.href = '/logout'
+}
 
     const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 

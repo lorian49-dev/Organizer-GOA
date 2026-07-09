@@ -53,6 +53,9 @@ let limitPag = 1
 // Utilidades
 const searchByGlass = document.querySelector('.hello') // variable la cual tendra una clase de la que cuando se active se buscara un documento por gafas
 const searchByGlassReference = document.querySelector('.hola') // variable la cual tendra una clase de la que cuando se active se buscara un documento por referencia
+const logoutBtn = () =>{
+    window.location.href = '/logout'
+}
 const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // un debounce es lo que cree para tener por cada evento de tecleo en un input, un tiempo de respuesta establecido para no saturar al servidor de solicitudes.
 const debounce = (fn, delay) => {
@@ -179,7 +182,7 @@ async function tableInformation(code, filter) {
             eyeUrl.innerHTML = `<a href="${file.url}" target="_blank"><i class="fa-solid fa-eye"></i></a>`;
             
             const btnDelete = document.createElement('td');
-            btnDelete.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+            btnDelete.innerHTML = '<i class="fa-solid fa-trash"></i>';
             btnDelete.classList.add('olvidona');
 
             // Lógica de borrado dinámica
