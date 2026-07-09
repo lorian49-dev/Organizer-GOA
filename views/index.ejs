@@ -23,11 +23,13 @@
         </div>
         </label>
     </form>
+    <% if(user_id === 1){ %>
     <div class="main"> 
         <a href="/monturas"><section>Monturas<i class="fa-solid fa-glasses"></i></section></a>
         <a href="/facturas"><section>Facturas<i class="fa-solid fa-file-invoice-dollar"></i></section></a>
         <a href="/manifiestos"><section>Manifiestos<i class="fa-solid fa-file-invoice"></i></section></a>
     </div>
+    <% } %>
     <div class="modal-container">
         <div class="modal-windows">
             <div class="modal-windows-content">

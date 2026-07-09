@@ -91,15 +91,18 @@ const showInfoGlasses = async() => {
     const data = await res.json();
 
     data.forEach(item => {
-        const newTr = document.createElement('tr');
-        newTr.innerHTML = ` <td><input type='checkbox'></td>
+        let newTr = document.createElement('tr');
+        let htmlContent = ` <td><input type='checkbox'></td>
                             <td>${item.brand}</td>
                             <td>${item.code}</td>
                             <td>${item.reference}</td>
                             <td>${item.color}</td>
-                            <td>${item.ship_order}</td>
-                            <td><a href='${item.invoice_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>
-                            <td><a href='${item.manifest_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>`;
+                            <td>${item.ship_order}</td>`;
+                            if(idRoleUser === 1){
+                                htmlContent += `<td><a href='${item.invoice_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>`
+                            }
+        htmlContent += `<td><a href='${item.manifest_id.url}' target='_blank'><i class="fa-solid fa-file-pdf"></i></a></td>`
+        newTr.innerHTML = htmlContent         
         tableBodyGlasses.appendChild(newTr);
     })
 
@@ -115,6 +118,7 @@ showInfoGlasses();
 
      // Eventos en la NavBar 
      if(barIconMenu){
+        console.log(idRoleUser)
   barIconMenu.addEventListener('click', async()=>{
      navIsActive = navEgation.classList.contains('active')
      openNavBar(navIsActive, breakPoint)

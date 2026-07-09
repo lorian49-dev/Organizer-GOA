@@ -175,7 +175,10 @@ app.get('/logout', (req, res)=>{
 app.use(isAuthenticated)
 
 app.get('/',(req, res)=>{
-  res.sendFile(`${routeFolder}/sections/index.html`)
+  res.render('index', {
+    user_id: req.session.user.id,
+    username: req.session.user.username
+  })
 })
 
 
@@ -257,7 +260,10 @@ app.get('/get-glasses', async(req, res)=>{
 //-------------------------------------------
 
 app.get('/search-mid', (req, res)=>{
-  res.sendFile(path.join(routeFolder, 'sections', 'search.html'))
+  res.render('search-result', {
+    userId: req.session.user.id,
+    userName: req.session.user.username
+  });
 }) 
 
 app.get('/search-glasses-table', async(req, res)=>{
