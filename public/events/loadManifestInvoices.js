@@ -522,10 +522,14 @@ const clickNext = () => {
         pdf_container.innerHTML = '';
         currentPage++;
         tableInformation();
-    }else{
+    }else if(currentPage < globalTotalRows && valueInput && !valueFilter){
         pdf_container.innerHTML = '';
         currentPage++;
         tableInformation(valueInput);
+    }else{
+         pdf_container.innerHTML = '';
+        currentPage++;
+        tableInformation(valueInput, valueFilter);
     }
 };
 
@@ -535,10 +539,14 @@ const clickBack = () => {
         pdf_container.innerHTML = '';
         currentPage--;
         tableInformation();
-    }else{
+    }else if((currentPage > 1 && valueInput && !valueFilter)){
         pdf_container.innerHTML = '';
         currentPage--;
         tableInformation(valueInput);
+    }else{
+         pdf_container.innerHTML = '';
+        currentPage--;
+        tableInformation(valueInput, valueFilter);
     }
 };
 

@@ -105,6 +105,10 @@ app.use(session({
   }
 }));  
 
+const idSession = (req) =>{
+ return req.session.user.id;
+}
+
 // Rutas estaticas
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -243,9 +247,19 @@ app.get('/get-glasses', async(req, res)=>{
 
   const start = (page - 1) * limit;
   const end = start + (limit - 1);
+
+  let selection
   
   try{
-  const {data, error, count} = await access.from('glasses').select('brand, code, ship_order, invoice_id(name, url), manifest_id(name, url)', {count: 'exact'}).order('ship_order', {ascending:'false'}).range(start,end);
+  if(idSession(req) && idSession(req) === 1){
+    selection = 'brand, code, ship_order, invoice_id(name, url), manifest_id(name, url)';
+  } else{
+    selection = 'brand, code, ship_order, manifest_id(name, url)';
+  }
+
+  console.log(idSession(req))
+
+  const {data, error, count} = await access.from('glasses').select(selection, {count:'exact'}).order('ship_order', {ascending:'false'}).range(start,end);
   if(error) return console.log(error) 
   const totalGlasses = Math.ceil(count / limit)                                     
   res.json({data, totalGlasses})
@@ -269,15 +283,22 @@ app.get('/search-mid', (req, res)=>{
 app.get('/search-glasses-table', async(req, res)=>{
   const searchData = req.query.glass_model;
   if(!searchData) return res.status(500).send('ERROR AL INTENTAR CONECTAR CON LA BASE DE DASTO O NO HAY QUE BUSCAR EN LA CONSULTA')
+    let selection
   try{
+
+    if(idSession(req) && idSession(req)===1){
+      selection = 'brand, code, reference, color, ship_order, invoice_id(url), manifest_id(url)';
+    } else{
+      selection = 'brand, code, reference, color, ship_order, manifest_id(url)';
+    }
    
   const sendMatchGlasses = async(data) =>{
-    const {data: dataByCode, error: errorByCode} = await access.from('glasses').select('brand, code, reference, color, ship_order, invoice_id(url), manifest_id(url)').ilike('code', `%${data}%`);
+    const {data: dataByCode, error: errorByCode} = await access.from('glasses').select(selection).ilike('code', `%${data}%`);
 
     if(errorByCode) throw errorByCode;
     if(dataByCode && dataByCode.length > 0) return dataByCode
 
-    const {data: dataByReference, error:errorByReference} = await access.from('glasses').select('brand, code, reference, color, ship_order, invoice_id(url), manifest_id(url)').ilike('reference', `%${data}%`);
+    const {data: dataByReference, error:errorByReference} = await access.from('glasses').select(selection).ilike('reference', `%${data}%`);
 
      if(errorByReference) throw errorByReference;
     if(dataByReference && dataByReference.length > 0) return dataByReference
@@ -363,6 +384,7 @@ app.get('/invoices-table-get', async (req, res) => {
   const end = start + limit - 1;
 
   try {
+    if(idSession(req) && idSession(req)===1){
     let query;
     let isJoin = false;
 
@@ -403,7 +425,11 @@ app.get('/invoices-table-get', async (req, res) => {
 
     const totalRows = Math.ceil(count / limit);
 
-    res.json({ data: normalizedData, totalRows });  
+    res.json({ data: normalizedData, totalRows });
+  }else{
+    console.log('Acceso Denegado')
+    throw error
+  }  
 
   } catch (error) {
     console.error('Error en /invoices-table-get:', error);
@@ -508,6 +534,7 @@ app.delete('/action-delete/:id', async(req, res)=>{
   const fileName = getFileName.name
 
   try{
+    if(idSession(req)&&idSession(req)===1){
     if(getFileNameError){
     console.error(getFileNameError)
     return res.status(400).json({error:getFileNameError.message})
@@ -526,6 +553,10 @@ app.delete('/action-delete/:id', async(req, res)=>{
 
   const deleteFile = await r2Session.send(new DeleteObjectCommand(deleteCommand))
   res.status(200).send('registro borrado con exito')
+  }else{
+    console.error('Acceso denegado para realizar esta accion')
+    throw error
+  }
 
   }catch(error){
   console.log(error);
@@ -677,6 +708,8 @@ app.delete('/action-delete-manifest/:id', async(req, res)=>{
   
   const id = req.params.id;
   try{
+
+    if(idSession(req)&&idSession(req)===1){
   const {data: getFileName, error: getFileNameError} = await access.from('manifest').select('name').eq('id_manifest', id).single()
   const fileName = getFileName.name
 if(getFileNameError || !fileName){
@@ -699,6 +732,10 @@ if(getFileNameError || !fileName){
   }
 
   res.status(200).send('registro borrado con exito')
+  }else{
+    console.error('Acceso denegado para realizar esta accion')
+    throw error
+  }
   }catch(deleteFileError){
     console.log(deleteFileError)
     res.status(500).json({message:'Error al momento de borrar el archivo de la base de datos:', error:deleteFileError})

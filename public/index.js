@@ -53,6 +53,8 @@ const img_logo = document.querySelector('.logo-andes');
          
 // arrow
 
+        const waiting = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
           const showAndHideModal = (btn,ModalC, ModalW, logoImg, logoText, groupBtn) =>{
             btn.addEventListener('click', async()=>{
             ModalW.style.transform = 'translateY(-100vh)'
@@ -81,7 +83,6 @@ const img_logo = document.querySelector('.logo-andes');
         })
     }
         //constante para aniadir promesas dentro de Lisneners
-        const waiting = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
         addEventListener('DOMContentLoaded', async()=>{
             setTimeout(()=>{
