@@ -1,5 +1,5 @@
 const currentPath = window.location.pathname;
-const isManifestPage = currentPath.includes('loadManiefst');
+const isManifestPage = currentPath.includes('manifiestos');
 // configuracion dinamica de la url de la pagina dependiendo de la ubicacion actual
 const PAGE_CONFIG = {
     getSearchDocument : isManifestPage? '/search-manifest': '/search-invoice',
@@ -9,6 +9,8 @@ const PAGE_CONFIG = {
     idField: isManifestPage ? 'id_manifest' : 'id_invoice',
     emptyMessageText: isManifestPage ? 'Sin registros, tabla de manifiestos vacía' : 'Sin registros, tabla de Facturas vacía'
 };
+
+
 
 // Variables y elementos del DOM
 const inputSearchGlass = document.getElementById('search-glass');
