@@ -29,10 +29,9 @@
          <li><a href="/facturas"><i class="fa-solid fa-file-invoice-dollar"></i><span class="nav-description">Facturas</span></a></li>
          <li><a href="/manifiestos"><i class="fa-solid fa-file-invoice"></i><span class="nav-description">Manifiestos</span></a></li>
         </ul>
+         <!--Boton de Cierre de sesion-->
          <button id="btn-log-out" onclick="logoutBtn()" title="cerrar sesion"><i class="fa-solid fa-power-off"></i></button>
       </nav>
-      <!--Boton de Cierre de sesion-->
-         <button id="btn-log-out" onclick="logoutBtn()"><i class="fa-solid fa-power-off"></i></button>
 <div class="main-glasses">
     <div class="img-container">
             <button class="btn-info">Adicionar</button>
@@ -107,7 +106,6 @@
     const tableGlass = document.querySelector('.body-table-glass');
     const btnBack = document.querySelector('.btnBack')
     const btnNext = document.querySelector('.btnNext')
-    // Const for dropDown
 
     // for Invoices
 
@@ -121,12 +119,12 @@
     const idFieldManifest = document.getElementById('id-input-manifest');
     const fieldResultManifest = document.querySelector('.manifest-result-field')
 
-    // End const for the dropDown ^
+    // Eventos al desplegar tablas y formulario
     const btnInfoShow = document.querySelectorAll('.btn-info');
     const formContainer = document.querySelector('.img-container');
     const tableContainer = document.querySelector('.img-container-2');
     const tableGlasses = document.querySelector('.table-container')
-    const formGlasses = document.querySelector('.glass-form')
+    const formEyeWear = document.querySelector('.glass-form')
     
     // Estados cambiantes
     let tableState = false
@@ -140,9 +138,9 @@
     const logoutBtn = () =>{
     window.location.href = '/logout'
 }
-
+// Funcion que puede facilitar la asincronia en ciertas tareas
     const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-
+// Abrir Barra de navegacion
      const openNavBar = async(a, b) =>{
    
     if(!a){
@@ -179,7 +177,7 @@
     }
    }
 
-    const autocompleteMI = async (name, id, field, fetchUrl, idTable) => {
+    const autocompleteManifestInvoice = async (name, id, field, fetchUrl, idTable) => {
         field.innerHTML = '';
         field.style.display = 'none';
         const value = name.value;
@@ -237,7 +235,7 @@ if(magnifier){
          formContainer.classList.toggle('active')
  
          if(!formState){
-            formGlasses.style.display = 'flex';
+            formEyeWear.style.display = 'flex';
             // manejo de envento al hacer click fuera del campo de resultados
             document.addEventListener('click', (e)=>{
              if(!fieldResultInvoice.contains(e.target) && !fieldResultManifest.contains(e.target)){
@@ -247,16 +245,16 @@ if(magnifier){
             })
 
             nameFieldInvoice.addEventListener('input', debounce(()=>{
-            autocompleteMI(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?name=', 'id_invoice')
+            autocompleteManifestInvoice(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?name=', 'id_invoice')
             }, 300))
 
             nameFieldManifest.addEventListener('input', debounce(()=>{
-                 autocompleteMI(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?name=', 'id_manifest')
+                 autocompleteManifestInvoice(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?name=', 'id_manifest')
             }, 300))
 
             formState=true;
          }else{
-            formGlasses.style.display = 'none'
+            formEyeWear.style.display = 'none'
             formState=false;
          }
         })
@@ -294,7 +292,16 @@ if(magnifier){
         }
 
         //-------------------------------------------------//
-        //                   Show Table
+        //                Enviar Registro
+        //-------------------------------------------------//
+
+        formEyeWear.addEventListener('submit', (event)=>{
+            event.preventDefault();
+            
+        })
+
+        //-------------------------------------------------//
+        //           Desplegar Tabla de Monturas
         //-------------------------------------------------//
 
         async function showTableInfo() {
