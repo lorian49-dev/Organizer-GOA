@@ -34,13 +34,13 @@
       </nav>
 <div class="main-glasses">
     <div class="img-container">
-            <button class="btn-info">Adicionar</button>
-        <form class="glass-form" method="POST" action="/glasses">
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="brand" required><span class="glass-form-span">Marca</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="serial" required><span class="glass-form-span"># Codigo</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="reference" required><span class="glass-form-span"># Referencia</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="color" required><span class="glass-form-span">Color de montura</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input" name="order" required><span class="glass-form-span"># Orden</span></label>
+            <button class="btn-info">Registro Unico</button>
+        <form class="glass-form">
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-color" name="color" required><span class="glass-form-span">Color de montura</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
             <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
            <div class="box-selection-invoice-manifest">
              <label class="selection-invoice">
@@ -62,29 +62,32 @@
         </form>
     </div>
     <div class="img-container-2">
-            <button class="btn-info">Explorar</button>
-            <div class="table-container">
-             <div class="table-shorts">
-                <button onclick="clickBack()" class="btnBack"><i class="fa-solid fa-angle-up" style="transform: rotate(270deg);"></i></button>
-                <button onclick="clickNext()" class="btnNext"><i class="fa-solid fa-angle-up" style="transform: rotate(90deg);"></i></button>
-                <span class="page-info">
-            <!--Aqui aparecera el numero de registros y paginas-->
-                </span>
-             </div>    
-            <div class="overflow-table">
-             <table class="space-table">
-                <thead>
-                    <th>Marca</th>
-                    <th>Referencia</th>
-                    <th>Orden de Compra</th>
-                    <th>Ver Factura</th>
-                    <th>Ver manifiesto</th>
-                </thead>
-                <tbody class="body-table-glass">
-                </tbody>
-            </table>
-            </div>
-        </div>
+            <button class="btn-info">Registro Masivo</button>
+            <form class="glass-form big-form">
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-color" name="color" required><span class="glass-form-span">Color de montura</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
+            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
+           <div class="box-selection-invoice-manifest">
+             <label class="selection-invoice">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
+                <input type="hidden" id="id-input-invoice" name="id_invoice">
+                <div class="invoice-result-field">
+
+                </div>
+            </label>
+            <label class="selection-manifest">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" autocomplete="off">
+                <input type="hidden" id="id-input-manifest" name="id_manifest">
+                <div class="manifest-result-field">
+
+                </div>
+            </label>
+           </div>
+            <button class="btn-submit-info" type="submit">Registrar</button>
+        </form>
     </div>
 </div>
 </div>
@@ -102,11 +105,6 @@
     let navIsActive
     const barIconMenu = document.querySelector('.fa-bars-staggered')
 
-    // Tabla de Monturas
-    const tableGlass = document.querySelector('.body-table-glass');
-    const btnBack = document.querySelector('.btnBack')
-    const btnNext = document.querySelector('.btnNext')
-
     // for Invoices
 
     const nameFieldInvoice = document.getElementById('id-input-name-invoice');
@@ -123,11 +121,11 @@
     const btnInfoShow = document.querySelectorAll('.btn-info');
     const formContainer = document.querySelector('.img-container');
     const tableContainer = document.querySelector('.img-container-2');
-    const tableGlasses = document.querySelector('.table-container')
+    const formContainerMassive = document.querySelector('.big-form')
     const formEyeWear = document.querySelector('.glass-form')
     
     // Estados cambiantes
-    let tableState = false
+    let bigFormState = false
     let formState = false
 
     let currentPage = 1
@@ -301,59 +299,20 @@ if(magnifier){
         })
 
         //-------------------------------------------------//
-        //           Desplegar Tabla de Monturas
+        //           Enviar Registro masivo
         //-------------------------------------------------//
 
-        async function showTableInfo() {
-
-            tableGlass.innerHTML = ' '
-            const res = await fetch(`/get-glasses?p=${currentPage}`);
-            const data = await res.json();
-            const {totalGlasses : count} = data
-            globalCount = count;
-
-
-          if(currentPage <= 1){
-          btnBack.style.color = '#adadad'
-          btnBack.style.pointerEvents = 'none'
-        }else{
-          btnBack.style.color = '#383838'
-          btnBack.style.pointerEvents = 'auto'
-        }
-
-          if(currentPage === globalCount){
-            btnNext.style.color = '#adadad'
-            btnNext.style.pointerEvents = 'none'
-          }else{
-          btnNext.style.color = '#383838'
-          btnNext.style.pointerEvents = 'auto'
-          }
-
-
-            data.data.forEach(item =>{
-                //Contenedor de la fila
-                const newTr = document.createElement('tr');
-                newTr.innerHTML = `
-                <td>${item.brand}</td>
-                <td>${item.code}</td>
-                <td>${item.ship_order}</td>
-                <td><a href="${item.invoice_id.url}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
-                <td><a href="${item.manifest_id.url}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
-                `
-                tableGlass.appendChild(newTr)
-
-            });
-        }
+       
 
         btnInfoShow[1].addEventListener('click', ()=>{
          tableContainer.classList.toggle('active')
 
-         if(!tableState){
-         tableGlasses.style.display = 'block';
-         tableState = true;
+         if(!bigFormState){
+         formContainerMassive.style.display = 'flex';
+         bigFormState = true;
          } else{
-         tableGlasses.style.display = 'none';
-         tableState = false;
+         formContainerMassive.style.display = 'none';
+         bigFormState = false;
          }
 
         })
@@ -364,28 +323,6 @@ if(magnifier){
             }, 300));
         }
         // end
-
-        showTableInfo()
-
-       function clickBack(){
-        if(currentPage <= 1 ){
-            showTableInfo();
-        }else{
-            currentPage--;
-            showTableInfo()
-        }
-        
-       }
-
-       const clickNext = () =>{
-        if(currentPage === globalCount){
-            return
-        } else{
-            currentPage++
-            showTableInfo();
-        }
-       }
-
 </script>
 </body>
 </html>

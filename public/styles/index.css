@@ -840,7 +840,7 @@ table a:hover{
     gap: 2rem;
 }
 
-.img-container{
+.img-container, .img-container-2{
     width: 100%;
     height: 300px;
     background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.5), rgba(0,0,0,0.1)),url(https://images.pexels.com/photos/1260284/pexels-photo-1260284.jpeg?cs=srgb&dl=pexels-iamasifhussain-1260284.jpg&fm=jpg);
@@ -856,18 +856,7 @@ table a:hover{
 }
 
 .img-container-2{
-    width: 100%;
-    height: 300px;
     background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.5), rgba(0,0,0,0.1)),url(https://tse4.mm.bing.net/th/id/OIP.GJxkcBssigpnvicwChm7PgHaEo?rs=1&pid=ImgDetMain&o=7&rm=3);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 25px;
-    box-shadow: var(--main-shadow);
-    transition: all .5s ease ;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .img-container-2.active, .img-container.active{
@@ -906,6 +895,10 @@ table a:hover{
     font-family: "Arsenal SC", sans-serif;
     color: #cfcfcf;
     gap: 2rem;
+}
+
+.big-form{
+    overflow-y: auto;
 }
 
 .glass-form-label{
