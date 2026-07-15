@@ -35,7 +35,7 @@
 <div class="main-glasses">
     <div class="img-container">
             <button class="btn-info">Registro Unico</button>
-        <form class="glass-form">
+        <form class="glass-form" method="POST" action="/glasses">
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
@@ -64,24 +64,21 @@
     <div class="img-container-2">
             <button class="btn-info">Registro Masivo</button>
             <form class="glass-form big-form">
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-color" name="color" required><span class="glass-form-span">Color de montura</span></label>
+            <textarea name="infdo-text-area" class="csv-glasses"></textarea>
             <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
             <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
            <div class="box-selection-invoice-manifest">
              <label class="selection-invoice">
-                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
-                <input type="hidden" id="id-input-invoice" name="id_invoice">
-                <div class="invoice-result-field">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" class="input-name-invoice-package" autocomplete="off">
+                <input type="hidden" id="id-input-invoice" class="id-input-invoice-package" name="id_invoice">
+                <div class="invoice-result-field invoice-result-field-package">
 
                 </div>
             </label>
             <label class="selection-manifest">
-                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" autocomplete="off">
-                <input type="hidden" id="id-input-manifest" name="id_manifest">
-                <div class="manifest-result-field">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" class="input-name-manifest-package" autocomplete="off">
+                <input type="hidden" id="id-input-manifest" class="id-input-manifest-package" name="id_manifest">
+                <div class="manifest-result-field manifest-result-field-package">
 
                 </div>
             </label>
@@ -108,21 +105,29 @@
     // for Invoices
 
     const nameFieldInvoice = document.getElementById('id-input-name-invoice');
+    const nameFieldInvoicePackage = document.querySelector('.input-name-invoice-package');
     const idFieldInvoice = document.getElementById('id-input-invoice');
-    const fieldResultInvoice = document.querySelector('.invoice-result-field')
+    const idFieldInvoicePackage = document.querySelector('.id-input-invoice-package');
+    const fieldResultInvoice = document.querySelector('.invoice-result-field');
+    const fieldResultInvoicePackage = document.querySelector('.invoice-result-field-package');
 
     // for Manifest
 
     const nameFieldManifest = document.getElementById('id-input-name-manifest');
+    const nameFieldManifestPackage = document.querySelector('.input-name-manifest-package');
     const idFieldManifest = document.getElementById('id-input-manifest');
-    const fieldResultManifest = document.querySelector('.manifest-result-field')
+    const idFieldManifestPackage = document.querySelector('.id-input-manifest-package');
+    const fieldResultManifest = document.querySelector('.manifest-result-field');
+    const fieldResultManifestPackage = document.querySelector('.manifest-result-field-package');
 
     // Eventos al desplegar tablas y formulario
     const btnInfoShow = document.querySelectorAll('.btn-info');
     const formContainer = document.querySelector('.img-container');
     const tableContainer = document.querySelector('.img-container-2');
-    const formContainerMassive = document.querySelector('.big-form')
-    const formEyeWear = document.querySelector('.glass-form')
+    const formContainerMassive = document.querySelector('.big-form'); // contenedor del formulario para registros masivos
+    const formEyeWear = document.querySelector('.glass-form');
+    const formEyeWearBigData = document.querySelector('.big-form');
+    const textAreaGlasses = document.querySelector('.csv-glasses');
     
     // Estados cambiantes
     let bigFormState = false
@@ -293,16 +298,11 @@ if(magnifier){
         //                Enviar Registro
         //-------------------------------------------------//
 
-        formEyeWear.addEventListener('submit', (event)=>{
-            event.preventDefault();
-            
-        })
+
 
         //-------------------------------------------------//
         //           Enviar Registro masivo
         //-------------------------------------------------//
-
-       
 
         btnInfoShow[1].addEventListener('click', ()=>{
          tableContainer.classList.toggle('active')
@@ -315,6 +315,27 @@ if(magnifier){
          bigFormState = false;
          }
 
+        })
+
+        nameFieldInvoicePackage.addEventListener('input', debounce(()=>{
+            autocompleteManifestInvoice(nameFieldInvoicePackage, idFieldInvoicePackage, fieldResultInvoicePackage, '/search-invoice?name=', 'id_invoice')
+        }))
+
+        nameFieldManifestPackage.addEventListener('input', debounce(()=>{
+            autocompleteManifestInvoice(nameFieldManifestPackage, idFieldManifestPackage, fieldResultManifestPackage, '/search-manifest?name=', 'id_manifest')
+        }))
+
+        formEyeWearBigData.addEventListener('submit', async(event)=>{
+            event.preventDefault();
+            const dataTrim = textAreaGlasses.value.trim().split('\n');
+            const dataTrimRows = dataTrim.map(event =>{
+            return event.split('\t');
+            })
+            const  dataCleaned = dataTrimRows.map(lete =>{ return lete.map(late =>{return late.trim()})})
+
+            const RegisterPackage = dataCleaned.map(element=>{return {marca: element[0], codigo:element[1], referencia:element[2], color:element[3]}});
+            console.log(RegisterPackage)
+            
         })
 
         if(inputSearchGlass){
