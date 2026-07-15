@@ -215,6 +215,9 @@ app.post('/glasses', async(req, res)=>{
   const {brand, serial, reference, color, order, id_invoice, id_manifest} = req.body
     
   try{
+  if(req.body.length == 1) console.log('Solo hay un registro')
+    console.log(req.body.length?req.body.length:'hola')
+    console.log(req.body)
   const {data, error} = await access.from('glasses').insert([
     {
       brand:brand, 
@@ -234,6 +237,21 @@ app.post('/glasses', async(req, res)=>{
    res.sendFile(`${routeFolder}/sections/glasses.html`)
   }catch(err){
     console.log(err)
+  }
+})
+
+app.post('/glasses-package', async(req, res)=>{
+  const monturas = req.body.monturas;
+  try{
+    const {data, error} = await access.from('glasses').insert(monturas)
+    if(error){
+      console.error('no se pudo realizar la insercion de data')
+      throw error
+    }
+   res.status(200).send('Operacion Exitosa :)')
+  }catch(error){
+    console.error(error);
+    res.status(500).send({message:'Hubo un grave error al intentar hacer la peticion a la Base de datos, intente de nuevo'})
   }
 })
 

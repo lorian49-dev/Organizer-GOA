@@ -119,6 +119,7 @@
     const idFieldManifestPackage = document.querySelector('.id-input-manifest-package');
     const fieldResultManifest = document.querySelector('.manifest-result-field');
     const fieldResultManifestPackage = document.querySelector('.manifest-result-field-package');
+    const inputOrderpackage = document.querySelectorAll('.eyewear-order');
 
     // Eventos al desplegar tablas y formulario
     const btnInfoShow = document.querySelectorAll('.btn-info');
@@ -327,15 +328,30 @@ if(magnifier){
 
         formEyeWearBigData.addEventListener('submit', async(event)=>{
             event.preventDefault();
+            // se separan los registros del excel por \n (filas)
             const dataTrim = textAreaGlasses.value.trim().split('\n');
+            // se separan los registros de cada fila por \t (columnas)
             const dataTrimRows = dataTrim.map(event =>{
             return event.split('\t');
             })
+            // se mapea de nuevo cada elemento devuelto para limpiar espacios indeseados al principio y el final
             const  dataCleaned = dataTrimRows.map(lete =>{ return lete.map(late =>{return late.trim()})})
-
-            const RegisterPackage = dataCleaned.map(element=>{return {marca: element[0], codigo:element[1], referencia:element[2], color:element[3]}});
-            console.log(RegisterPackage)
+            // variables de los elementos de valor fijo, se usa [] para poder acceder al segundo elemento en el HTML con esta clase
+            const valueOrder = inputOrderpackage[1].value || null
+            // se convierte el array de arrays a un array de objetos, esto para que el servidor pueda leer correctamente
+            const registerPackage = dataCleaned.map(element=>{return {brand: element[0], code:element[1], reference:element[2], color:element[3], ship_order:valueOrder, invoice_id: idFieldInvoicePackage.value, manifest_id: idFieldManifestPackage.value}});
             
+            const res = await fetch('/glasses-package', {
+                method:'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({monturas:registerPackage})
+            })
+            const operationStatus = res.status
+            if(operationStatus === 200){
+                console.log('OPERACION EXITOSA')
+            }else{
+                console.log('No se subieron los archivos')
+            }
         })
 
         if(inputSearchGlass){
