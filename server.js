@@ -1,7 +1,8 @@
 //-------------------------------------------------//
 //            Declaracion de variables
 //-------------------------------------------------//
-
+// PUERTO
+const PORT = 3000;
 // constantes nativas
 const path = require('path');
 // dotenv
@@ -20,7 +21,6 @@ const r2Session = new S3Client({
   secretAccessKey: process.env.R2_SECRET_KEY
  }
 })
-
 const uploadParams = (bucket, key, body, contT) =>{
  return {
    Bucket: bucket,
@@ -766,7 +766,7 @@ if(getFileNameError || !fileName){
 // ------------------------------------------- //
 
 app.listen(3000, ()=>{
-  console.log('servidor escuchandose en http://localhost:3000');
+  console.log(`servidor escuchandose en http://localhost:${PORT}`);
 })
 
 

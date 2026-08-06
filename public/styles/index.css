@@ -899,6 +899,21 @@ table a:hover{
 
 .big-form{
     overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.csv-glasses{
+    width: 100%;
+    min-height: 200px;
+    max-width: 300px;
+    border-radius: 15px;
+    border-style: none;
+    padding: 15px;
+    font-family: "Arsenal SC", sans-serif;
+}
+
+.csv-glasses:focus{
+    outline: none;
 }
 
 .glass-form-label{
@@ -926,12 +941,11 @@ table a:hover{
 }
 
 .box-selection-invoice-manifest{
+    justify-content: center;
     display: flex;
-    gap: 2rem;
-}
-
-.selection-invoice, .selection-manifest{
- margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 .glass-form-input:focus + .glass-form-span,
