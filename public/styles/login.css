@@ -51,12 +51,6 @@ html{
     align-items: center;
 }
 
-
-.logo-andes-form{
-    
-}
-
-
 .right{
     width: 50%;
     display: flex;
@@ -112,7 +106,7 @@ html{
     padding: .7rem;
     border-radius: 25px;
     color: rgb(51, 51, 51);
-    background-color: #ffffff;
+    background: #ffffff;
     box-shadow: var(--main-shadow);
 }
 
@@ -120,7 +114,7 @@ html{
     outline: none;
 }
 
-.form-login span{
+.movil-name{
     position: absolute;
     left: 15px;
     top: 10px;
@@ -130,6 +124,22 @@ html{
 
 .form-login input:focus + span, .form-login input:not(:placeholder-shown) + span{
     transform: scale(.8) translateY(-2.5rem);
+}
+
+.show-password{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
 }
 
 .modal-container-login{

@@ -1,0 +1,58 @@
+<div class="main-glasses">
+    <div class="img-container">
+            <button class="btn-info">Registro Unico</button>
+        <form class="glass-form" method="POST" action="/glasses">
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
+            <label class="glass-foyewear-order" name="order" required><span class="rm-label"><input type="text" placeholder=" " class="glass-form-input eyewear-color" name="color" required><span class="glass-form-span">Color de montura</span></label>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eglass-form-span"># Orden</span></label>
+            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
+           <div class="box-selection-invoice-manifest">
+             <label class="selection-invoice">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
+                <input type="hidden" id="id-input-invoice" name="id_invoice">
+                <div class="invoice-result-field">
+
+                </div>
+            </label>
+            <label class="selection-manifest">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" autocomplete="off">
+                <input type="hidden" id="id-input-manifest" name="id_manifest">
+                <div class="manifest-result-field">
+
+                </div>
+            </label>
+           </div>
+            <button class="btn-submit-info" type="submit">Registrar</button>
+        </form>
+    </div>
+    <div class="img-container-2">
+            <button class="btn-info">Registro Masivo</button>
+            <form class="glass-form big-form">
+            <textarea name="infdo-text-area" class="csv-glasses" placeholder="Por favor, con atencion pegue desde su archivo excel las siguientes 4 columnas: Marca Codigo Referencia Color, no pegue la cabecera de la columna, solo la informacion, deben ser 4 columnas, solo presione Ctrl + v"></textarea>
+            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
+            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
+           <div class="box-selection-invoice-manifest">
+             <label class="selection-invoice">
+                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" class="input-name-invoice-package" autocomplete="off">
+                <input type="hidden" id="id-input-invoice" class="id-input-invoice-package" name="id_invoice">
+                <div class="invoice-result-field invoice-result-field-package">
+
+                </div>
+            </label>
+            <label class="selection-manifest">
+                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" class="input-name-manifest-package" autocomplete="off">
+                <input type="hidden" id="id-input-manifest" class="id-input-manifest-package" name="id_manifest">
+                <div class="manifest-result-field manifest-result-field-package">
+
+                </div>
+            </label>
+           </div>
+            <button class="btn-submit-info" type="submit">Registrar</button>
+        </form>
+    </div>
+    <div class="img-container-3">
+        
+    </div>
+</div>

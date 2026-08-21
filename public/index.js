@@ -29,11 +29,11 @@ const img_logo = document.querySelector('.logo-andes');
           }
         }
 
-        const modalContent = [{
+        const modalInstructions = [{
             tittle: 'Como usar Organizer? ',
             subtittle: 'Busqueda de monturas',
             img: '/logo-types/search-bar.png',
-            text: '<p>La <strong>barra de busqueda</strong> al inicio de la web, proporciona un atajo en la busqueda de cualquier montura registrada.<br><br> Solo se bebe ingresar el numero exacto de Modelo y apareceran todas las coincidencias</p>'
+            text: '<p>La <strong>barra de busqueda</strong> al inicio de la web, proporciona un atajo en la busqueda de cualquier montura registrada.<br><br> Solo se bebe ingresar el numero exacto de la referencia a la que se hace referencia, o en su defecto al numero de registro de la montura(el numero de registro normalmente es dado por la bodega y siempre comienza por una "M")</p><br><br><p> Si el resultado coincide con alguno almacenado en la base de datos, este arrojara una barra de resultados la cual sera interactuable con el usuario, con solo darle click se redirigira a la pagina de resultados, de igual forma si se prefiere solo escriba el codigo o referencia y de click en enter para una busqueda rapida.</p>'
         },
            {tittle: 'Atajos',
             subtittle: 'Accesos rapidos',
@@ -43,7 +43,17 @@ const img_logo = document.querySelector('.logo-andes');
             {tittle: 'Gestion de Documentos',
             subtittle: 'PDF y monturas',
             img: '/logo-types/search-bar.png',
-            text: '<p>lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum</p>'
+            text: `<p>El personal encargado de ingresar los documentos enlazados tendran algunas tareas: </p>
+            <ul>
+            <li>Podran subirse documentos que no esten directamente relacionados, es decir puede subirse una factura la cual no se tenga su pdf manifiesto, sin embargo para crear un registro de monturas quedaria incompleto, solo serviria para tener acceso digitalmente a el.</li>
+            <li>Una vez se tengan los dos documentos correctamente subidos(verifique el nombre con el que se subio originalmente) vaya a la seccion de <a href='/monturas'>monturas</a> y alli utilice el campo recomendado, si son pocos registros use el campo mas amplio de la izquierda, si son masivos dirija su atencion al formulario de la derecha y siga las instrucciones</li>
+            <li>luego de cada registro haga al menos la comprobacion de una entrada(una gafa ingresada), de esta forma trabajara de forma mas eficiente.</li>
+            <li>para el personal autorizado, sea muy cuidadoso al momento de <strong>borrar</strong> cualquier pdf, ya que esto puede causar una accion en cascada, eliminando las monturas previamente relacionadas.</li>
+            <ul>
+            <h3>Como subir un documento pdf al sistema?</h3>
+            <img src="/logo-types/upload-step-1.png"><p> Para subir el archivo solo debe seleccionarlo y arrastrarlo con el mouse hacia la pagina correspondiente, posteriormente se mostrara un cuadro en  la barra de menu lateral que indicara donde debe soltarse el o los archivos.</p>
+            <img src="/logo-types/upload-step-2.png">`
+            
         }]
         
         let i = -1
@@ -117,22 +127,22 @@ const img_logo = document.querySelector('.logo-andes');
         // escucha al evento al seguir en el modal
 
       btn_next.addEventListener('click', async(eventClick)=>{
-        if(i <= modalContent.length-1){
+        if(i <= modalInstructions.length-1){
         modalWindowsContent.style.opacity = '0'
         await waiting(500)
         i++
-        tittleModal.textContent = modalContent[i].tittle
-       subtittleModal.textContent = modalContent[i].subtittle
-       modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
-       textInstrutions.innerHTML = modalContent[i].text
+        tittleModal.textContent = modalInstructions[i].tittle
+       subtittleModal.textContent = modalInstructions[i].subtittle
+       modalImg.innerHTML = `<img src="${modalInstructions[i].img}" alt="imagen de referencia">`
+       textInstrutions.innerHTML = modalInstructions[i].text
         modalWindowsContent.appendChild(textInstrutions)
         modalWindowsContent.style.opacity = '1'
-       if(i == modalContent.length-1){
+       if(i == modalInstructions.length-1){
         btn_next.style.display = 'none'
        }
         }
 
-        if(i >= 1 && i <= modalContent.length){
+        if(i >= 1 && i <= modalInstructions.length){
         btn_back.style.display = 'block'
         }
       })
@@ -145,10 +155,10 @@ const img_logo = document.querySelector('.logo-andes');
         modalWindowsContent.style.opacity = '0'
         await waiting(500)
         i--
-        tittleModal.textContent = modalContent[i].tittle
-        subtittleModal.textContent = modalContent[i].subtittle
-        modalImg.innerHTML = `<img src="${modalContent[i].img}" alt="imagen de referencia">`
-          textInstrutions.innerHTML = modalContent[i].text
+        tittleModal.textContent = modalInstructions[i].tittle
+        subtittleModal.textContent = modalInstructions[i].subtittle
+        modalImg.innerHTML = `<img src="${modalInstructions[i].img}" alt="imagen de referencia">`
+          textInstrutions.innerHTML = modalInstructions[i].text
         modalWindowsContent.appendChild(textInstrutions)
         modalWindowsContent.style.opacity = '1'
         if(i === 0){

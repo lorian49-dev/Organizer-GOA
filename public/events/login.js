@@ -2,7 +2,8 @@ const rightSideLogin = document.querySelector('.right');
 const formLogin = document.querySelector('.form-login');
 const inputuserName = document.querySelector('.input-user-name');
 const inputPassword = document.querySelector('.input-password');
-const messageLogin = document.querySelector('.messaeg-wrong-login')
+const messageLogin = document.querySelector('.message-wrong-login')
+const btnEye = document.querySelector('.show-password')
 let i = 0;
 const phrases = [
     'No te dejes intimidar por las opiniones de los demás. Solo la mediocridad es segura, así que arriésgate y haz aquello que deseas.',
@@ -12,6 +13,14 @@ const phrases = [
     'La única revolución posible es dentro de uno mismo.',
     'No hay nada completamente errado en el mundo, incluso un reloj parado puede estar en lo cierto dos veces al día.'
 ]
+const eventShowPassword = (inputChoosed, eye) =>{
+ eye.classList.toggle('active')
+ if(eye.classList.contains('active')){
+  inputChoosed.type = 'text'
+ }else{
+  inputChoosed.type = 'password'
+ } 
+}
 
 const modalContainer = document.querySelector('.modal-container-login')
 
@@ -19,6 +28,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const phraseContainer = document.createElement('div');
   phraseContainer.classList.add('phrase-container')
   
+  btnEye.addEventListener('click', ()=>{
+   eventShowPassword(inputPassword, btnEye);
+  })
+
   const cargePhrase = () => {
   rightSideLogin.appendChild(phraseContainer)
   phraseContainer.textContent = phrases[i]

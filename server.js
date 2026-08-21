@@ -215,9 +215,6 @@ app.post('/glasses', async(req, res)=>{
   const {brand, serial, reference, color, order, id_invoice, id_manifest} = req.body
     
   try{
-  if(req.body.length == 1) console.log('Solo hay un registro')
-    console.log(req.body.length?req.body.length:'hola')
-    console.log(req.body)
   const {data, error} = await access.from('glasses').insert([
     {
       brand:brand, 
@@ -231,12 +228,13 @@ app.post('/glasses', async(req, res)=>{
 
    if(error){
     console.log(error)
-    return res.status(500).send('error al guardar datos'); 
+    return res.status(400).send('error al guardar datos'); 
    }
 
-   res.sendFile(`${routeFolder}/sections/glasses.html`)
+   res.status(200).send('Proceso Exitoso')
   }catch(err){
     console.log(err)
+    res.status(500).send('error interno del servidor')
   }
 })
 
@@ -252,37 +250,6 @@ app.post('/glasses-package', async(req, res)=>{
   }catch(error){
     console.error(error);
     res.status(500).send({message:'Hubo un grave error al intentar hacer la peticion a la Base de datos, intente de nuevo'})
-  }
-})
-
-// Obtencion de datos de la tabla de gafas
-
-app.get('/get-glasses', async(req, res)=>{
-
-  const p = parseInt(req.query.p);
-  const page = Number.isInteger(p) && p > 1? p : 1;
-  const limit = 50
-
-  const start = (page - 1) * limit;
-  const end = start + (limit - 1);
-
-  let selection
-  
-  try{
-  if(idSession(req) && idSession(req) === 1){
-    selection = 'brand, code, ship_order, invoice_id(name, url), manifest_id(name, url)';
-  } else{
-    selection = 'brand, code, ship_order, manifest_id(name, url)';
-  }
-
-  console.log(idSession(req))
-
-  const {data, error, count} = await access.from('glasses').select(selection, {count:'exact'}).order('ship_order', {ascending:'false'}).range(start,end);
-  if(error) return console.log(error) 
-  const totalGlasses = Math.ceil(count / limit)                                     
-  res.json({data, totalGlasses})
-  }catch(err){
-   res.status(500).send('Error al obtener datos')
   }
 })
 //-------------------------------------------
@@ -378,10 +345,10 @@ app.get('/search-invoice', async(req, res)=>{
 
   if(!search) return res.status(500).json([]);
 
-  const {data, error} = await access.from('invoices').select('id_invoice, name').ilike('name', `%${search}%`).limit(10);
+  const {data, error} = await access.from('invoices').select('id:id_invoice, name').ilike('name', `%${search}%`).limit(10);
 
   if(error){
-    return res.status(500).json({message: error.message})
+    return res.status(400).json({message: error.message})
   }
 
   res.json(data)
@@ -599,10 +566,10 @@ app.get('/search-manifest', async(req, res)=>{
 
   if(!search) return res.json([]); // validacion de consulta
 
-  const {data, error} = await access.from('manifest').select('id_manifest, name').ilike('name', `%${search}%`).limit(10); // ilike se usa en Postgree SQL para que los datos solicitados sean insensibles a las mayusculas.
+  const {data, error} = await access.from('manifest').select('id:id_manifest, name').ilike('name', `%${search}%`).limit(10); // ilike se usa en Postgree SQL para que los datos solicitados sean insensibles a las mayusculas.
 
   if(error){
-    return res.status(500).json({message: error.message})
+    return res.status(400).json({message: error.message})
   }
 
   res.json(data);

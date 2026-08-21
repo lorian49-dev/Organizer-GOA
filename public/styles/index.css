@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Stack+Sans+Notch:wght@200..700&display=swap');
 :root{
     --main-shadow: 1px 1px hsl(0deg 0% 0% / 0.075),
       0 2px 2px hsl(0deg 0% 0% / 0.075),
@@ -10,6 +10,8 @@
                 inset -4px -4px 15px #fff,
                  3px 3px 15px #3a3a3ab6,
                  -4px -4px 10px #fff;
+    --font-arsenal: "Arsenal SC";
+    --font-arsenal-paragraph:"Arsenal";
 }
 
 *{
@@ -57,7 +59,7 @@ header>img{
     transition: all 2s ease;
     transform: translateX(30rem);
     font-size: 5rem;
-    font-family: "Arsenal SC", sans-serif;
+    font-family: var(--font-arsenal), sans-serif;
   font-weight: 400;
   font-style: normal;
     padding-left: 2rem;
@@ -158,39 +160,37 @@ header>img{
 }
 
 .main{
-    width: 60%;
+    width: 100%;
     padding: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin: 0 auto;
+    gap: 20px;
     z-index: 0;
 }
 
 .main section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 100px;
     background-color: #262a82;
-    padding: 3.5rem;
     text-align: center;
     border-radius: 25px;
     color: white;
-    font-size: 1.5rem;
-    font-family: "Arsenal SC", sans-serif;
+    font-size: 18px;
+    font-family: var(--font-arsenal), sans-serif;
     font-weight: 400;
     font-style: normal;
   box-shadow: var(--main-shadow);
   cursor: pointer;
   font-optical-sizing: auto;
   opacity: 0;
- --escala: .5;
- --y: 0px;
-  transform: scale(var(--escala)) translateY(var(--y));
   transition: transform .5s ease, background-color .5s ease, opacity .5s ease-in, box-shadow 1s ease, color .5s ease;
 }
 
 .main section:hover{
-    --y: -5px;
-    transform: scale(var(--escala)) translateY(var(--y));
+    transform: translateY(-5px);
     background-color: rgba(128, 128, 128, 0.233);
     box-shadow: var(--background-shadow-button);
     color: #16183881;
@@ -198,6 +198,13 @@ header>img{
 
 section>i{
     margin-left: 1rem;
+}
+
+.icon-ai-max{
+    width: 50px;
+    height: 50px;
+    display: block;
+    background-image: url(/logo-types/ai-max-logo.png);
 }
 
 /*Ventana modal de manual de usuario*/
@@ -267,7 +274,7 @@ section>i{
 
 h2{
     font-size: 3rem;
-    font-family: "Arsenal SC", sans-serif;
+    font-family: var(--font-arsenal), sans-serif;
   font-weight: 100;
   font-style: normal;
   text-align: center;
@@ -275,7 +282,7 @@ h2{
 
 h3{
     font-size: 1.5rem;
-    font-family: "Arsenal SC", sans-serif;
+    font-family: var(--font-arsenal), sans-serif;
   font-weight: 100;
   font-style: normal;
   text-align: center;
@@ -339,7 +346,7 @@ main.load-manifest-and-invoice-container{
 }
 
 h1{
-   font-family: "Arsenal SC", sans-serif;
+   font-family: var(--font-arsenal), sans-serif;
   font-weight: 100;
   font-style: normal;
   font-size: 3rem;
@@ -348,7 +355,7 @@ h1{
 }
 
 p{
-   font-family: "Arsenal SC", sans-serif;
+   font-family: var(--font-arsenal), sans-serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -599,7 +606,7 @@ a .bold{
 }
 
 #file-info{
-    font-family: "Arsenal SC", sans-serif;
+    font-family: var(--font-arsenal), sans-serif;
     font-size: .8rem;
     margin-left: 15px;
 }
@@ -780,6 +787,15 @@ table{
     display: none;
 }
 
+@keyframes phantom-loading{
+    0%{
+     background-position: 200% 0;
+    }
+    100%{
+      background-position: -200% 0;
+    }
+}
+
 thead{
         color: #181818a6;
 
@@ -831,213 +847,464 @@ table a:hover{
 -----------------------------------------
 */
 
-.main-glasses{
-    margin-top: 2rem;
-    width: 100%;
-    height: 95vh;
-    padding: 2rem 4rem;
+.pop-up-status-register{
     display: flex;
-    gap: 2rem;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    top: 12px;
+    right: -50px;
+    animation: statusBar 5s .5s 1 ease forwards;
+    box-shadow: var(--main-shadow);
+    overflow: hidden;
+    white-space: nowrap;
+    justify-content: flex-start;
+    gap: 15px;
+    align-items: center;
+    font-family: var(--font-arsenal-paragraph);
+    color: #fff;
+    font-size: 15px;
 }
 
-.img-container, .img-container-2{
+.container-pop-up-icons{
     width: 100%;
-    height: 300px;
-    background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.5), rgba(0,0,0,0.1)),url(https://images.pexels.com/photos/1260284/pexels-photo-1260284.jpeg?cs=srgb&dl=pexels-iamasifhussain-1260284.jpg&fm=jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 25px;
-    box-shadow: var(--main-shadow);
-    transition: all .5s ease ;
+    height: 100%;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-left: 50px;
 }
 
-.img-container-2{
-    background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.5), rgba(0,0,0,0.1)),url(https://tse4.mm.bing.net/th/id/OIP.GJxkcBssigpnvicwChm7PgHaEo?rs=1&pid=ImgDetMain&o=7&rm=3);
-}
-
-.img-container-2.active, .img-container.active{
-    height: 100%;
-   justify-content: flex-start;
-    padding-top: 2rem;
-    flex-direction: column;
+.icon-status{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    background: #1b1e5c;
-}
-
-.img-container:hover, .img-container-2:hover{
-    width: 150%;
-}
-.btn-info{
-    padding: 1rem 2rem;
-    background: none;
-    border: 2px solid #ffd000;
-    color: #fff;
-    cursor: pointer;
-    transition: all .5s ease;
-}
-
-.img-container.active .btn-info, .img-container-2.active .btn-info{
-    border: 2px solid #1475e4;
-    color: #e4e4e4;
-    border-radius: 20px;
-}
-
-.glass-form{
-    width: 70%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    font-family: "Arsenal SC", sans-serif;
-    color: #cfcfcf;
-    gap: 2rem;
-}
-
-.big-form{
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.csv-glasses{
-    width: 100%;
-    min-height: 200px;
-    max-width: 300px;
-    border-radius: 15px;
-    border-style: none;
-    padding: 15px;
-    font-family: "Arsenal SC", sans-serif;
-}
-
-.csv-glasses:focus{
-    outline: none;
-}
-
-.glass-form-label{
-    position: relative;
-}
-
-.glass-form-input{
-    padding: .5rem;
-    border : none;
-    border-bottom: #1475e4 2px solid;
-    background: transparent;
-    color: #fff;
-    width: 20rem;
-}
-
-.glass-form-input:focus{
-    outline: none;
-}
-
-.glass-form-span{
-    font-size: 1.2rem;
+    font-size: 20px;
     position: absolute;
     left: 0;
-    transition: all .5s ease;
+    top: 0;
+    border-radius: 50%;
 }
 
-.box-selection-invoice-manifest{
-    justify-content: center;
+.pop-up-status-register.error{
+    background: linear-gradient(to right,rgb(146, 27, 11), rgb(94, 18, 9));
+}
+
+.pop-up-status-register.success{
+    background: linear-gradient(to right,rgb(119, 192, 36), rgb(94, 145, 35));
+}
+
+.pop-up-status-register.error .icon-status{
+    background: rgb(146, 27, 11);
+}
+
+.pop-up-status-register.success .icon-status{
+    background: rgb(119, 192, 36);
+}
+
+@keyframes statusBar{
+    0%{
+    right: -50px;
+    }
+    15%{
+    right: 50px;
+    width: 50px;
+    }
+    25%{
+        right: 100px;
+        width: 300px;
+    }75%{
+        right: 100px;
+        width: 300px;
+    }100%{
+        width: 50px;
+        right: -50px;
+    }
+}
+
+.container-input-data{
     display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-top: 2rem;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.glass-form-input:focus + .glass-form-span,
-.glass-form-input:not(:placeholder-shown) + .glass-form-span {
-    font-size: .8rem;
-    color: rgb(255, 217, 0);
-    transform: translateY(-1rem); 
-}
-
-#id-input-name-invoice, #id-input-name-manifest{
-    padding: .7rem;
-    border: none;
-    border-radius: 5px;
-}
-
-.invoice-result-field, .manifest-result-field{
-    display: none;
-    background-color: whitesmoke;
-    max-height: 200px;
-    color: #383838;
-    padding: .5rem;
-    border-radius: 5px;
-    position: absolute;
+.main-glasses{
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 35px;
+    flex-wrap:wrap;
+    padding: 35px;
     overflow-y: auto;
 }
 
-.invoice-result-field::-webkit-scrollbar, .manifest-result-field::-webkit-scrollbar{
-    width:5px;
+.container-register-eyewears{
+    min-width: 400px;
+    max-width: 1000px;
+    height: 700px;
+    background: #262a82;
+    border-radius: 35px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--main-shadow);
 }
 
-.invoice-result-field::-webkit-scrollbar-track, .manifest-result-field::-webkit-scrollbar-track{
-    margin: 20px 0;
+.container-register-eyewears.change{
+    background: linear-gradient(#060e1b 80%, #0d2750 100%) !important;
 }
 
-.invoice-result-field::-webkit-scrollbar-thumb, .manifest-result-field::-webkit-scrollbar-thumb{
- background: #1b1e5c;
+.container-register-eyewears>div{
+    width: 50%;
+    height: 100%;
+    background-color: #262a82;
+    padding: 40px;
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-register{
+    background: linear-gradient(#060e1b 80%, #0d2750 100%) !important;
+}
+
+.cover-capsule{
+   background: #fff !important;
+    position: absolute;
+    color: #0d2750;
+    flex-direction: column;
+    gap: 20px;
+    transition: all .5s ease;
+}
+
+.cover-capsule.toRight{
+    transform: translateX(99.5%);
+    background: linear-gradient(#060e1b 80%, #0d2750 100%) !important;
+    color: #fff !important;
+}
+
+.btn-togle-register{
+ padding: 20px;
+ border-radius: 15px;
+ border-style: none;
+ background: rgb(233, 180, 7);
+ cursor: pointer;
+ font-family: var(--font-arsenal-paragraph) !important;
+ transition:all .5s ease;
+
+ box-shadow: var(--main-shadow);
+}
+
+.btn-togle-register:hover{
+    background: #262a82;
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.cover-capsule p{
+    font-family: var(--font-arsenal-paragraph) !important;
+    font-size: 15px;
+    width: 80%;
+    text-align: center;
+    font-weight: lighter;
+}
+
+/*Form Massive Data*/
+
+.form-massive-data{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+/*Form Single Data*/
+
+.form-single-data{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/*Form to issue certificate*/
+
+.certificate-register{
+    min-width: 500px;
+    height: 800px;
+    background: linear-gradient(#060e1b, #0d2750,#060e1b);
+    border-radius: 25px;
+    box-shadow: var(--main-shadow);
+    animation: movementBackgroundCertificate 8s infinite linear;
+    background-size: 200% 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes movementBackgroundCertificate{
+    0%{
+      background-position: 50% 0%;
+    }
+    50%{
+      background-position: 50% 200%;
+    }
+    100%{
+      background-position: 50% 0%;
+    }
+}
+
+
+.issue-certificate{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-radius: 25px;
+    background: #060e1b86;
+    overflow-y: auto;
+}
+
+.img-logo-imax{
+    width: 80px;
+    height: 80px;
+    background-image: url(/logo-types/ai-max-logo.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/*textArea*/
+
+#textareaGlasses{
+    min-width: 75%;
+    max-width: 80%;
+    height: 150px;
+    border-radius: 25px;
+    padding: 15px;
+    border-style: none;
+    box-shadow: var(--main-shadow);
+}
+
+#textareaGlasses:focus{
+    outline: none;
+}
+
+/*Labels*/
+
+.group-input-certificate-glasses{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.label-input{
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+    position: relative;
+}
+/*Inputs*/
+
+.glass-form-input{
+    padding: 15px;
+    border-radius: 25px;
+    border-style: none;
+    box-shadow: var(--main-shadow);
+    transition: all .5s ease;
+    width: 200px;
+}
+
+.group-input-certificate-glasses .glass-form-input{
+    width: 90px;
+}
+
+input[type='date']{
+    width: 200px;
+    padding: 15px;
+    border-radius: 25px;
+    border-style: none;
+    box-shadow: var(--main-shadow);
+    transition: all .5s ease;
+    font-family: var(--font-arsenal-paragraph);
+}
+
+input[type='date']:focus{
+    outline: none;
+    background: transparent;
+    border: 1px #ffd000 solid;
+    color: #fff;
+}
+
+input[type='date']:focus::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1); /* Invierte el color del ícono nativo (de negro a blanco) */
+    
+    /* Opcional: hacerlo un poco más grande */
+    transform: scale(1.2); 
+}
+
+input[type='date'] + .tittle-input{
+    background: transparent;
+    transform: translateY(-30px);
+    font-size: 10px;
+    color: #ffd000;
+}
+
+.glass-form-input:focus, .glass-form-input:not(:placeholder-shown){
+    outline: none;
+    background: none;
+    border: 1px #ffd000 solid;
+    color: #fff;
+}
+
+.tittle-input{ /*span*/
+    position: absolute;
+    display: inline-block;
+    left: 15px;
+    top: 15px;
+    font-size: 13px;
+    transition: all .5s ease;
+}
+
+.glass-form-input:focus + .tittle-input, .glass-form-input:not(:placeholder-shown) + .tittle-input{
+    transform: translateY(-20px);
+    font-size: 10px;
+    color: #ffd000;
+    background: #262a82;
+    padding: 0 5px;
+}
+
+.form-single-data .glass-form-input:focus + .tittle-input, .form-single-data .glass-form-input:not(:placeholder-shown) + .tittle-input {
+    background: #060e1b;
+}
+
+.issue-certificate .glass-form-input:focus + .tittle-input, .issue-certificate .glass-form-input:not(:placeholder-shown) + .tittle-input{
+    background: transparent;
+    transform: translateY(-30px);
+}
+
+#inputFillInvoice, #inputFillManifest{
+ padding: 10px;
+ border-radius: 15px;
+ border-style: none;
+ box-shadow: var(--main-shadow);
+}
+
+#inputFillInvoice.search, #inputFillManifest.search{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#inputFillInvoice:focus, #inputFillManifest:focus{
+    outline: none;
+}
+.field-result-document{
+ background: #fff;
+ position: absolute;
+ width: 100%;
+ left: 0;
+ padding: 5px;
+ border-bottom-left-radius: 15px;
+ border-bottom-right-radius: 15px;
+ max-height: 200px;
+ overflow-y: auto;
+ overflow-x: hidden;
+ display: none;
+ z-index: 5;
+}
+
+.field-result-document::-webkit-scrollbar{
+    width: 5px;
+}
+
+.field-result-document::-webkit-scrollbar-corner{
+    display: none;
+}
+
+.field-result-document::-webkit-scrollbar-track{
+        margin: 20px 0;
+}
+
+.field-result-document::-webkit-scrollbar-thumb{
+    background: #000b30;
+    border-radius: 5px;
+}
+
+.field-result-document ul{
+    font-size: 12px;
+    font-family: var(--font-arsenal-paragraph), Arial;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.field-result-document li{
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ width: 100%;
+ padding: 5px 2px;
+ cursor: pointer;
+ transition: all .5s ease;
  border-radius: 5px;
 }
 
-.result-item{
-    padding: .5rem;
-    transition: all .3s ease;
-}
-
-.result-item:hover{
-    background-color: #000b30;
+.field-result-document li:hover{
+    background-color: #838383;
     color: #fff;
 }
 
-/*Enviar informacion*/
+/*Boton de accion*/
 
-.btn-submit-info{
-    max-height: 3rem;
-    padding: .8rem 1.5rem;
+.btn-register-action{
+    padding: 15px;
+    border-radius: 15px;
     border-style: none;
-    border-radius: 20px;
-    background-color: #1475e4;
-    color: #e4e4e4;
-    font-family: "Arsenal SC", sans-serif;
     cursor: pointer;
-    margin-top: 1rem;
+    box-shadow: var(--main-shadow);
+    background: rgb(2, 16, 43);
+    font-family: var(--font-arsenal-paragraph);
+    transition: all .5s ease;
+    color: #fff;
 }
 
-.btn-submit-info:hover{
-    background-color: #000b30;
+.btn-register-action:hover{
+    background: rgb(5, 180, 122);
+    transform: translateY(-5px);
+    color: #060e1b;
 }
 
-.table-container{
-    display: none;
-    margin-top: 2rem;
-    max-height: 500px;
-    border-radius: 25px;
-    background-color: #fff;
-    text-align: center;
+.btn-register-action.process{
+    pointer-events: none;
+    cursor: default;
 }
 
-.overflow-table{
-    max-height: 450px;
-    overflow-y: auto;
-}
-
-.overflow-table::-webkit-scrollbar{
-    width: 7px;
-}
-
-.overflow-table::-webkit-scrollbar-track{
-    margin: 20px 0;
-}
-
-.overflow-table::-webkit-scrollbar-thumb{
-    border-radius: 10px;
-    background: #000b30;
+.group-documents-input{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Estilos de la pagina de resultados */
@@ -1115,13 +1382,4 @@ tr:hover input[type="checkbox"]{
 .denny-box img{
     width: 10rem;
     filter: grayscale(100%);
-}
-
-@keyframes phantom-loading{
-    0%{
-     background-position: 200% 0;
-    }
-    100%{
-      background-position: -200% 0;
-    }
 }

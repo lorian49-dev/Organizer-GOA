@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-   <div class="container">
- <nav>
-        <span class="back-home"  onclick="goHome()">
+   <div class="container-input-data">
+    <nav>
+        <span class="back-home">
             <i class="fa-solid fa-arrow-left"></i>
         </span>
         <ul class="list-navegation-ul">
@@ -31,335 +31,65 @@
         </ul>
          <!--Boton de Cierre de sesion-->
          <button id="btn-log-out" onclick="logoutBtn()" title="cerrar sesion"><i class="fa-solid fa-power-off"></i></button>
-      </nav>
-<div class="main-glasses">
-    <div class="img-container">
-            <button class="btn-info">Registro Unico</button>
-        <form class="glass-form" method="POST" action="/glasses">
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-name" name="brand" required><span class="glass-form-span">Marca</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-serial" name="serial" required><span class="glass-form-span"># Codigo</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-reference" name="reference" required><span class="glass-form-span"># Referencia</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-color" name="color" required><span class="glass-form-span">Color de montura</span></label>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
-            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
-           <div class="box-selection-invoice-manifest">
-             <label class="selection-invoice">
-                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" autocomplete="off">
-                <input type="hidden" id="id-input-invoice" name="id_invoice">
-                <div class="invoice-result-field">
-
-                </div>
+    </nav>
+    <main class="main-glasses">
+        <div class="container-register-eyewears">
+         <div class="single-register">
+          <form action="" method="post" class="form-single-data">
+             <label class="label-input"><input type="text" name="brand" class="glass-form-input input-brand" placeholder=" " autocomplete="off" required><span class="tittle-input">Marca</span></label>
+             <label class="label-input"><input type="text" name="serial" class="glass-form-input input-code" placeholder=" " autocomplete="off" required><span class="tittle-input">Codigo</span></label>
+              <label class="label-input"><input type="text" name="reference" class="glass-form-input input-reference" placeholder=" " autocomplete="off" required><span class="tittle-input">Referencia</span></label>
+               <label class="label-input"><input type="text" name="color" class="glass-form-input input-color" placeholder=" " autocomplete="off" required><span class="tittle-input">Color</span></label>
+               <label class="label-input"><input type="text" name="order" class="glass-form-input input-order-single" placeholder=" " autocomplete="off" required><span class="tittle-input">Nro Pedido</span></label>
+               <!--Entrada de datos para Documentos-->
+            <div class="group-documents-input">
+            <label class="label-input">
+             <input type="text" placeholder="Escriba su factura" id="inputFillInvoice" class="single-input-fill-invoice" autocomplete="off">
+             <input type="hidden" name="id_invoice" class="id-invoice-single">
+             <div class="document-invoice-result-single field-result-document"></div>
             </label>
-            <label class="selection-manifest">
-                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" autocomplete="off">
-                <input type="hidden" id="id-input-manifest" name="id_manifest">
-                <div class="manifest-result-field">
-
-                </div>
+            <label class="label-input">
+             <input type="text" placeholder="Escriba su manifiesto" id="inputFillManifest" class="single-input-fill-manifest" autocomplete="off">
+             <input type="hidden" name="id_manifest" class="id-manifest-single">
+             <div class="document-manifest-result-single field-result-document"></div>
             </label>
-           </div>
-            <button class="btn-submit-info" type="submit">Registrar</button>
-        </form>
-    </div>
-    <div class="img-container-2">
-            <button class="btn-info">Registro Masivo</button>
-            <form class="glass-form big-form">
-            <textarea name="infdo-text-area" class="csv-glasses" placeholder="Por favor, con atencion pegue desde su archivo excel las siguientes 4 columnas: Marca Codigo Referencia Color, no pegue la cabecera de la columna, solo la informacion, deben ser 4 columnas, solo presione Ctrl + v"></textarea>
-            <label class="glass-form-label"><input type="text" placeholder=" " class="glass-form-input eyewear-order" name="order" required><span class="glass-form-span"># Orden</span></label>
-            <!--Desde aqui se separan los inputs anteriores a los campos de eleccion de Facturas y manifiestos-->
-           <div class="box-selection-invoice-manifest">
-             <label class="selection-invoice">
-                <input type="text" placeholder="Escoger Factura *" id="id-input-name-invoice" class="input-name-invoice-package" autocomplete="off">
-                <input type="hidden" id="id-input-invoice" class="id-input-invoice-package" name="id_invoice">
-                <div class="invoice-result-field invoice-result-field-package">
-
-                </div>
+            </div>
+            <button class="btn-register-action register-single">Registrar</button>
+          </form>
+         </div>
+         <div class="massive-register">
+          <form action="" method="post" class="form-massive-data">
+            <textarea name="info-text-area" id="textareaGlasses"></textarea>
+            <label class="label-input"><input type="text" name="order" class="glass-form-input input-order-massive" placeholder=" " autocomplete="off" required><span class="tittle-input">Nro Pedido</span></label>
+            <!--Entrada de datos para Documentos-->
+            <div class="group-documents-input">
+            <label class="label-input">
+             <input type="text" placeholder="Escriba su factura" id="inputFillInvoice" class="massive-input-fill-invoice" autocomplete="off">
+             <input type="hidden" name="id-invoice" class="id-invoice-massive">
+             <div class="document-invoice-result-massive field-result-document"></div>
             </label>
-            <label class="selection-manifest">
-                <input type="text" placeholder="Escoger Manifiesto *" id="id-input-name-manifest" class="input-name-manifest-package" autocomplete="off">
-                <input type="hidden" id="id-input-manifest" class="id-input-manifest-package" name="id_manifest">
-                <div class="manifest-result-field manifest-result-field-package">
-
-                </div>
+            <label class="label-input">
+             <input type="text" placeholder="Escriba su manifiesto" id="inputFillManifest" class="massive-input-fill-manifest" autocomplete="off">
+             <input type="hidden" name="id-manifest" class="id-manifest-massive">
+             <div class="document-manifest-result-massive field-result-document"></div>
             </label>
-           </div>
-            <button class="btn-submit-info" type="submit">Registrar</button>
-        </form>
-    </div>
+            </div>
+            <button class="btn-register-action register-massive">Registrar</button>
+          </form>
+         </div>
+         <div class="cover-capsule">
+            <h3>
+                Registro Masivo
+            </h3>
+            <p>Debe copiarse la informacion de 4 columnas de una hoja excel que contenga las, marcas, codigos, referencias y color de montura.</p>
+            <p>Solo debe copiarse y pegarse en el area indicada, no puede alterarse ni haber espacios en blancos entre las celdas.</p>
+            <p>solo puede haber un numero de orden, es el indicado en el ingreso al sistema Softix.</p>
+            <p>los campos de factura y manifiesto son obligatorios, debe darsele click a la coincidencia arrojada por el sistema.</p>
+            <button class="btn-togle-register">Hacer un solo registro</button>
+         </div>
+        </div>
+    </main>
 </div>
-</div>
-<script>
-
-    // Buscador de Gafas
-
-    const inputSearchGlass = document.getElementById('search-glass')
-    const searchGlassResults = document.querySelector('.field-results-glasses')
-
-    // navBar Constantes
-    const magnifier = document.querySelector('.fa-magnifying-glass')
-    const navEgation = document.querySelector('nav')
-    const formManifestAndInvoice = document.querySelector('.form-documents');
-    let navIsActive
-    const barIconMenu = document.querySelector('.fa-bars-staggered')
-
-    // for Invoices
-
-    const nameFieldInvoice = document.getElementById('id-input-name-invoice');
-    const nameFieldInvoicePackage = document.querySelector('.input-name-invoice-package');
-    const idFieldInvoice = document.getElementById('id-input-invoice');
-    const idFieldInvoicePackage = document.querySelector('.id-input-invoice-package');
-    const fieldResultInvoice = document.querySelector('.invoice-result-field');
-    const fieldResultInvoicePackage = document.querySelector('.invoice-result-field-package');
-
-    // for Manifest
-
-    const nameFieldManifest = document.getElementById('id-input-name-manifest');
-    const nameFieldManifestPackage = document.querySelector('.input-name-manifest-package');
-    const idFieldManifest = document.getElementById('id-input-manifest');
-    const idFieldManifestPackage = document.querySelector('.id-input-manifest-package');
-    const fieldResultManifest = document.querySelector('.manifest-result-field');
-    const fieldResultManifestPackage = document.querySelector('.manifest-result-field-package');
-    const inputOrderpackage = document.querySelectorAll('.eyewear-order');
-
-    // Eventos al desplegar tablas y formulario
-    const btnInfoShow = document.querySelectorAll('.btn-info');
-    const formContainer = document.querySelector('.img-container');
-    const tableContainer = document.querySelector('.img-container-2');
-    const formContainerMassive = document.querySelector('.big-form'); // contenedor del formulario para registros masivos
-    const formEyeWear = document.querySelector('.glass-form');
-    const formEyeWearBigData = document.querySelector('.big-form');
-    const textAreaGlasses = document.querySelector('.csv-glasses');
-    
-    // Estados cambiantes
-    let bigFormState = false
-    let formState = false
-
-    let currentPage = 1
-    let globalCount = 0
-
-    // Utilidades
-
-    const logoutBtn = () =>{
-    window.location.href = '/logout'
-}
-// Funcion que puede facilitar la asincronia en ciertas tareas
-    const breakPoint = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-// Abrir Barra de navegacion
-     const openNavBar = async(a, b) =>{
-   
-    if(!a){
-        barIconMenu.title = 'Minimizar menu'
-        navEgation.classList.add('active');
-        formManifestAndInvoice.classList.add('active')
-        setTimeout(()=>{inputSearchGlass.classList.add('active')}, 1000)
-    }else{
-        barIconMenu.title = 'Expandir menu'
-        inputSearchGlass.classList.remove('active');
-        setTimeout(()=>{formManifestAndInvoice.classList.remove('active')}, 500)
-        await b(500);
-        navEgation.classList.remove('active')
-        if(dropZone&&dropZone.classList.contains('on')) dropZone.classList.remove('on');
-
-    }
-   
- }
-
-    // Funcion de redireccionar la ubicacion actual a la pagina principal
-    function goHome(){
-        window.location.href = '/';
-    }
-
-    // Funcion de debounce
-
-   function debounce(fn, delay){
-    let timeout;
-    return function(...args){
-        clearTimeout(timeout);
-        timeout = setTimeout(()=>{
-            fn.apply(this, args)
-        }, delay)
-    }
-   }
-
-    const autocompleteManifestInvoice = async (name, id, field, fetchUrl, idTable) => {
-        field.innerHTML = '';
-        field.style.display = 'none';
-        const value = name.value;
-
-        if(value.length < 2) return
-
-        const res = await fetch(`${fetchUrl}${value}`);
-        const data = await res.json();
-
-        data.forEach(item =>{
-            const itemResult = document.createElement('div');
-            itemResult.textContent = item.name
-            itemResult.classList.add('result-item')
-            itemResult.addEventListener('click', ()=>{
-                name.value = item.name;
-                id.value = item[idTable];
-                field.innerHTML = ''
-                field.style.display = 'none'
-            })
-
-            field.appendChild(itemResult)
-            field.style.display = 'block'
-        })
-
-    }
-
-     document.addEventListener('DOMContentLoaded', ()=>{
-        setTimeout(()=>{
-         document.body.style.opacity = 1
-         document.body.style.pointerEvents = 'auto'
-        }, 1000)
-     })
-
-     // Eventos en la NavBar 
-
-if(barIconMenu){
-    barIconMenu.addEventListener('click', async()=>{
-     navIsActive = navEgation.classList.contains('active')
-     openNavBar(navIsActive, breakPoint)
-    })
-}
-
-if(magnifier){
-    magnifier.addEventListener('click', async()=>{
-     navIsActive = navEgation.classList.contains('active')
-     openNavBar(navIsActive, breakPoint)
-    })
-}
-
-        //-------------------------------------------------//
-        //                   Show Form
-        //-------------------------------------------------//
-
-        btnInfoShow[0].addEventListener('click', ()=>{
-         formContainer.classList.toggle('active')
- 
-         if(!formState){
-            formEyeWear.style.display = 'flex';
-            // manejo de envento al hacer click fuera del campo de resultados
-            document.addEventListener('click', (e)=>{
-             if(!fieldResultInvoice.contains(e.target) && !fieldResultManifest.contains(e.target)){
-                fieldResultInvoice.style.display = 'none';
-                fieldResultManifest.style.display = 'none'
-             }
-            })
-
-            nameFieldInvoice.addEventListener('input', debounce(()=>{
-            autocompleteManifestInvoice(nameFieldInvoice, idFieldInvoice, fieldResultInvoice, '/search-invoice?name=', 'id_invoice')
-            }, 300))
-
-            nameFieldManifest.addEventListener('input', debounce(()=>{
-                 autocompleteManifestInvoice(nameFieldManifest, idFieldManifest, fieldResultManifest, '/search-manifest?name=', 'id_manifest')
-            }, 300))
-
-            formState=true;
-         }else{
-            formEyeWear.style.display = 'none'
-            formState=false;
-         }
-        })
-        // searchGlass dropDown
-
-        async function autoCompleteGlass(input, field) {
-            field.innerHTML = ''
-            field.style.display = 'none';
-            if(input.classList.contains('boxShadowOff')){
-            input.classList.remove('boxShadowOff');
-            }
-            const valueSearch = input.value;
-
-            if(valueSearch.length < 2) return;
-
-            const res = await fetch(`/search-glass-results?glass=${valueSearch}`);
-            const data = await res.json();
-
-            if(data.length === 0) return field.style.display = 'none'
-            
-            data.forEach(item =>{
-                const result = document.createElement('div');
-                result.classList.add('item-glass-result');
-                result.textContent = item.code;
-
-                result.addEventListener('click', ()=>{
-                    window.location.href = `/search-mid?glass_model=${item.code}`;
-                })
-
-                field.appendChild(result);
-            })
-
-            field.style.display = 'block'
-            input.classList.add('boxShadowOff')
-        }
-
-        //-------------------------------------------------//
-        //                Enviar Registro
-        //-------------------------------------------------//
-
-
-
-        //-------------------------------------------------//
-        //           Enviar Registro masivo
-        //-------------------------------------------------//
-
-        btnInfoShow[1].addEventListener('click', ()=>{
-         tableContainer.classList.toggle('active')
-
-         if(!bigFormState){
-         formContainerMassive.style.display = 'flex';
-         bigFormState = true;
-         } else{
-         formContainerMassive.style.display = 'none';
-         bigFormState = false;
-         }
-
-        })
-
-        nameFieldInvoicePackage.addEventListener('input', debounce(()=>{
-            autocompleteManifestInvoice(nameFieldInvoicePackage, idFieldInvoicePackage, fieldResultInvoicePackage, '/search-invoice?name=', 'id_invoice')
-        }))
-
-        nameFieldManifestPackage.addEventListener('input', debounce(()=>{
-            autocompleteManifestInvoice(nameFieldManifestPackage, idFieldManifestPackage, fieldResultManifestPackage, '/search-manifest?name=', 'id_manifest')
-        }))
-
-        formEyeWearBigData.addEventListener('submit', async(event)=>{
-            event.preventDefault();
-            // se separan los registros del excel por \n (filas)
-            const dataTrim = textAreaGlasses.value.trim().split('\n');
-            // se separan los registros de cada fila por \t (columnas)
-            const dataTrimRows = dataTrim.map(event =>{
-            return event.split('\t');
-            })
-            // se mapea de nuevo cada elemento devuelto para limpiar espacios indeseados al principio y el final
-            const  dataCleaned = dataTrimRows.map(lete =>{ return lete.map(late =>{return late.trim()})})
-            // variables de los elementos de valor fijo, se usa [] para poder acceder al segundo elemento en el HTML con esta clase
-            const valueOrder = inputOrderpackage[1].value || null
-            // se convierte el array de arrays a un array de objetos, esto para que el servidor pueda leer correctamente
-            const registerPackage = dataCleaned.map(element=>{return {brand: element[0], code:element[1], reference:element[2], color:element[3], ship_order:valueOrder, invoice_id: idFieldInvoicePackage.value, manifest_id: idFieldManifestPackage.value}});
-            
-            const res = await fetch('/glasses-package', {
-                method:'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({monturas:registerPackage})
-            })
-            const operationStatus = res.status
-            if(operationStatus === 200){
-                console.log('OPERACION EXITOSA')
-            }else{
-                console.log('No se subieron los archivos')
-            }
-        })
-
-        if(inputSearchGlass){
-            inputSearchGlass.addEventListener('input', debounce(()=>{
-            autoCompleteGlass(inputSearchGlass, searchGlassResults)
-            }, 300));
-        }
-        // end
-</script>
+<script type="module" src="/events/glasses.js"></script>
 </body>
 </html>
